@@ -1,0 +1,67 @@
+---
+description: Forth naming, layout, comments, constants, control nesting
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Style and documentation
+
+## Naming
+
+- English, **what** the word does, not **how** (`read-block` not `call-#36`).
+- ANS guarantees at least **31** characters of name significance; Gforth allows arbitrary length. Keep names short enough to read.
+- Safe portable character set: printable ASCII `!`…`~` (0x21–0x7E), no whitespace inside the name.
+- A name that parses as a valid number is hidden by the number parser (e.g. `2` is always the number `2`); pick a non-numeric token (`two`, `2dup` is fine because it starts with a digit but contains letters).
+- Prefer hyphenated phrases: `fill-buffer`, `parse-line`.
+- Conventions worth following: `?foo` returns a flag, `>foo` converts to foo, `.foo` prints foo, `foo!` stores, `foo@` fetches.
+
+## Definition layout
+
+```forth
+: example ( c-addr u -- flag )
+  \ body indented for readability
+  0= if false exit then
+  true ;
+```
+
+- `:` starts at column 0; body indented (spaces, not tabs mixed inconsistently).
+- Keep definitions **short**; if longer than ~40–50 lines, factor.
+- Max **3** levels of nested control structures per word; more suggests missing factoring.
+
+## Stack comments in source
+
+```forth
+: ?key ( -- char true | false )
+  key? if key true else false then ;
+```
+
+For words with **different stack effects per path**, list each on its own line:
+
+```forth
+: recv ( -- addr u true | ior false )
+  ( -- addr u true )
+  ...
+  ( -- ior false )
+  ... ;
+```
+
+Return stack: when using `>r` `r>` `r@`, add `(R before -- after )` on the same header or the line above the first `>r`.
+
+## Magic numbers
+
+Do not embed unexplained numeric literals in word bodies. Use constants:
+
+```forth
+42 constant asterisk-code
+: star ( -- ) asterisk-code emit ;
+```
+
+## Variables
+
+- Minimize global `variable` / `value`; prefer stack arguments and factored words.
+- Initialize variables at creation or in a dedicated init word called from `init` / `go` / `run`.
+- Define locals near first use in the module that owns them.
+
+## Structured programming
+
+One entry, one normal exit. Use `catch` / `throw` (or project IOR convention) for errors — not ad-hoc jumps out of nested structures.

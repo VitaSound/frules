@@ -1,0 +1,49 @@
+---
+description: Factoring, word size, bottom-up design (Thinking Forth style)
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Factoring and design
+
+## Small words
+
+A colon definition should do **one recognizable thing** at the level of abstraction of its name. If you need inline comments to explain every line, extract words.
+
+```forth
+\ BAD — monolith, no named steps, magic 255
+: send-packet ( addr u -- )
+  dup 255 min over c! 1+ swap 1- ... ;
+
+\ GOOD — named steps, each with a clear stack effect
+255 constant max-payload
+: clamp-payload ( u -- u' ) max-payload min ;
+: store-byte    ( addr c -- addr+1 ) over c! 1+ ;
+: advance       ( addr u -- addr+1 u-1 ) 1 /string ;
+```
+
+## Bottom-up
+
+Build a **vocabulary** for the problem domain first (low-level, tested words), then compose application words. The language of words should read like the problem statement.
+
+## Rule of three
+
+If the same sequence of three or more words appears twice, factor it into a new word unless inlining is required for speed (document that exception).
+
+## Defer optimization
+
+Write clear factored code first. Merge or specialize only after profiling on the target system. Inlining via `compile,` / `postpone` is an advanced, dialect-specific step — do not default to it.
+
+## Component boundaries
+
+Group related words in one file or block. List **exports** (words other modules may use) at the top of the file comment. Hide helpers (no external documentation) when the project supports it.
+
+## Tests at the keyboard
+
+New words should be runnable in isolation at the interpreter with a documented stack setup:
+
+```forth
+\ setup -- try -- cleanup
+s" test" 2constant test$
+test$ count type cr
+```

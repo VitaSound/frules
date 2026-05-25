@@ -1,0 +1,71 @@
+---
+description: Common Forth mistakes — especially from imperative/LLM habits
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Anti-patterns
+
+## Infix and assignment thinking
+
+Do not model imperative variables. Pass values on the stack between small words.
+
+```forth
+\ Imperative habit (not Forth):
+\   x = (a + b) * 2 ;  if x > 0 then ...
+
+\ Forth equivalent — name the operation, leave result on stack
+: scale-sum     ( a b -- n )      + 2* ;
+: act-on-sum    ( a b -- )        scale-sum 0> if ." positive" then ;
+```
+
+Reach for `variable` / `value` only for genuinely persistent state (config, caches, hardware registers). Intermediate values belong on the stack or in locals (`{ … }` in Gforth).
+
+## Deep stack / PICK / ROLL
+
+Frequent `pick` `roll` `rot` chains mean the word should be refactored. On **Gforth**, prefer `{ locals }` (see `forth-dialect-gforth.mdc`); otherwise use return stack with clear `(R …)` comments or ANS `LOCALS|`.
+
+`pick` and `roll` are valid in CORE-EXT but are **array operations on the stack** — use sparingly.
+
+## Stack not cleaned on exit
+
+Every `if` / `else` / `begin` path must agree on stack depth unless documented as two distinct `( -- … )` contracts.
+
+## Variables instead of stack
+
+Do not mirror stack parameters into `variable` unless persistence or global state is required.
+
+## String handling
+
+- C-style null-terminated assumptions: use `count` + `addr` pairs (`c-addr u`) in ANS style.
+- Forgetting that `type` expects `( c-addr u -- )`.
+
+## `[` misuse
+
+Do not leave compilation state wrong after `[` … `]`; ensure `]` restores compile mode before `;`.
+
+## String literals in definitions
+
+Match the active dialect. **Gforth:** `S"` / `s"` / `[ s" … ] literal`; `"text"` is common but non-ANS. **Portable ANS:** `S"` / `." … "`. Do not use C `"hello"` or NUL-terminated assumptions.
+
+## `[char]` at the interpreter
+
+`[char] x` is **compile-only** — it embeds the literal character code into the surrounding definition. At the interpreter (or in a test script outside `:` … `;`), use `char x` instead, which parses the next blank-delimited token and pushes its first character code.
+
+```forth
+\ inside a definition
+: bang ( -- )  [char] ! emit ;
+
+\ at interpret level
+char a   .   \ prints 97
+```
+
+A common mistake is `s" abc" [char] a count-char` typed at the prompt — it warns "compile-only" and pushes nothing, producing a stack underflow in the next word.
+
+## Over-commenting the obvious
+
+Comments should explain **why** or **non-obvious stack state**, not narrate `dup drop`.
+
+## Copying C control flow
+
+Prefer `begin … while … repeat`, `begin … until`, `?do … loop` over fake `for` loops with manual indices unless the project idiom uses counted loops (`?do` / `+loop`).

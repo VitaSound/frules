@@ -1,0 +1,6 @@
+# Скопируйте в frules.conf и отредактируйте:
+#   cp frules.conf.example frules.conf
+
+# gforth — правила Gforth + общие ANS-идиомы
+# ans  — только переносимый ANS, без forth-dialect-gforth.mdc
+dialect=gforth

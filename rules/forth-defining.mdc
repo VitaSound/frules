@@ -1,0 +1,51 @@
+---
+description: CREATE DOES>, IMMEDIATE, compilation vs execution stack effects
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Defining words and state
+
+## Colon definitions
+
+```forth
+: name ( stack -- effect )
+  ... ;
+```
+
+`;` ends the definition. Use `recursive` (Gforth/Forth-2012) when the word must call itself by name from inside its own body.
+
+## CREATE / DOES>
+
+A defining word builds new words. Two stack effects matter: one for **calling the defining word**, one for **calling each created word** (after `does>`).
+
+```forth
+: cell-array  ( n "name" -- )       \ defining-time: reserve n cells
+  create cells allot
+  does>     ( i a-addr -- addr )     \ run-time of a created word
+    swap cells + ;
+
+10 cell-array readings                \ defines 'readings'
+0 readings @ .                        \ access element 0
+```
+
+`does>` puts the address of the created word's data area on the stack before running the body.
+
+## IMMEDIATE
+
+Words marked `immediate` execute during compilation of the enclosing definition (`if`, `then`, `[char]`, custom macros). Their job is usually to emit code via `postpone`, `compile,`, or `,`. They must keep the compile-time stack balanced.
+
+## Literals and execution tokens
+
+- `[ … ] literal` — interpret `…` at compile time, compile its single-cell result as a literal.
+- `sliteral` — compile a string literal from `( c-addr u )` already on the compile-time stack.
+- `postpone word` — compile the compilation semantics of `word` (handles immediate and non-immediate correctly).
+- `'  word` ( interpret ) and `['] word` ( compile ) push an **execution token** (xt) for `word`; run it with `execute`.
+
+## VOCABULARY / FORTH (if present)
+
+Switching vocabularies is implementation-specific. In portable ANS code, avoid relying on `search-order` tricks unless the project explicitly uses them.
+
+## Arrays and strings in memory
+
+Prefer allocated buffers with explicit size (`create`, `allot`, `char+`, `cell+`) over treating the **parameter stack** as an array. See `forth-anti-patterns.mdc`.

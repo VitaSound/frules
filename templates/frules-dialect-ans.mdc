@@ -1,0 +1,10 @@
+---
+description: Active Forth dialect — ANS portable (frules)
+alwaysApply: true
+---
+
+# Dialect: ANS Forth (portable)
+
+Target **ANS Forth** / DPANS94 portability. Do not use Gforth-only syntax (`{ locals }`, `"foo"` literals, `$@`, etc.) unless the user explicitly asks for Gforth.
+
+Prefer standard CORE / CORE-EXT words and `CELL`/`CHARS` sizing. Document environmental dependencies for any extension word.

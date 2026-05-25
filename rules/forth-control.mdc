@@ -1,0 +1,64 @@
+---
+description: Control structures, loops, flags, return stack in control flow
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Control structures
+
+## Flags
+
+In ANS, **true** is `-1`, **false** is `0`. Tests use `if` / `else` / `then` with a single flag on stack.
+
+```forth
+: positive? ( n -- flag )
+  0> ;
+```
+
+Do not assume `1` is true unless your project standard says so.
+
+## if / else / then
+
+```forth
+: abs ( n -- |n| )
+  dup 0< if negate then ;
+```
+
+Each branch must leave the **same** stack effect unless documented otherwise.
+
+## begin / until / again / while / repeat
+
+```forth
+: wait-key ( -- key )
+  begin key? until key ;
+```
+
+Use `leave` inside `do … loop` only when early exit is required; document stack effect of `leave` for your system.
+
+## counted loops
+
+```forth
+: fill ( c addr u -- )
+  0 ?do dup i + c! loop drop ;
+```
+
+Index is `i` (and `j` in nested loops). Bounds: `( limit start -- )` for `?do` / `+loop` in ANS.
+
+## return stack in loops
+
+`>r` / `r>` for temporary storage in complex control flow — always document `(R …)` and ensure `r>` runs on all exit paths (no return stack leaks).
+
+**Do not mix `>r`/`r@` with `DO` / `?DO`.** `DO` / `?DO` push the loop counter and limit on the return stack; `R@` inside the loop body returns the loop index `I`, not the value you pushed before the loop. If a counted loop needs an extra parameter:
+
+- restructure to keep it on the data stack (often with one extra `OVER` / `ROT`);
+- pass it via a `VALUE` written outside the loop and `TO`-updated;
+- on **Gforth**, bind it with `{ name }` locals (see `forth-dialect-gforth.mdc`);
+- or replace `DO` with `BEGIN … WHILE … REPEAT` and manage the counter yourself.
+
+## case / of / endof (if available)
+
+Use when dispatching on multiple discrete values; keep each `of` branch stack-balanced.
+
+## State smart words
+
+Words like `if` are immediate and compile branches. Do not manually `compile,` control words unless building defining words.

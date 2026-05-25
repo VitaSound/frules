@@ -1,0 +1,47 @@
+---
+description: Forth data stack, postfix notation, stack-effect comments
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Stack and postfix
+
+Forth is **postfix (RPN)**: operands first, then the operator.
+
+```forth
+\ Compute (2 + 3) * 4
+
+\ BAD — infix syntax does not exist in Forth
+\ ( 2 + 3 ) * 4
+
+\ GOOD — operands first, operator after
+2 3 + 4 *
+```
+
+## Stack-effect notation
+
+Document every colon definition. Convention: `( inputs -- outputs )` on the data stack. Use a space between stack items. Use `addr`, `char`, `n`, `u`, `d`, `flag`, `ior` where helpful (ANS glossary style).
+
+```forth
+: star ( -- )
+  42 emit ;
+
+: dup* ( n -- n n*n )
+  dup * ;
+```
+
+- **Before** `--`: stack picture when the word is **entered**.
+- **After** `--`: stack picture when the word **exits** (success path).
+- Empty side is valid: `( -- )`, `( n -- )`.
+
+## Stack balance
+
+Every word must leave the stack in a predictable state on normal exit. If a branch consumes or produces different stack items, document **each** path (see `forth-style.mdc`).
+
+## Interactive vs compiled
+
+Numbers and existing words are **executed immediately** at the interpreter. Inside `: ... ;` the same tokens compile unless marked `immediate` or `[` ... `]` is used for compile-time execution.
+
+## Mental model
+
+The data stack is the primary parameter passing mechanism — not a temporary “expression stack”. Design words assuming the caller prepared the stack contract you document.

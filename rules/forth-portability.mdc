@@ -1,0 +1,49 @@
+---
+description: ANS portability — cells, addresses, memory, standard words
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Portability (ANS-oriented)
+
+## Cell and address units
+
+- A **cell** is the natural stack integer; size is **implementation-defined**.
+- Use `cell`, `cells`, `cell+`, `aligned`, `align`, not hard-coded `2*` or `4` for scaling indices unless the project targets one known platform.
+
+```forth
+\ BAD on unknown cell size
+: field@ ( addr -- x ) 2* + @ ;
+
+\ GOOD
+: field@ ( addr -- x ) cell+ @ ;
+```
+
+## Char vs address units
+
+Use `char`, `chars`, `char+` for character buffers; do not assume 1 char = 1 address unit on all systems.
+
+## Stacks are stacks
+
+Parameter and return stacks are **LIFO**. Do not assume you can treat the data stack as a random-access array in portable code (see `PICK` / `ROLL` in anti-patterns).
+
+## Standard words first
+
+Prefer CORE / CORE-EXT words from ANS before vendor extensions. If you must use a non-standard word, document it in the file header **Environmental dependencies**.
+
+## Double numbers
+
+Double-cell values occupy two stack cells (low cell on top in ANS storage order, but pushed/popped as a pair). Use the proper word set:
+
+- pure double: `d+ d- d* d/ d= d< dnegate dabs d2* d2/ d.`
+- mixed single/double: `m+ m* m*/ um* um/mod sm/rem fm/mod s>d d>s`
+
+Document `( d -- d' )` or `( d1 d2 -- d3 )` in headers and remember each `d` is two cells deep.
+
+## Throw / catch
+
+Use `throw` with standardized or project-assigned codes; document which inputs cause which `ior` or exception.
+
+## File and memory words
+
+`allocate` / `free`, `read-file`, `write-file` — check `ior` on every call in application code; do not ignore failure flags.

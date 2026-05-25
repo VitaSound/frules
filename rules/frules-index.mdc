@@ -1,0 +1,19 @@
+---
+description: Forth frules — precedence and conflict resolution between rule files
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# frules precedence
+
+When several Forth rules are in context (Cursor attaches whole `.mdc` files by `globs`; cross-references do not auto-load), apply this order on conflict:
+
+1. **`frules-dialect.mdc`** — chosen dialect (always applied).
+2. **`forth-dialect-<name>.mdc`** — dialect syntax and idioms.
+3. **`forth-portability.mdc`** — only when the project targets multiple Forths.
+4. **`forth-anti-patterns.mdc`** — fix violations before adding more code.
+5. **Other `forth-*.mdc`** — generic guidance (stack, style, control, factoring, defining).
+
+Each topic file's `description:` field tells you what it covers; pick the most specific one for the current task. Do not repeat stack-tutorial material inside a defining-word edit.
+
+If a needed topic is missing, prefer portable ANS words and ask to add `rules/forth-<topic>.mdc` from `sources/`.

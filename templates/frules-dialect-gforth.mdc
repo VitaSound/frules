@@ -1,0 +1,17 @@
+---
+description: Active Forth dialect — Gforth (frules)
+alwaysApply: true
+---
+
+# Dialect: Gforth
+
+This project uses **Gforth**. Use `frules-index.mdc` to pick topic rules. Follow `forth-dialect-gforth.mdc` for strings, locals, includes, and tooling. Other `forth-*.mdc` files apply where they do not conflict; **Gforth wins** on syntax.
+
+Quick checks before suggesting code:
+
+- Prefer `S"` / `s\"` and Gforth string words (`$@`, `$!`) over non-portable hacks.
+- Use `{ locals }` instead of deep `rot`/`pick` when a word needs several named values.
+- Scripts: `#!/usr/bin/env gforth` and `include` / `require` as appropriate.
+- Deviations from strict ANS are OK when idiomatic for Gforth; say so in a one-line comment if non-standard.
+
+Reference: https://gforth.org/manual/
