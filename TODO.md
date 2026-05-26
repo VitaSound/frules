@@ -4,8 +4,13 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
 
 ## Near term (next 1–2 sessions)
 
-- [ ] **`tests/challenges/`** — задачи без решений (только условие + ассерты + ожидаемый стек). Скармливать свежему чату Cursor, смотреть, что модель напишет «вслепую». Это единственный честный сигнал «правила работают».
-- [ ] **Дистилляция первой книги.** Положить в `sources/` (например, *Thinking Forth* / *Starting Forth* / конспект), прогнать `docs/DISTILL-PROMPT.md`, обновить `rules/*.mdc` и `docs/SOURCES.md`.
+- [~] **`tests/challenges/`** — задачи без решений (только условие + ассерты + ожидаемый стек). Скармливать свежему чату Cursor, смотреть, что модель напишет «вслепую». Это единственный честный сигнал «правила работают».
+    - [x] Seed: `01-clamp`, `02-min-max`, `03-reverse-string`, `04-caesar-shift`, `05-balanced-parens`, `06-roman` + `_tester.fs` (форвард на `tests/ans/ttester*`) + `README.md`. Без решения файл аборится `Undefined word: <name>`; решение пасте́ится между маркерами. `test.sh` сам каталог не сканирует — CI не ломается.
+    - [ ] Добить набор: `07-parse-decimal`, `08-anagram?`, `09-rle-encode`, `10-binary-search` — по одному на оставшиеся непокрытые правила (`forth-defining-words.mdc`, `forth-stack.mdc`, FP/double если появятся).
+    - [~] Бенчмарковый прогон: `docs/CHALLENGE-RUNS.md` (Cursor) + `docs/LOCAL-GEMMA-BENCHMARK.md` (Gemma 4 / Ollama, rules on/off). Первая строка в CHALLENGE-RUNS — Composer 2.5 / Agent на `01-clamp`.
+- [~] **Дистилляция первой книги.** Положить в `sources/` (например, *Thinking Forth* / *Starting Forth* / конспект), прогнать `docs/DISTILL-PROMPT.md`, обновить `rules/*.mdc` и `docs/SOURCES.md`.
+    - [x] Thinking Forth: исходники сконвертированы в `sources/brodie-thinking-forth/chapter*.md` + `appendix*.md` + `epilog.md` через `extract.sh` (pandoc + `preprocess.pl`). Картинки в `figures/` — только для человека.
+    - [x] Прогнать `docs/DISTILL-PROMPT.md` по главам, обновить `rules/*.mdc` (`forth-factoring.mdc`, `forth-style.mdc`, `forth-anti-patterns.mdc` переписаны под Brodie; вынесен `forth-naming.mdc`; `docs/SOURCES.md` отмечает источник).
 - [ ] **Pre-commit hook** (`.git/hooks/pre-commit` или husky): запускать `./test.sh`, блокировать коммит при FAIL.
 - [ ] **CI.** GitHub Actions: установка `gforth` + `pforth` через apt, запуск `./test.sh` на каждый PR/push.
 - [ ] **Lint English-only.** Скрипт в `tests/lint.sh`: грепает `[А-Яа-яЁё]` в `rules/*.mdc` и `templates/*.mdc`, фейлит при попадании.

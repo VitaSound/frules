@@ -1,67 +1,87 @@
 ---
-description: Forth naming, layout, comments, constants, control nesting
+description: Forth naming, layout, comments, syntax (Brodie + App E)
 globs: "**/*.{fth,fs,4th,forth,fb}"
 alwaysApply: false
 ---
 
 # Style and documentation
 
-## Naming
+## File / listing organisation
 
-- English, **what** the word does, not **how** (`read-block` not `call-#36`).
-- ANS guarantees at least **31** characters of name significance; Gforth allows arbitrary length. Keep names short enough to read.
-- Safe portable character set: printable ASCII `!`…`~` (0x21–0x7E), no whitespace inside the name.
-- A name that parses as a valid number is hidden by the number parser (e.g. `2` is always the number `2`); pick a non-numeric token (`two`, `2dup` is fine because it starts with a digit but contains letters).
-- Prefer hyphenated phrases: `fill-buffer`, `parse-line`.
-- Conventions worth following: `?foo` returns a flag, `>foo` converts to foo, `.foo` prints foo, `foo!` stores, `foo@` fetches.
+- First line is a comment with unit name, optional page number, date.
+- One definition per line; subsequent lines indent **3 spaces** (multiples
+  of 3 for nested control). No blank lines between consecutive definitions
+  -- only between groups.
+- Keep `decimal` at start *and* end. If a section uses `hex`, wrap it:
+  `base @ >r  hex  …  r> base !`.
+- Declare data one per line with a one-line comment. Initialise variables
+  in one `init` word called from the load file.
+
+For naming, prefixes, and suffixes see `forth-naming.mdc`.
 
 ## Definition layout
 
 ```forth
-: example ( c-addr u -- flag )
-  \ body indented for readability
-  0= if false exit then
-  true ;
+: example ( u -- flag )
+   0= if  false exit  then
+   true ;
 ```
 
-- `:` starts at column 0; body indented (spaces, not tabs mixed inconsistently).
-- Keep definitions **short**; if longer than ~40–50 lines, factor.
-- Max **3** levels of nested control structures per word; more suggests missing factoring.
+`:` at column 0; body indented 3 spaces. Target one line, ~7 references;
+never more than ~3 levels of nested control per word (deeper = missing
+factoring).
 
-## Stack comments in source
+## Forth-natural syntax
 
-```forth
-: ?key ( -- char true | false )
-  key? if key true else false then ;
-```
+Keep words composable on the stack:
 
-For words with **different stack effects per path**, list each on its own line:
+- Numbers precede names (`20 spaces`, not `spaces 20`).
+- Address before count (`( c-addr u )` for `type`, `erase`, `blank`).
+- Source before destination (`( src dst u ) move`).
+- Zero-relative indexing inside; convert at the user edge only.
+- Avoid parsing words that expect a specific follower in the input stream.
 
-```forth
-: recv ( -- addr u true | ior false )
-  ( -- addr u true )
-  ...
-  ( -- ior false )
-  ... ;
-```
+## Stack comments
 
-Return stack: when using `>r` `r>` `r@`, add `(R before -- after )` on the same header or the line above the first `>r`.
+Every definition that touches the stack carries a stack-effect comment.
+Five comment kinds, used together as needed:
 
-## Magic numbers
+| kind            | example                              |
+|-----------------|--------------------------------------|
+| stack-effect    | `( c-addr u -- flag )`               |
+| data-structure  | `\ { 1count \| 63text }`             |
+| input-stream    | `( "name" -- xt )`                   |
+| purpose         | `\ restore base after dump`          |
+| narrative       | inside body, vertical format only    |
 
-Do not embed unexplained numeric literals in word bodies. Use constants:
+When effects differ per path, list each on its own line with full `--`:
+`( -- c-addr u true | -- ior false )`. When `>r` `r>` `r@` are used, add
+`(R … )` on the header or the line above the first `>r`.
+
+## Stack abbreviations (App E)
+
+`n` signed cell · `u` unsigned · `d`/`ud` double · `c` char · `b` byte ·
+`a`/`addr` address · `'x` address of `x` · `?`/`t=`/`f=` flag · `#` count ·
+`i` index (elements) · `o` offset (bytes) · `m` mask · `x` don't-care.
+Input stream: `c` blank-delimited char · `name` word · `text<delim>` string
+with explicit delimiter.
+
+## Magic numbers and locals
+
+Use constants, not unexplained literals. Keep about 3 items live on the
+data stack inside one definition; for a worst-case primitive with 4+
+arguments, use Gforth locals (see `forth-dialect-gforth.mdc`):
 
 ```forth
 42 constant asterisk-code
-: star ( -- ) asterisk-code emit ;
+: star ( -- )  asterisk-code emit ;
+
+: [box] { x1 y1 x2 y2 -- }
+  x1 y1 x2 y1 line   x2 y1 x2 y2 line
+  x2 y2 x1 y2 line   x1 y2 x1 y1 line ;
 ```
-
-## Variables
-
-- Minimize global `variable` / `value`; prefer stack arguments and factored words.
-- Initialize variables at creation or in a dedicated init word called from `init` / `go` / `run`.
-- Define locals near first use in the module that owns them.
 
 ## Structured programming
 
-One entry, one normal exit. Use `catch` / `throw` (or project IOR convention) for errors — not ad-hoc jumps out of nested structures.
+One entry, one normal exit. Use `catch` / `throw` (or the project's IOR
+convention) for errors -- not ad-hoc jumps out of nested structures.

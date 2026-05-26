@@ -1,5 +1,5 @@
 ---
-description: Factoring, word size, bottom-up design (Thinking Forth style)
+description: Factoring, word size, bottom-up design (Brodie "Thinking Forth")
 globs: "**/*.{fth,fs,4th,forth,fb}"
 alwaysApply: false
 ---
@@ -8,42 +8,82 @@ alwaysApply: false
 
 ## Small words
 
-A colon definition should do **one recognizable thing** at the level of abstraction of its name. If you need inline comments to explain every line, extract words.
+Each colon definition does **one** thing at the level of its name and fits on
+one or two lines (about seven references). If you need an inline comment to
+track what is on the stack mid-definition, factor.
 
 ```forth
-\ BAD — monolith, no named steps, magic 255
-: send-packet ( addr u -- )
-  dup 255 min over c! 1+ swap 1- ... ;
+\ BAD -- magic 255, no named steps
+: send-packet ( c-addr u -- )  dup 255 min over c! 1+ swap 1- ... ;
 
-\ GOOD — named steps, each with a clear stack effect
+\ GOOD
 255 constant max-payload
-: clamp-payload ( u -- u' ) max-payload min ;
-: store-byte    ( addr c -- addr+1 ) over c! 1+ ;
-: advance       ( addr u -- addr+1 u-1 ) 1 /string ;
+: clamp-payload ( u -- u' )                max-payload min ;
+: store-byte    ( c-addr c -- c-addr' )    over c! 1+ ;
+: advance       ( c-addr u -- c-addr' u' ) 1 /string ;
 ```
 
-## Bottom-up
+## Lexicons and components
 
-Build a **vocabulary** for the problem domain first (low-level, tested words), then compose application words. The language of words should read like the problem statement.
+Group related words into a **component** that exposes a small **lexicon**;
+everything else stays internal. A bare literal inside the component is fine;
+once it crosses the boundary, name it (`14 constant /record`). One name per
+function -- the Forth dictionary is itself a case statement.
 
-## Rule of three
+## Factoring techniques
 
-If the same sequence of three or more words appears twice, factor it into a new word unless inlining is required for speed (document that exception).
+- **Data.** Pass the varying value: `: two-thirds ( n -- n' )  2 3 */ ;`.
+- **Function.** Do not pass `( flag -- )` to pick between two bodies -- see
+  `forth-anti-patterns.mdc`.
+- **Code inside a conditional.** Lift the common tail out (`… 0= if drop
+  [char] . then emit`, not `emit` on both arms).
+- **Names.** Replace a run like `0sts 1sts … 7sts` with one defining word
+  plus an index (`8 array status   ( i -- 'cell )`).
+- **The control structure.** When two words differ only in the action body,
+  factor the condition: `: ready? ( -- flag )  saturday? work-done? and ;`.
+- **Bodies.** Identical bodies varying only in compile-time data become one
+  `create … does>` family (see `forth-defining.mdc`).
 
-## Defer optimization
+## When to factor
 
-Write clear factored code first. Merge or specialize only after profiling on the target system. Inlining via `compile,` / `postpone` is an advanced, dialect-specific step — do not default to it.
+- Definition exceeds about one line / seven references.
+- You feel the urge to write a stack picture mid-definition -- cut at the
+  picture and promote it to the new word's `( -- )`.
+- Same three-word phrase appears twice (rule of three).
+- You cannot give the fragment a single non-hyphenated name -- the concept
+  is fuzzy; rethink rather than name.
+- A `do … loop` becomes doubly nested -- move the inner loop into its own
+  word.
 
-## Component boundaries
+Do not factor for its own sake: clichés like `over + swap` (turn `c-addr u`
+into `do`'s `( limit start )`) read better inline than behind a name.
 
-Group related words in one file or block. List **exports** (words other modules may use) at the top of the file comment. Hide helpers (no external documentation) when the project supports it.
+## Calculation > data structure > logic
 
-## Tests at the keyboard
+Pick the simplest adequate form: closed-form calculation, then a table
+indexed by input, then `if` / `case`. `: bump ( n -- n' )  1- 2* 10 + ;`
+beats a 3-arm `case` for "map 1 2 3 -> 10 12 14".
 
-New words should be runnable in isolation at the interpreter with a documented stack setup:
+## Compile-time factoring
+
+Let the compiler do the arithmetic; do not retype derived numbers. Size a
+`,`-built table from `here`. Case statements and decision tables fall under
+the same idea.
 
 ```forth
-\ setup -- try -- cleanup
-s" test" 2constant test$
-test$ count type cr
+8 constant wide   4 constant ave
+wide 3 *  ave 2 * +  80 swap -  2/  constant leftmargin
+
+create points  10 ,  11 ,  12 ,  13 ,
+here points -  cell /  constant #points
+```
+
+## Factor calculation out of display, and out of variables
+
+A word that prints should not also compute. A word that hard-codes a
+variable cannot be reused with a different start.
+
+```forth
+: (n.)  ( n -- c-addr u )  s>d swap over dabs <# #s rot sign #> ;
+: n.    ( n -- )           (n.) type space ;
 ```

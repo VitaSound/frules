@@ -2,13 +2,25 @@
 
 Сюда кладите книги и главы в **текстовом** виде.
 
-## Рекомендуемые имена
+## Уже добавлено
+
+- **Thinking Forth** (Leo Brodie, CC BY-NC-SA 2.0) — `brodie-thinking-forth/`,
+  главы `chapter1.md` … `chapter8.md` + `appendix{a..e}.md` + `epilog.md`.
+  Пересборка: `bash brodie-thinking-forth/extract.sh` (требует `pandoc`,
+  `perl`, `git`). Картинки лежат в `brodie-thinking-forth/figures/` —
+  они для чтения человеком; AI игнорирует, см. `docs/DISTILL-PROMPT.md`.
+
+## Рекомендуемые имена для новых источников
 
 ```
-brodie-thinking-forth.txt
+brodie-thinking-forth.txt        (одиночный файл — для коротких выписок)
 leo-forth-application-techniques-ch03.txt
 starting-forth-ch01-stack.txt
 ```
+
+Для целой книги с конвейером пересборки — отдельный подкаталог по образцу
+`brodie-thinking-forth/` с `extract.sh` / `preprocess.pl` и `.gitignore`,
+который скрывает `upstream/`.
 
 ## Что извлекать в `rules/`
 

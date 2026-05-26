@@ -39,6 +39,9 @@ Body:
 - Exercises without a concrete idiom payload.
 - Re-statements of the ANS dictionary that are already covered by the Gforth manual.
 - Vendor-specific quirks unrelated to Gforth.
+- Markdown image references such as `![](figures/…)` or `<img src="figures/…">`.
+  Figures are kept in the source tree for human reading only; they are not
+  expected to contribute rules and should be ignored during distillation.
 
 ## Validation checklist (before saving)
 

@@ -74,3 +74,20 @@ dialect=gforth
 Переключение проверяется автоматически — см. `docs/DIALECT-TEST.md`. На моей машине `test.sh` гоняет `examples/gforth/*.fs` через `gforth` и `examples/ans/*.fs` через **gforth + pforth** (`apt install pforth`), что подтверждает портабельность ANS-примеров.
 
 Другие системы (SwiftForth, Mecrisp, …) — позже отдельный `forth-dialect-*.mdc` и значение в `frules.conf` (шаги в `docs/DIALECT-TEST.md`).
+
+## Проверка: работают ли правила?
+
+Челленджи без эталонных решений — честный замер для **свежей** модели:
+
+| Документ | Содержание |
+|----------|------------|
+| [`docs/CHALLENGE-RUNS.md`](docs/CHALLENGE-RUNS.md) | Cursor / Composer / Agent: новый чат, промпт, `gforth`, таблица результатов |
+| [`docs/LOCAL-GEMMA-BENCHMARK.md`](docs/LOCAL-GEMMA-BENCHMARK.md) | **Gemma 4 через Ollama**: включить/выключить правила, A/B baseline |
+| [`tests/challenges/`](tests/challenges/) | `01-clamp` … `06-roman` + `README.md` |
+
+```bash
+./install.sh . gforth          # правила ВКЛ  → .cursor/rules/
+cd tests/challenges && gforth 01-clamp.fs   # без решения → Undefined word (норма)
+```
+
+Отключить правила для baseline: см. раздел «Отключить frules» в `docs/LOCAL-GEMMA-BENCHMARK.md`.

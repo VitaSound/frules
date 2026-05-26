@@ -69,6 +69,7 @@ FULL_TOPICS=(
   forth-control.mdc
   forth-defining.mdc
   forth-factoring.mdc
+  forth-naming.mdc
   forth-portability.mdc
   forth-stack.mdc
   forth-style.mdc

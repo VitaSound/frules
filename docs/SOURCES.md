@@ -4,7 +4,11 @@
 |--------------|----------|--------|
 | `forth-stack.mdc` | Starting Forth (стек, постфикс) | seed |
 | `forth-style.mdc` | forth.org/forth_coding.txt | seed |
-| `forth-factoring.mdc` | Thinking Forth (Leo Brodie) — общие принципы | seed, уточнить по вашему тексту |
+| `forth-factoring.mdc` | Thinking Forth (Leo Brodie), главы 1, 3, 4, 6, 7, 8 | distilled |
+| `forth-style.mdc` (Brodie pass) | Thinking Forth, главы 4, 5, 7 + Appendix E | distilled |
+| `forth-anti-patterns.mdc` (Brodie pass) | Thinking Forth, главы 6, 7, 8 | distilled |
+| `forth-naming.mdc` | Thinking Forth, глава 5 + Appendix E (вынесено из `forth-style.mdc`) | distilled |
+| `sources/brodie-thinking-forth/*.md` | Thinking Forth (Leo Brodie, CC BY-NC-SA 2.0), upstream [forthy42/thinking-forth@ans_tf](https://github.com/forthy42/thinking-forth/tree/ans_tf), конвертер `sources/brodie-thinking-forth/extract.sh` (+ `preprocess.pl`). Фигуры в `figures/` — только для глаз человека, см. `docs/DISTILL-PROMPT.md`. | vendored; дистилляция в `rules/forth-{factoring,style,anti-patterns,naming}.mdc` выполнена |
 | `forth-defining.mdc` | Starting Forth / ANS | seed |
 | `forth-portability.mdc` | DPANS94 | seed |
 | `forth-anti-patterns.mdc` | comp.lang.forth, community practice | seed |

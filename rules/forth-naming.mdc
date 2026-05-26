@@ -1,0 +1,76 @@
+---
+description: Forth naming conventions, prefixes, suffixes, hyphenation (Brodie + App E)
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Naming
+
+## What, not how
+
+Name a word for the outward effect, not the implementation. `allot` is
+right; `dp+!` is wrong. `cmove>` (destination direction) is right; `<cmove`
+(backward iteration) is wrong.
+
+## Length and characters
+
+- Spell names in full: `initialize`, `terminal`, `buffer` -- not `dspl`,
+  `len`.
+- Prefer the shorter equivalent of equal clarity: `bright` over `intense`,
+  `enable` over `activate`, `on` / `off` / `go` in context.
+- ANS guarantees 31 significant characters; stay portable.
+- Safe characters: printable ASCII `!`…`~` (0x21-0x7E). A name that parses
+  as a number is hidden by the parser (`2` always pushes 2; `2dup` is fine
+  because it contains letters).
+- Hex literals begin with `0` so they cannot collide with a defined name:
+  `0ade`, not `ade`.
+
+## Hyphenation is a smell
+
+A hyphenated name often mixes two concepts. Factor them:
+
+```forth
+\ BAD -- 8 entries, no reuse
+enable-left-motor      disable-left-motor
+enable-right-motor     disable-right-motor
+enable-left-solenoid   disable-left-solenoid   ...
+
+\ GOOD -- 6 entries, composable in phrases
+: left      ( -- )      ... ;
+: right     ( -- )      ... ;
+: motor     ( ... -- )  ... ;
+: solenoid  ( ... -- )  ... ;
+: on        ( a -- )    true  swap ! ;
+: off       ( a -- )    false swap ! ;
+
+\ usage:  left motor on
+```
+
+## Numbers in names
+
+Do not bundle a digit into a name. `1channel 2channel … 7channel` becomes
+`1 channel`, `2 channel`: the digit is a stack argument, not part of the
+identifier.
+
+## Convention table
+
+These shapes are widely shared (App E). Use them so a reader can guess a
+word's role from its name.
+
+| shape    | meaning                              | example   |
+|----------|--------------------------------------|-----------|
+| `?foo`   | execute conditionally                | `?dup`    |
+| `foo?`   | return a boolean                     | `empty?`  |
+| `>foo`   | convert to *foo*                     | `>body`   |
+| `foo>`   | forward direction / end marker       | `cmove>`  |
+| `<foo`   | from *foo* / start marker            | `<#`      |
+| `.foo`   | print / display *foo*                | `.s`      |
+| `foo!`   | store into *foo*                     | `cursor!` |
+| `foo@`   | fetch from *foo*                     | `cursor@` |
+| `'foo`   | address of *foo*                     | `'limit`  |
+| `#foo`   | count of *foo*                       | `#chars`  |
+| `/foo`   | bytes per *foo*                      | `/record` |
+| `+foo`   | advance / enable                     | `+record` |
+| `-foo`   | retreat / disable                    | `-record` |
+| `(foo)`  | internal / primitive helper          | `(.)`     |
+| `0foo`   | initialise *foo*                     | `0record` |

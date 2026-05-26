@@ -14,3 +14,6 @@ sources/*.mobi
 *.swp
 *~
 .DS_Store
+
+# Local scratch (e.g. downloaded tool binaries for sandboxed runs)
+.scratch/
