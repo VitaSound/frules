@@ -6,10 +6,10 @@ include _tester.fs
 : gcd  ( a b -- g )
   begin dup while  tuck mod  repeat drop ;
 
-12  8 gcd  4 t=
-17  5 gcd  1 t=
- 0  7 gcd  7 t=
- 7  0 gcd  7 t=
-48 18 gcd  6 t=
+T{ 12  8 gcd -> 4 }T
+T{ 17  5 gcd -> 1 }T
+T{  0  7 gcd -> 7 }T
+T{  7  0 gcd -> 7 }T
+T{ 48 18 gcd -> 6 }T
 
 report bye

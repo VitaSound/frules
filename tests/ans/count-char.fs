@@ -17,11 +17,11 @@ include _tester.fs
   recurse                                  \ flag count'
   swap if 1+ then ;                        \ count
 
-s" hello world"   bl     count-char  1 t=
-s" abc"           bl     count-char  0 t=
-s" "              bl     count-char  0 t=
-s" a b c d e"     bl     count-char  4 t=
-s" aaaa"        char a   count-char  4 t=
-s" mississippi" char s   count-char  4 t=
+T{ s" hello world"   bl     count-char -> 1 }T
+T{ s" abc"           bl     count-char -> 0 }T
+T{ s" "              bl     count-char -> 0 }T
+T{ s" a b c d e"     bl     count-char -> 4 }T
+T{ s" aaaa"        char a   count-char -> 4 }T
+T{ s" mississippi" char s   count-char -> 4 }T
 
 report bye

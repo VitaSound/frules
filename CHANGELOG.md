@@ -4,6 +4,12 @@ All notable changes to `frules` are recorded here.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: [SemVer](https://semver.org/).
 
+## [0.1.1] — 2026-05-27
+
+### Changed
+
+- **Test harness:** the ad-hoc `t=` / `report` pair was replaced by the vendored Hayes/Ertl `ttester` (`tests/ttester.4th` upstream verbatim + `tests/ttester-ext.4th` with VitaSound `expect-*` predicates and `TS{ … }ST` fixture hooks; both public domain, taken from `https://github.com/VitaSound/ttester`). `tests/_tester.fs` is now a thin wrapper that includes both files and defines `report` against `#errors @`. All 10 existing test files migrated to `T{ … -> … }T`. This makes the suite drop-in compatible with the upstream Hayes test sets (gforth's own `test/`, FSL test files, etc.).
+
 ## [0.1.0] — 2026-05-25
 
 First usable cut. AI rules for Forth, Gforth-oriented with portable ANS fallback. Validated against `gforth 0.7.9` and `pforth 2.0.1`.
@@ -52,4 +58,5 @@ First usable cut. AI rules for Forth, Gforth-oriented with portable ANS fallback
 - `pforth` emits a benign `INCLUDE error on line #N` after `bye` at file end. Ignored by `test.sh`.
 - `gforth file.fs` without `-e bye` stays in the REPL — `test.sh` handles this for load-mode checks.
 
+[0.1.1]: https://github.com/VitaSound/frules/releases/tag/v0.1.1
 [0.1.0]: https://github.com/VitaSound/frules/releases/tag/v0.1.0

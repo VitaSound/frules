@@ -15,14 +15,14 @@ include _tester.fs
   swap char+ swap 2 -
   recurse ;
 
-s" "          palindrome? true  t=
-s" a"         palindrome? true  t=
-s" aa"        palindrome? true  t=
-s" ab"        palindrome? false t=
-s" aba"       palindrome? true  t=
-s" abba"      palindrome? true  t=
-s" abca"      palindrome? false t=
-s" racecar"   palindrome? true  t=
-s" forth"     palindrome? false t=
+T{ s" "        palindrome? -> true  }T
+T{ s" a"       palindrome? -> true  }T
+T{ s" aa"      palindrome? -> true  }T
+T{ s" ab"      palindrome? -> false }T
+T{ s" aba"     palindrome? -> true  }T
+T{ s" abba"    palindrome? -> true  }T
+T{ s" abca"    palindrome? -> false }T
+T{ s" racecar" palindrome? -> true  }T
+T{ s" forth"   palindrome? -> false }T
 
 report bye

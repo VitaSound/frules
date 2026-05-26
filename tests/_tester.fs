@@ -1,19 +1,22 @@
-\ tests/_tester.fs — minimal portable test harness (gforth + pforth).
+\ tests/_tester.fs - wrapper around vendored ttester (Hayes/Ertl, public domain).
 \
-\ Usage in a test file:
+\ Each test file is expected to:
 \   include _tester.fs
-\   <actual-expr> <expected-literal> t=
+\   T{ <code> -> <expected stack> }T
 \   ...
 \   report bye
+\
+\ See ttester.4th (verbatim upstream) and ttester-ext.4th (extra expect-*
+\ predicates and TS{ ... }ST fixture hooks) in this directory.
+\
+\ Upstream: http://www.complang.tuwien.ac.at/cvsweb/cgi-bin/cvsweb/gforth/test/ttester.fs
+\ Fork:     https://github.com/VitaSound/ttester
 
-variable #fails  0 #fails !
-
-: t=  ( got expected -- )
-  2dup = if 2drop exit then
-  cr ." FAIL  expected " . ."  got " . space
-  1 #fails +! ;
+include ttester.4th
+include ttester-ext.4th
 
 : report  ( -- )
-  cr #fails @
-  if ." TESTS FAILED: " #fails @ . cr
-  else ." TESTS OK" cr then ;
+  cr #errors @
+  if   ." TESTS FAILED: " #errors @ . cr
+  else ." TESTS OK" cr
+  then ;

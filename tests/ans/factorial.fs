@@ -7,9 +7,9 @@ include _tester.fs
   dup 1 <= if drop 1 exit then
   dup 1- recurse * ;
 
-0 factorial   1 t=
-1 factorial   1 t=
-5 factorial 120 t=
-7 factorial 5040 t=
+T{ 0 factorial ->    1 }T
+T{ 1 factorial ->    1 }T
+T{ 5 factorial ->  120 }T
+T{ 7 factorial -> 5040 }T
 
 report bye

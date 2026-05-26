@@ -1,16 +1,26 @@
 # tests/ — Forth-level regression tests
 
-Each file under `tests/ans/` and `tests/gforth/` is a self-contained Forth program that defines a word, runs assertions via the tiny tester in `_tester.fs`, and prints either `TESTS OK` or `TESTS FAILED: N`.
+Each file under `tests/ans/` and `tests/gforth/` is a self-contained Forth program that defines a word, runs assertions via the vendored Hayes/Ertl `ttester` (loaded through `_tester.fs`), and prints either `TESTS OK` or `TESTS FAILED: N`.
 
 The top-level `./test.sh` runs every file with the appropriate engine and reports a single line per case.
+
+## Harness
+
+- `ttester.4th` — verbatim upstream `T{ <code> -> <expected stack> }T` from John Hayes (JHU/APL 1995) with subsequent revisions by Anton Ertl, David N. Williams, Krishna Myneni and C. G. Montgomery. Public domain. Source: `http://www.complang.tuwien.ac.at/cvsweb/cgi-bin/cvsweb/gforth/test/ttester.fs`.
+- `ttester-ext.4th` — VitaSound extensions (`expect-true`, `expect-false`, `expect-eq`, `expect-not-eq`, `expect-depth`, `expect-stack-clean`, `expect-stack-balanced`, `expect-str-eq`, plus `TS{ ... }ST` fixture hooks routed through `DEFER test-setup` / `DEFER test-teardown`). Public domain. Source: `https://github.com/VitaSound/ttester`.
+- `_tester.fs` — thin wrapper that `include`s both files and defines `report` (`TESTS OK` / `TESTS FAILED: N`, reading `#errors @`).
 
 ## Layout
 
 ```
 tests/
-  _tester.fs                 # canonical source of t= and report
+  _tester.fs                 # wrapper around ttester + `report`
+  ttester.4th                # vendored Hayes/Ertl upstream
+  ttester-ext.4th            # vendored VitaSound extensions
   ans/                       # pure DPANS94 — must pass on gforth + pforth
-    _tester.fs -> ../_tester.fs
+    _tester.fs       -> ../_tester.fs
+    ttester.4th      -> ../ttester.4th
+    ttester-ext.4th  -> ../ttester-ext.4th
     factorial.fs
     gcd.fs
     safe-divide.fs
@@ -20,7 +30,9 @@ tests/
     sum-array.fs
     palindrome.fs
   gforth/                    # Gforth-only — uses { } locals etc.
-    _tester.fs -> ../_tester.fs
+    _tester.fs       -> ../_tester.fs
+    ttester.4th      -> ../ttester.4th
+    ttester-ext.4th  -> ../ttester-ext.4th
     gcd-locals.fs
     clamp-locals.fs
 ```
@@ -47,9 +59,10 @@ tests/
    ```forth
    include _tester.fs
    : your-word ( ... -- ... ) ... ;
-   <inputs> your-word <expected> t=
+   T{ <inputs> your-word -> <expected stack> }T
    report bye
    ```
+   Expected results are listed in stack order, bottom-to-top — for a word with stack effect `( -- n flag )` write `-> n flag`. Use `expect-*` predicates from `ttester-ext.4th` when you want named assertions (`T{ 1 2 + 3 expect-eq -> }T`).
 3. Add a row to the coverage map above and to `docs/SOURCES.md` if it exercises a freshly added rule.
 4. `./test.sh` — must end with exit code 0.
 

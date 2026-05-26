@@ -12,11 +12,11 @@ include _tester.fs
 
 decimal
 
-s" 123" parse-int  true t= 123 t=
-s" 0"   parse-int  true t=   0 t=
-s" 42"  parse-int  true t=  42 t=
-s" abc" parse-int  false t=  0 t=
-s" 12x" parse-int  false t=  0 t=
-s" "    parse-int  true t=   0 t=    \ empty: trivially parsed as 0
+T{ s" 123" parse-int -> 123 true  }T
+T{ s" 0"   parse-int ->   0 true  }T
+T{ s" 42"  parse-int ->  42 true  }T
+T{ s" abc" parse-int ->   0 false }T
+T{ s" 12x" parse-int ->   0 false }T
+T{ s" "    parse-int ->   0 true  }T    \ empty: trivially parsed as 0
 
 report bye

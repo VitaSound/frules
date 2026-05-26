@@ -18,5 +18,7 @@
 | `examples/ans/*.fs` | hand-written DPANS94, validated with `gforth + pforth 2.0.1` | smoke-tested by `test.sh` |
 | `tests/ans/*.fs` | rule-coverage assertions, gforth + pforth | green via `test.sh` |
 | `tests/gforth/*.fs` | rule-coverage assertions, gforth-only (locals) | green via `test.sh` |
+| `tests/ttester.4th` | John Hayes (JHU/APL 1995), revisions by Anton Ertl, David N. Williams, Krishna Myneni, C. G. Montgomery — upstream `http://www.complang.tuwien.ac.at/cvsweb/cgi-bin/cvsweb/gforth/test/ttester.fs` | vendored verbatim, public domain |
+| `tests/ttester-ext.4th` | VitaSound fork `https://github.com/VitaSound/ttester` (`expect-*` predicates, `TS{ … }ST` fixtures) | vendored verbatim, public domain |
 
 Когда добавите файл в `sources/`, допишите строку и укажите, какие разделы `.mdc` обновлены.

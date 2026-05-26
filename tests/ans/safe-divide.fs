@@ -12,8 +12,8 @@ include _tester.fs
 : divide-by-zero        ( -- )    20 0 safe/ drop ;
 : try-divide-by-zero    ( -- code )  ['] divide-by-zero catch ;
 
-20 5 safe/             4 t=
-try-divide-by-zero   -10 t=
+T{ 20 5 safe/           ->   4 }T
+T{ try-divide-by-zero   -> -10 }T
 
 \ Successful path through CATCH returns 0 and leaves the result.
 : try-normal  ( -- q code )  ['] safe/ 20 5 rot catch ;
@@ -21,6 +21,6 @@ try-divide-by-zero   -10 t=
 : ok-divide      ( -- )       20 5 safe/ drop ;
 : try-ok-divide  ( -- code )  ['] ok-divide catch ;
 
-try-ok-divide  0 t=
+T{ try-ok-divide -> 0 }T
 
 report bye

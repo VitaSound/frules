@@ -20,13 +20,13 @@ include _tester.fs
 
 fill-data
 
-sum-data 15 t=
-0 @data 1 t=
-4 @data 5 t=
+T{ sum-data ->  15 }T
+T{ 0 @data  ->   1 }T
+T{ 4 @data  ->   5 }T
 
 100 2 !data
-0 @data 1 t=
-2 @data 100 t=
-sum-data 112 t=    \ 1+2+100+4+5
+T{ 0 @data  ->   1 }T
+T{ 2 @data  -> 100 }T
+T{ sum-data -> 112 }T    \ 1+2+100+4+5
 
 report bye
