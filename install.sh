@@ -69,9 +69,14 @@ FULL_TOPICS=(
   forth-control.mdc
   forth-defining.mdc
   forth-factoring.mdc
+  forth-floating-point.mdc
+  forth-io.mdc
+  forth-memory.mdc
+  forth-meta.mdc
   forth-naming.mdc
   forth-portability.mdc
   forth-stack.mdc
+  forth-strings.mdc
   forth-style.mdc
 )
 

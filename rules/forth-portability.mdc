@@ -46,4 +46,8 @@ Use `throw` with standardized or project-assigned codes; document which inputs c
 
 ## File and memory words
 
-`allocate` / `free`, `read-file`, `write-file` — check `ior` on every call in application code; do not ignore failure flags.
+`allocate` / `free`, `read-file`, `write-file`, `open-file` — check `ior` on every call; pass to `throw` in application code. See `forth-memory.mdc` and `forth-io.mdc` for idioms.
+
+## Alignment
+
+Use `aligned` / `align` when mixing `char+` addressing with cell `@` / `!` — unaligned access may fail or be slow on some CPUs. See `forth-memory.mdc`.

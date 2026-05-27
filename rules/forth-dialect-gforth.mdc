@@ -1,5 +1,5 @@
 ---
-description: Gforth dialect — strings, locals, includes, floats, tooling
+description: Gforth dialect — includes, locals, values, exceptions, tooling
 globs: "**/*.{fth,fs,4th,forth,fb}"
 alwaysApply: false
 ---
@@ -18,54 +18,27 @@ require ./utils.fs
 include constants.fs
 ```
 
-- **`include`** — load a file into the current session / compilation.
-- **`require`** / **`needs`** — load once (search path: `GFORTHPATH`, `-p path`, cwd).
-- End batch runs with `-e bye` to skip the interactive `ok` prompt.
+- **`include`** — load into current session.
+- **`require`** / **`needs`** — load once (`GFORTHPATH`, `-p path`, cwd).
+- End batch runs with `-e bye`.
 
-Use **`gforth-fast`** for debugged, performance-sensitive code; **`gforth`** gives clearer errors while developing.
-
-## String terminology
-
-Two different things — do not confuse:
-
-| Form | Stack | Used by |
-|------|-------|---------|
-| **address/length pair** | `( c-addr u )` | `type`, `evaluate`, `s"`, most modern string words |
-| **counted string** | `( c-addr )`, first byte is length | `count` (unpacks to pair), `c"` (compiles a counted string) |
-
-`count ( c-addr1 -- c-addr2 u )` converts counted → pair.
-
-## String literals
-
-| Task | Idiom |
-|------|--------|
-| Address/length literal inside `:` … `;` | `s" hello"` (pushes `c-addr u` at run time) |
-| Interpreter test | `s" hello" type cr` |
-| Counted string literal | `c" hello"` (run-time pushes `c-addr`) |
-| With escapes (`\n`, `\t`, …) | `s\" line\n"` |
-| Compile-time computed cell literal | `[ 2 cells ] literal` |
-| Compile-time computed string literal | `s" hello" sliteral` |
-
-```forth
-: greet  ( -- )  s" world" type cr ;
-```
-
-Gforth also accepts non-ANS `"hello"` as a string literal in some contexts; prefer `s"` for portability.
+Use **`gforth-fast`** for performance; **`gforth`** for clearer errors while developing.
 
 ## Locals
 
-Locals mirror stack picture order: rightmost = TOS.
+Rightmost name = TOS. Gforth allows **multiple** `{ … }` blocks per definition (non-standard elsewhere).
 
 ```forth
-: divide  ( a b -- q )
-  { a b }                       \ a is dividend, b is divisor (TOS)
-  b 0= if -10 throw then        \ -10 = ANS "division by zero"
+: swap { a b -- b a }  b a ;
+
+: divide { a b -- q }
+  b 0= if -10 throw then
   a b / ;
 ```
 
-Type prefixes: `W:` cell (default), `D:` double, `F:` float, `C:` char; `W^` `F^` … for address-flavoured locals (variable-flavoured, address valid only inside the word).
+Type prefixes: `W:` cell (default), `D:` double, `F:` float, `C:` char.
 
-Prefer locals over long `>r`/`r>` chains or `rot pick` for named intermediate values.
+Prefer locals over long `>r`/`r>` or `rot pick` — but practice without locals to build factoring skill.
 
 ## Values and constants
 
@@ -75,33 +48,42 @@ Prefer locals over long `>r`/`r>` chains or `rot pick` for named intermediate va
 10 constant max-count
 ```
 
-## Floating point
+Prefixes `2` (double) and `f` (float) work with `variable` and `constant`.
 
-Float literals and words use `f` prefix in many cases (`fdup`, `f*`, `1e`, `fliteral`). Document `(F: … -- … )` in headers when a word uses the FP stack.
+## Strings and floating point
 
-Separate stacks: do not mix cell and float stack items without explicit `>float` / conversion words.
+See dedicated topic files: `forth-strings.mdc`, `forth-floating-point.mdc`.
 
-## Control and exceptions
+## Exceptions
 
-- true = `-1`, false = `0` (ANS).
-- `throw` / `catch` / `abort"` — use project error codes or `"-1 throw"` consistently.
-- `assert(` … `)` and `?dup` are common in Gforth code.
+```forth
+100 throw          \ nonzero n always throws
+3 0 ' / catch .    \ catch returns exception code (0 = ok)
+```
 
-## Memory
+Restore state on all exits — including exceptions:
 
-`allocate` / `free` / `resize` return `ior`; check in application code. For small buffers, `create` / `allot` / `here` idioms still apply.
+```forth
+: with-base ( xt -- )
+  base @ >r
+  try  execute 0  restore  r> base !  endtry  throw ;
+```
 
-## Useful development commands
+Gforth `try … restore … endtry` is safe against async interrupts between `catch` and cleanup.
+
+## Memory and files
+
+Dictionary/heap idioms: `forth-memory.mdc`. File I/O: `forth-io.mdc`.
+
+## Development commands
 
 ```forth
 see foo          \ decompile
 .s               \ print stack
-warnings         \ toggle warnings (interactive)
+warnings         \ toggle warnings
 ```
 
-## Structs / fields (Gforth)
-
-When the project uses Gforth structures:
+## Structs (Gforth)
 
 ```forth
 begin-structure point
@@ -110,10 +92,10 @@ begin-structure point
 end-structure
 ```
 
-Use `point.x` `+` `@` style field access as in project examples; do not invent field syntax if the project uses plain `create` / `cell+` offsets.
+Match project field syntax; do not invent structures if the project uses plain offsets.
 
-## What not to do in Gforth
+## What not to do
 
-- Do not use C `printf` or `"string\0"` style unless binding C.
-- Do not assume `create` names work as immediate compile-time constants without `constant` / `literal` / `[']`.
-- Avoid portable-breaking `char` addressing assumptions; use `char+` / `chars`.
+- No C `printf` or `"string\0"` unless binding C.
+- Do not use `create` names as compile-time constants without `constant` / `literal` / `[']`.
+- Use `char+` / `chars`, not hard-coded byte sizes.

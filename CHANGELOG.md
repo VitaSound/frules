@@ -8,6 +8,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ### Added
 
+- **Gforth Tutorial distillation** (`sources/gforth-manual-tutorial/` → `rules/`):
+  - **`forth-memory.mdc`** — `variable`, `create`, `allot`, `here`, `aligned`, `allocate`.
+  - **`forth-io.mdc`** — `open-file`, `read-line`, `write-line`, ior/`throw`, `Value fd`.
+  - **`forth-meta.mdc`** — interpret vs compile state, `immediate`, `postpone`, `[`/`]`.
+  - **`forth-strings.mdc`** — `( c-addr u )`, `s"`, `c"`, counted strings, `c,`/`c@`.
+  - **`forth-floating-point.mdc`** — separate FP stack, `1e` literals, `f~abs`/`f~rel`.
 - **`sources/gforth-manual-tutorial/`** — Gforth manual ch.3 Tutorial (§3.1–§3.37) as per-section Markdown; `extract.sh` for refresh from [gforth.org/manual/Tutorial.html](https://gforth.org/manual/Tutorial.html).
 - **`tests/challenges/`** — 139 bank (`001`–`139`) + 6 seeds = **145** hold-out; `eval-slices.yaml`, [`docs/BENCHMARK-SIZING.md`](docs/BENCHMARK-SIZING.md).
 - **14 training-oriented tasks** (126–139): linked, parse, graph topo, DP knapsack/edit, LRU, Collatz, etc.
@@ -15,11 +21,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ### Changed
 
+- **Gforth Tutorial distillation (updated rules)** — `forth-stack` (manipulation, designing stack effects), `forth-control` (exit/leave, recursion, flags), `forth-defining` (simple-field, defer/is), `forth-dialect-gforth` (locals, try/endtry; strings/FP moved to dedicated topics), `forth-style`, `forth-portability`, `forth-anti-patterns`, `forth-naming` (type prefixes).
+- **`frules-index.mdc`** — topic routing table for memory, io, strings, FP, meta.
+- **`install.sh`** — five new topics in `FULL_TOPICS`.
+- **`docs/SOURCES.md`** — per-file provenance from Gforth Tutorial §3.x; skip list (crash-course, decompilation, advanced-macros, compilation-tokens).
+- **`TODO.md`** — Gforth Tutorial distillation marked done.
 - **Agent / challenge docs** — `docs/AGENT-SOLVE-CHALLENGES.md`, `docs/CHALLENGE-TO-TRAIN.md`, `data/challenge-solutions/README.md`: `sources/theforth.net-packages/`, `sources/brodie-thinking-forth/`, and `sources/gforth-manual-tutorial/` listed as allowed references (same spirit as Brodie).
 - **`docs/CHALLENGE-RUNS.md`** — deny `sources/` (tutorial, Brodie, theForthNet) during blind benchmark runs; document 131-challenge catalog, cognitive tiers, regeneration workflow.
 - **`docs/MODEL-TRAINING.md`** — Track B chunks may use Brodie, Gforth tutorial, or theForthNet fragments.
 - **`docs/SOURCES.md`**, **`sources/README.md`**, **`README.md`**, **`tests/challenges/README.md`** — document vendored tutorial and theForthNet packages.
-- **`TODO.md`** — open tasks: distill Gforth Tutorial and index theForthNet packages into `rules/` (Brodie-style pass).
+- **`TODO.md`** — open task: index theForthNet packages into `rules/` (Brodie-style pass).
 
 ## [0.1.2] — 2026-05-27
 

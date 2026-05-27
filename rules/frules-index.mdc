@@ -12,8 +12,22 @@ When several Forth rules are in context (Cursor attaches whole `.mdc` files by `
 2. **`forth-dialect-<name>.mdc`** — dialect syntax and idioms.
 3. **`forth-portability.mdc`** — only when the project targets multiple Forths.
 4. **`forth-anti-patterns.mdc`** — fix violations before adding more code.
-5. **Other `forth-*.mdc`** — generic guidance (stack, style, control, factoring, defining).
+5. **Other `forth-*.mdc`** — generic guidance (stack, style, control, factoring, defining, memory, io, strings, floating-point, meta).
 
-Each topic file's `description:` field tells you what it covers; pick the most specific one for the current task. Do not repeat stack-tutorial material inside a defining-word edit.
+Topic routing (pick the most specific file for the task):
+
+| Task | Rule file |
+|------|-----------|
+| Stack order, manipulation, stack-effect design | `forth-stack.mdc` |
+| if/loop/exit/recursion/flags | `forth-control.mdc` |
+| CREATE/DOES>, defer, value | `forth-defining.mdc` |
+| immediate, postpone, `[`/`]` | `forth-meta.mdc` |
+| variable, create, allot, alignment | `forth-memory.mdc` |
+| open-file, read-line, write-line | `forth-io.mdc` |
+| s", c-addr u, counted strings | `forth-strings.mdc` |
+| FP stack, 1e, f~abs | `forth-floating-point.mdc` |
+| Gforth locals, require, try/endtry | `forth-dialect-gforth.mdc` |
+
+Do not repeat stack-tutorial material inside a defining-word edit.
 
 If a needed topic is missing, prefer portable ANS words and ask to add `rules/forth-<topic>.mdc` from `sources/`.

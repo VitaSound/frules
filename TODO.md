@@ -12,7 +12,7 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
     - [x] Thinking Forth: исходники в `sources/brodie-thinking-forth/chapter*.md` + `appendix*.md` + `epilog.md` (`extract.sh`). Картинки в `figures/` — только для человека.
     - [x] Прогнать `docs/DISTILL-PROMPT.md` по главам Brodie; обновить `rules/*.mdc` (`forth-factoring`, `forth-style`, `forth-anti-patterns`, `forth-naming`; `docs/SOURCES.md` отмечает источник).
     - [x] Gforth manual Tutorial vendored: `sources/gforth-manual-tutorial/` (§3.1–§3.37, `extract.sh`).
-    - [ ] **Дистилляция Gforth Tutorial** — прогнать `docs/DISTILL-PROMPT.md` по разделам `gforth-manual-tutorial/*.md`; дополнить `forth-dialect-gforth.mdc`, `forth-control.mdc`, `forth-defining.mdc` и др.; обновить `docs/SOURCES.md`.
+    - [x] **Дистилляция Gforth Tutorial** — прогнать `docs/DISTILL-PROMPT.md` по разделам `gforth-manual-tutorial/*.md`; дополнить `rules/*.mdc` (`forth-memory`, `forth-io`, `forth-meta`, `forth-strings`, `forth-floating-point` + updates); обновить `docs/SOURCES.md`.
     - [x] theForthNet packages vendored: `sources/theforth.net-packages/` (`.4th` / `.fs`).
     - [ ] **Индексация theForthNet packages** — каталог переиспользуемых идиом/паттернов (по пакетам или темам) → выборочная дистилляция в `rules/` + строки в `docs/SOURCES.md` (аналог pass по Brodie; возможно `docs/BOOK-INDEX.md` или отдельный `sources/theforth.net-packages/INDEX.md`).
 - [ ] **Pre-commit hook** (`.git/hooks/pre-commit` или husky): запускать `./test.sh`, блокировать коммит при FAIL.

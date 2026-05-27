@@ -74,3 +74,18 @@ word's role from its name.
 | `-foo`   | retreat / disable                    | `-record` |
 | `(foo)`  | internal / primitive helper          | `(.)`     |
 | `0foo`   | initialise *foo*                     | `0record` |
+
+## Type prefixes (Gforth manual)
+
+Similar operations on different types use different names — Forth does not overload:
+
+| Prefix | Type |
+|--------|------|
+| (none) | signed cell |
+| `u` | unsigned cell |
+| `c` | character |
+| `d` / `2` | double-cell / two cells |
+| `m` / `um` | mixed single/double |
+| `f` | floating-point |
+
+When signed and unsigned behave identically (e.g., `+`), only the prefix-less form exists. No compile-time type checking — wrong prefix means silent misinterpretation.

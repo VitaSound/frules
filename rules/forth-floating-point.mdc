@@ -1,0 +1,56 @@
+---
+description: Floating point — separate FP stack, 1e literals, f~abs, f~rel
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Floating point
+
+## Separate stack
+
+FP values live on the **FP stack**, not mixed with cells. Document `(F: … -- … )` in headers when a word uses FP.
+
+Do not mix cell and float items without explicit conversion (`s>f`, `f>s`, etc.).
+
+## Literals
+
+Use exponent form — `1.` is a **double-cell integer**, not a float:
+
+```forth
+2e 2e f+ f.
+1e    \ same as 1e0
+```
+
+Literals require **decimal** base (`hex 1e` is an integer).
+
+## Stack manipulation
+
+`fdup fswap fdrop fover frot` — mirror cell stack words on the FP stack.
+
+## Arithmetic
+
+`f+ f- f* f/ f** fnegate fsqrt fsin fln fmin` — prefix `f` on FP operations (see type prefixes in `forth-naming.mdc`).
+
+## Comparison
+
+Avoid exact `f=` — FP results are inexact. Gforth provides:
+
+```forth
+f~abs   ( r1 r2 -- flag )   \ absolute tolerance
+f~rel   ( r1 r2 -- flag )   \ relative tolerance
+```
+
+Standard `f~` exists but is poorly designed; prefer `f~abs` / `f~rel`.
+
+## Memory
+
+`f, f@ f! floats float+ faligned` — for FP arrays. `sf@` / `df@` variants access IEEE single/double in external buffers.
+
+## Example
+
+```forth
+: dot-product ( f-addr1 f-addr2 u -- r )
+  0e swap 0 ?do
+    dup f@ swap dup f@ f* f+  float+ swap float+
+  loop  2drop ;
+```

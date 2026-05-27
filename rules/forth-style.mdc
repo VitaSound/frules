@@ -54,6 +54,8 @@ Five comment kinds, used together as needed:
 | purpose         | `\ restore base after dump`          |
 | narrative       | inside body, vertical format only    |
 
+Use `\` for descriptive text and whole-line comment-out; use `( … )` for inline stack pictures and sub-line snippets. Do not nest `( … )` — the first `)` ends the comment. Avoid `)` in word names.
+
 When effects differ per path, list each on its own line with full `--`:
 `( -- c-addr u true | -- ior false )`. When `>r` `r>` `r@` are used, add
 `(R … )` on the header or the line above the first `>r`.

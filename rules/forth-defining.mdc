@@ -1,10 +1,10 @@
 ---
-description: CREATE DOES>, IMMEDIATE, compilation vs execution stack effects
+description: CREATE DOES>, defer, value, arrays — defining words
 globs: "**/*.{fth,fs,4th,forth,fb}"
 alwaysApply: false
 ---
 
-# Defining words and state
+# Defining words
 
 ## Colon definitions
 
@@ -13,39 +13,73 @@ alwaysApply: false
   ... ;
 ```
 
-`;` ends the definition. Use `recursive` (Gforth/Forth-2012) when the word must call itself by name from inside its own body.
+`;` ends the definition. Use `recursive` (Gforth) or `recurse` when the word calls itself — see `forth-control.mdc`.
 
 ## CREATE / DOES>
 
-A defining word builds new words. Two stack effects matter: one for **calling the defining word**, one for **calling each created word** (after `does>`).
+Two stack effects: **calling the defining word**, and **calling each created word** (after `does>`).
 
 ```forth
-: cell-array  ( n "name" -- )       \ defining-time: reserve n cells
+: cell-array ( n "name" -- )
   create cells allot
-  does>     ( i a-addr -- addr )     \ run-time of a created word
+  does> ( i a-addr -- addr )
     swap cells + ;
 
-10 cell-array readings                \ defines 'readings'
-0 readings @ .                        \ access element 0
+: constant ( n "name" -- )
+  create ,
+  does> ( -- n )
+    @ ;
 ```
 
-`does>` puts the address of the created word's data area on the stack before running the body.
+The stack comment at `does>` describes the **created word's** effect; the body receives the data address implicitly.
 
-## IMMEDIATE
+## Field offsets
 
-Words marked `immediate` execute during compilation of the enclosing definition (`if`, `then`, `[char]`, custom macros). Their job is usually to emit code via `postpone`, `compile,`, or `,`. They must keep the compile-time stack balanced.
+Factor repeated `( addr ) offset +` into a defining word:
 
-## Literals and execution tokens
+```forth
+: simple-field ( n "name" -- )
+  create ,
+  does> ( a-addr -- a-addr+n )
+    @ + ;
+```
 
-- `[ … ] literal` — interpret `…` at compile time, compile its single-cell result as a literal.
-- `sliteral` — compile a string literal from `( c-addr u )` already on the compile-time stack.
-- `postpone word` — compile the compilation semantics of `word` (handles immediate and non-immediate correctly).
-- `'  word` ( interpret ) and `['] word` ( compile ) push an **execution token** (xt) for `word`; run it with `execute`.
+Access raw body without `does>` behaviour: `' word >body`.
 
-## VOCABULARY / FORTH (if present)
+## value / to
 
-Switching vocabularies is implementation-specific. In portable ANS code, avoid relying on `search-order` tricks unless the project explicitly uses them.
+```forth
+: value ( n "name" -- )
+  create ,
+  does> ( -- n )  @ ;
+: to ( n "name" -- )
+  ' >body ! ;
 
-## Arrays and strings in memory
+5 value speed   7 to speed
+```
 
-Prefer allocated buffers with explicit size (`create`, `allot`, `char+`, `cell+`) over treating the **parameter stack** as an array. See `forth-anti-patterns.mdc`.
+## defer / is
+
+Indirect execution — useful for hooks and indirect recursion:
+
+```forth
+defer action
+: default-action ( -- ) ." default" ;
+' default-action is action
+```
+
+## Arrays
+
+Do not over-build array definers — often `create n cells allot` plus `@`/`!` and `cell+` is enough. Gforth `begin-structure` — see `forth-dialect-gforth.mdc`. Memory idioms — see `forth-memory.mdc`.
+
+## Literals and postpone
+
+`[ … ] literal`, `sliteral`, `postpone`, `'`, `[']` — see `forth-meta.mdc`.
+
+## VOCABULARY / search order
+
+Avoid `search-order` tricks in portable code unless the project uses them explicitly — see `forth-portability.mdc`.
+
+## Parameter stack as array
+
+Prefer real buffers over stack indexing — see `forth-anti-patterns.mdc`.

@@ -1,0 +1,73 @@
+---
+description: Memory — variable, create, allot, here, alignment, allocate
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Memory
+
+## Single cell
+
+```forth
+variable v   ( -- addr )
+5 v !  v @ .
+```
+
+`variable` allots one cell; you cannot `allot` more to it in standard Forth.
+
+## Buffers with create
+
+```forth
+create buf  20 cells allot    ( -- addr )
+3 buf 5 cells + !             \ store at index 5
+```
+
+Initialize inline with `,`:
+
+```forth
+create vals  5 , 4 , 3 , 2 , 1 ,
+vals @ .  vals cell+ @ .
+```
+
+## Dictionary memory (here / allot)
+
+```forth
+here 10 cells allot   ( -- start )
+here                  ( -- end )
+```
+
+`allot` uses dictionary memory like a stack — roll back only if no new word was defined in between:
+
+```forth
+-10 cells allot
+```
+
+Store the start address; `here` alone does not give you a named handle.
+
+## Heap (any order free)
+
+```forth
+10 cells allocate throw   ( -- addr )
+free throw
+```
+
+Check every `ior`; use `throw` in application code. See `forth-io.mdc` for the same pattern on file words.
+
+## Address arithmetic
+
+Use `cell+` / `cells` for cell arrays; `char+` / `chars` for byte buffers. Do not hard-code `2*` for cell scaling — see `forth-portability.mdc`.
+
+## Alignment
+
+`create` and `allocate` start at aligned addresses. `char+` may produce unaligned addresses — use `aligned` before `@` / `!`:
+
+```forth
+create raw  97 c,
+raw char+ aligned @    \ safe cell fetch
+```
+
+Use `align` before `,` when mixing `c,` and cell stores in one `create` block.
+
+## Arrays vs parameter stack
+
+Prefer `create` / `allot` / `variable` buffers over treating the data stack as a random-access array. See `forth-anti-patterns.mdc`.

@@ -9,39 +9,57 @@ alwaysApply: false
 Forth is **postfix (RPN)**: operands first, then the operator.
 
 ```forth
-\ Compute (2 + 3) * 4
-
-\ BAD — infix syntax does not exist in Forth
-\ ( 2 + 3 ) * 4
-
-\ GOOD — operands first, operator after
 2 3 + 4 *
 ```
 
+## Stack manipulation
+
+Core words (TOS on the right in stack pictures):
+
+| Word | Effect |
+|------|--------|
+| `dup` | `( x -- x x )` |
+| `drop` | `( x -- )` |
+| `swap` | `( x1 x2 -- x2 x1 )` |
+| `over` | `( x1 x2 -- x1 x2 x1 )` |
+| `rot` | `( x1 x2 x3 -- x2 x3 x1 )` |
+| `nip` | `( x1 x2 -- x2 )` |
+| `tuck` | `( x1 x2 -- x2 x1 x2 )` |
+| `2swap` | `( x1 x2 x3 x4 -- x3 x4 x1 x2 )` |
+
+Use `.s` to inspect the stack (TOS shown on the right). Prefer factoring or locals over long manipulation chains — see `forth-anti-patterns.mdc`.
+
+## Designing stack effects
+
+Design for **ease of use**, even if implementation is harder:
+
+- Words consume all parameters (e.g., `.` takes and prints one item).
+- Follow established order (`-` is `( n1 n2 -- n )` with subtrahend on TOS).
+- **Short-to-compute on TOS** — e.g., `!` expects `( x addr -- )` because the address is often a `variable` name.
+- **Quickly-consumed results on TOS** — e.g., `open-file` puts **ior on TOS** for immediate `throw`.
+
+When convention conflicts with frequency, favour the rule that helps the common call site.
+
 ## Stack-effect notation
 
-Document every colon definition. Convention: `( inputs -- outputs )` on the data stack. Use a space between stack items. Use `addr`, `char`, `n`, `u`, `d`, `flag`, `ior` where helpful (ANS glossary style).
+Document every colon definition: `( inputs -- outputs )`. Use `addr`, `char`, `n`, `u`, `d`, `flag`, `ior` where helpful.
 
 ```forth
-: star ( -- )
-  42 emit ;
-
 : dup* ( n -- n n*n )
   dup * ;
 ```
 
-- **Before** `--`: stack picture when the word is **entered**.
-- **After** `--`: stack picture when the word **exits** (success path).
-- Empty side is valid: `( -- )`, `( n -- )`.
+- **Before** `--`: stack when the word is **entered**.
+- **After** `--`: stack on normal **exit**.
 
 ## Stack balance
 
-Every word must leave the stack in a predictable state on normal exit. If a branch consumes or produces different stack items, document **each** path (see `forth-style.mdc`).
+Every word must leave a predictable stack on normal exit. Document **each** branch when effects differ — see `forth-style.mdc`.
 
 ## Interactive vs compiled
 
-Numbers and existing words are **executed immediately** at the interpreter. Inside `: ... ;` the same tokens compile unless marked `immediate` or `[` ... `]` is used for compile-time execution.
+At the interpreter, numbers and words execute immediately. Inside `: … ;` they compile unless `immediate` or `[ … ]` — see `forth-meta.mdc`.
 
 ## Mental model
 
-The data stack is the primary parameter passing mechanism — not a temporary “expression stack”. Design words assuming the caller prepared the stack contract you document.
+The data stack is the primary parameter-passing mechanism — not a temporary expression stack. Design words assuming the caller prepared the documented contract.

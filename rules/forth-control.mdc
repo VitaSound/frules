@@ -8,14 +8,19 @@ alwaysApply: false
 
 ## Flags
 
-In ANS, **true** is `-1`, **false** is `0`. Tests use `if` / `else` / `then` with a single flag on stack.
+**True** = `-1` (all bits set); **false** = `0`. Comparisons produce canonical flags. In `if`, any non-zero value is treated as true — still prefer `-1`/`0`.
 
 ```forth
 : positive? ( n -- flag )
   0> ;
+
+: min-no-if ( n1 n2 -- n )
+  2dup < if nip else drop then ;
 ```
 
-Do not assume `1` is true unless your project standard says so.
+Use `0=` / `0<>` to canonicalize. Combine flags with `and` / `or` / `xor` to avoid `if` when both branches are simple (e.g., `0= 14 and`).
+
+Do not assume `1` is true.
 
 ## if / else / then
 
@@ -33,7 +38,7 @@ Each branch must leave the **same** stack effect unless documented otherwise.
   begin key? until key ;
 ```
 
-Use `leave` inside `do … loop` only when early exit is required; document stack effect of `leave` for your system.
+`2/` floors toward zero; `/` rounds toward zero — pick the one your algorithm needs.
 
 ## counted loops
 
@@ -42,23 +47,43 @@ Use `leave` inside `do … loop` only when early exit is required; document stac
   0 ?do dup i + c! loop drop ;
 ```
 
-Index is `i` (and `j` in nested loops). Bounds: `( limit start -- )` for `?do` / `+loop` in ANS.
+Index: `i` (inner), `j` (nested). Bounds: `( limit start -- )` for `?do` / `+loop`.
+
+## Early exit
+
+```forth
+: find-it ( u -- flag )
+  0 ?do  i  target = if  i unloop exit  then  loop  false ;
+```
+
+- `leave` — exit innermost counted loop (calls `unloop` internally).
+- `exit` — exit current colon definition; each enclosing loop needs `unloop` before `exit`.
+
+## Recursion
+
+```forth
+: fac ( n -- n! )
+  dup 0> if  dup 1- recurse *  else  drop 1  then ;
+```
+
+Use `recursive` (Gforth) or `recurse` to call the word under definition. Redefining a core word (e.g., `/`) shadows the old version inside the new body only.
 
 ## return stack in loops
 
-`>r` / `r>` for temporary storage in complex control flow — always document `(R …)` and ensure `r>` runs on all exit paths (no return stack leaks).
+`>r` / `r>` / `r@` for temporary storage — document `(R …)` and balance on every exit path.
 
-**Do not mix `>r`/`r@` with `DO` / `?DO`.** `DO` / `?DO` push the loop counter and limit on the return stack; `R@` inside the loop body returns the loop index `I`, not the value you pushed before the loop. If a counted loop needs an extra parameter:
+**Do not mix `>r`/`r@` with `DO` / `?DO`.** Loop counter and limit live on the return stack; `R@` inside the loop returns `I`, not your saved value. Alternatives:
 
-- restructure to keep it on the data stack (often with one extra `OVER` / `ROT`);
-- pass it via a `VALUE` written outside the loop and `TO`-updated;
-- on **Gforth**, bind it with `{ name }` locals (see `forth-dialect-gforth.mdc`);
-- or replace `DO` with `BEGIN … WHILE … REPEAT` and manage the counter yourself.
+- keep the value on the data stack (`over` / `rot`);
+- use a `VALUE` or Gforth `{ locals }` (see `forth-dialect-gforth.mdc`);
+- use `BEGIN … WHILE … REPEAT` instead of `DO`.
+
+`2swap` via return stack: `rot >r rot r>` — see `forth-anti-patterns.mdc` for leak traps.
 
 ## case / of / endof (if available)
 
-Use when dispatching on multiple discrete values; keep each `of` branch stack-balanced.
+Dispatch on discrete values; keep each `of` branch stack-balanced.
 
 ## State smart words
 
-Words like `if` are immediate and compile branches. Do not manually `compile,` control words unless building defining words.
+Words like `if` are immediate — see `forth-meta.mdc`. Do not manually `compile,` control words unless building defining words.

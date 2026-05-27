@@ -1,0 +1,58 @@
+---
+description: File I/O — open-file, read-line, write-line, ior, Value fd
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# File I/O
+
+File words return **ior** (0 = ok). For application code, pass ior to `throw` immediately — error code stays on TOS for quick consumption (see `forth-stack.mdc`).
+
+## Open and assign
+
+```forth
+s" input.txt"  r/o open-file throw  Value fd-in
+s" output.txt" w/o create-file throw Value fd-out
+```
+
+Modes: `r/o`, `r/w`, `w/o`. Wrap in helpers when reused:
+
+```forth
+0 Value fd-in
+: open-input ( c-addr u -- )
+  r/o open-file throw to fd-in ;
+```
+
+## Line buffer
+
+```forth
+256 Constant max-line
+Create line-buf  max-line 2 + allot
+```
+
+`read-line ( c-addr u fd -- u2 flag ior )` — `flag` false at EOF.
+
+## Read loop
+
+```forth
+: copy-lines ( -- )
+  begin
+    line-buf max-line fd-in read-line throw
+  while
+    line-buf swap fd-out write-line throw
+  repeat
+  drop ;
+```
+
+`while` leaves bytes-read on stack at EOF — clean up in the `else` / after branch.
+
+## Close
+
+```forth
+fd-in  close-file throw
+fd-out close-file throw
+```
+
+## Stack design
+
+File words follow the ior-on-TOS convention: check errors before using other results. Do not ignore `ior` — see `forth-portability.mdc`.

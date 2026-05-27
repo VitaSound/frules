@@ -21,7 +21,7 @@ Reach for `variable` / `value` only for genuinely persistent state.
 
 Frequent `rot rot` means the stack is too crowded -- refactor or use Gforth
 `{ … }` locals. `pick` / `roll` treat the stack as an array; if you reach
-for them, the data belongs in a real array. Every `if` / `else` / `begin`
+for them, the data belongs in a real array (`forth-memory.mdc`). Every `if` / `else` / `begin`
 path must leave the same depth unless documented as distinct `( -- … )`
 contracts.
 
@@ -90,8 +90,11 @@ outside.
 - Hyphenated or numbered names usually mean bad factoring -- see
   `forth-naming.mdc`.
 - ANS strings are `c-addr u` pairs, not C NUL-terminated; `count` is
-  `( c-addr -- c-addr+1 u )`. Inside `:` `;` use `s" …"` or `." …"`;
+  `( c-addr -- c-addr+1 u )`. Inside `: … ;` use `s" …"` or `." …"`;
   `[char] x` is **compile-only** -- use `char x` at the interpreter.
+  See `forth-strings.mdc`.
+- Practice colon definitions **without** locals occasionally — builds
+  factoring skill (`forth-dialect-gforth.mdc`).
 - Prefer `begin … while … repeat`, `begin … until`, `?do … loop` over
   fake `for` loops with manual indices. Counts beat sentinels.
 - Comments explain **why** or non-obvious stack state, not `dup drop`.

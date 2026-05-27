@@ -1,0 +1,56 @@
+---
+description: Characters and strings — c-addr u, s", c", counted, c, c@
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Characters and strings
+
+## Stack representation
+
+Preferred form: **address/length pair** `( c-addr u )` for `type`, `compare`, `evaluate`.
+
+Counted string `( c-addr )` — first byte is length; `count ( c-addr1 -- c-addr2 u )` unpacks to a pair.
+
+## Character memory
+
+Chars are one byte in memory, one cell on the stack:
+
+```forth
+create hello
+  char h c,  char a c,  char l c,  char l c,  char o c,
+hello 5 type
+```
+
+Use `c@` / `c!` / `char+` / `chars` for byte buffers — not `@` / `!` unless aligned.
+
+## String literals
+
+| Task | Idiom |
+|------|--------|
+| Pair inside `: … ;` | `s" hello"` (permanent while definition exists) |
+| Interpreter one-liner | `s" hello" type cr` |
+| Counted literal | `c" hello"` |
+| Escapes | `s\" line\n"` |
+| Compile-time string | `s" hello" sliteral` |
+
+**Space required:** `s" hello"` — `s"` is a word; `s"hello"` fails.
+
+## s" lifetime
+
+Interpreted `s"`: buffer is ephemeral — overwritten by the next interpret-time `s"`. Inside a colon definition, compiled `s"` strings persist for the life of that definition.
+
+```forth
+: greet ( -- )  s" world" type cr ;
+```
+
+Prefer `s"` over non-ANS `"hello"` for portability. Do not use C NUL-terminated strings unless binding C.
+
+## Compile-time literals
+
+```forth
+[ 2 cells ] literal          \ cell literal
+s" tag" sliteral             \ string literal at compile time
+```
+
+See `forth-defining.mdc` for `[ … ] literal` and `forth-dialect-gforth.mdc` for Gforth tooling.

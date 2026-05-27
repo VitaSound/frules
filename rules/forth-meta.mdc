@@ -1,0 +1,60 @@
+---
+description: Interpret vs compile state, immediate, postpone, compile-only
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Interpretation and compilation
+
+## Two semantics
+
+Normal words: compile time appends their **interpretation** semantics. Control words (`if`, `then`) have non-default **compilation** semantics.
+
+## Immediate
+
+```forth
+: [print5] ( -- )  5 . ;  immediate
+```
+
+During compilation of `: bar … ;`, `[print5]` runs at compile time (interpretation semantics). Mark non-default words with bracket names or `immediate`.
+
+## Compile-only
+
+Words like `if` should not run at interpret time — mark `compile-only` to get a warning when interpreted accidentally.
+
+## State switches
+
+`:` enters compile state; `;` returns to interpret state. Brackets:
+
+- `[` — interpret state (compile-time evaluation inside a definition)
+- `]` — compile state
+
+```forth
+: demo ( -- )
+  [ 5 . ]   \ runs 5 . while compiling demo
+;
+```
+
+## POSTPONE
+
+Compile the **compilation** semantics of a word:
+
+```forth
+: MY-+  ( Compilation: -- ; Run-time: n1 n2 -- n )
+  postpone + ;  immediate
+```
+
+Document **both** stack effects for immediate defining words. Prefer `postpone` over `[ immediate-word ]` inside definitions — the bracket form is non-standard and fragile on some systems.
+
+Chain example:
+
+```forth
+: MY--  ( Compilation: -- ; Run-time: n1 n2 -- n )
+  postpone negate  postpone + ;  immediate  compile-only
+```
+
+## Execution tokens in meta words
+
+`' word` at interpret time; `['] word` while compiling. Use `postpone` instead of manual `compile,` when wrapping existing words.
+
+See `forth-defining.mdc` for CREATE/DOES> and `forth-control.mdc` for immediate control-flow words.
