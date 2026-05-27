@@ -23,10 +23,6 @@ include _tester.fs
 
 \ === paste your solution below this line ===
 
-: clamp  ( n lo hi -- n' )
-  { n lo hi -- }
-  n lo max hi min ;
-
 \ === paste your solution above this line ===
 
 T{    5  0 10 clamp ->  5 }T

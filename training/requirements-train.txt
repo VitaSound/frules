@@ -1,0 +1,9 @@
+# Pin after your first successful sandbox run (python -m pip freeze | grep -E 'torch|unsloth')
+# Minimal starting point:
+unsloth
+torch
+transformers
+datasets
+accelerate
+peft
+trl

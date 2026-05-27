@@ -4,6 +4,27 @@ All notable changes to `frules` are recorded here.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: [SemVer](https://semver.org/).
 
+## [0.1.2] — 2026-05-27
+
+### Added
+
+- **`docs/MODEL-TRAINING.md`** — пошаговые инструкции: датасет JSONL, Трек A (Qwen2.5-Coder-0.5B песочница), Трек B (7B LoRA → Ollama), Ubuntu 24 / WSL2, hold-out для `tests/challenges/`.
+- **`docs/TRAINING-RUNS.md`** — журнал прогонов обучения (как `CHALLENGE-RUNS.md` для inference).
+- **`scripts/build-dataset.py`** — сборка ShareGPT JSONL из `tests/ans`, `tests/gforth`, `examples/`; флаги `--sandbox`, `--validate`.
+- **`data/sandbox.jsonl`** (33 пары), **`data/train.jsonl`** (41 пара), **`data/README.md`**.
+- **`training/`** — `configs/sandbox.yaml`, `configs/prod-7b.yaml`, `requirements-train.txt`, `Modelfile.example`, `run-sandbox.sh`.
+
+### Changed
+
+- **`README.md`** — ссылки на MODEL-TRAINING, TRAINING-RUNS, `data/`, `scripts/`, `training/`.
+- **`docs/CHALLENGE-RUNS.md`** — ссылка на обучение своей LoRA.
+- **`TODO.md`** — отмечены инструкции по train; открыт пункт расширения датасета до 500+.
+- **`.gitignore`** — `output/`, `.venv-train/`, промежуточные JSONL.
+
+### Fixed
+
+- **`tests/challenges/01-clamp.fs`**, **`04-caesar-shift.fs`** — удалены черновые решения между маркерами (честный eval / hold-out).
+
 ## [0.1.1] — 2026-05-27
 
 ### Changed
@@ -58,5 +79,6 @@ First usable cut. AI rules for Forth, Gforth-oriented with portable ANS fallback
 - `pforth` emits a benign `INCLUDE error on line #N` after `bye` at file end. Ignored by `test.sh`.
 - `gforth file.fs` without `-e bye` stays in the REPL — `test.sh` handles this for load-mode checks.
 
+[0.1.2]: https://github.com/VitaSound/frules/releases/tag/v0.1.2
 [0.1.1]: https://github.com/VitaSound/frules/releases/tag/v0.1.1
 [0.1.0]: https://github.com/VitaSound/frules/releases/tag/v0.1.0

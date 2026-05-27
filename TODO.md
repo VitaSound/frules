@@ -45,3 +45,5 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
 - [x] Свой `T{ … -> … }T` совместимый с Hayes test suite (вместо текущего `t=`), чтобы интегрироваться с готовыми наборами. Подключён `ttester.4th` + `ttester-ext.4th` из `VitaSound/ttester`, все 10 тестов переведены.
 - [ ] Конвертер: `.mdc` → одиночный markdown для системных промптов другим IDE (не-Cursor).
 - [ ] Бенчмарки модели на `tests/challenges/`: процент зелёных под разными моделями (Composer, Sonnet, Opus, GPT) — публиковать таблицу.
+- [x] **Инструкции по обучению модели:** `docs/MODEL-TRAINING.md`, `docs/TRAINING-RUNS.md`, `scripts/build-dataset.py`, `data/sandbox.jsonl`, `training/configs/`.
+- [ ] Расширить `data/train.jsonl` до 500+ (внешний Gforth + синтетика); Track A/B на GPU — см. MODEL-TRAINING.md.

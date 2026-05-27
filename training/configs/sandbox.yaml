@@ -1,0 +1,11 @@
+# Track A — Qwen2.5-Coder-0.5B sandbox (RTX 4070)
+model: Qwen/Qwen2.5-Coder-0.5B-Instruct
+dataset: data/sandbox.jsonl
+lora_rank: 8
+lora_alpha: 16
+learning_rate: 2.0e-4
+num_epochs: 1
+max_seq_length: 1024
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 4
+quantization: 4bit

@@ -30,35 +30,6 @@ create cbuf 32 chars allot
 
 \ === paste your solution below this line ===
 
-char a constant lower-base
-char A constant upper-base
-26 constant letters
-
-: ?select  ( a b flag -- x )
-  if swap then drop ;
-
-: in-range?  ( base c -- flag )
-  swap - letters u< ;
-
-: shift-lower  ( c n -- c' )
-  swap lower-base - swap + letters mod lower-base + ;
-
-: shift-upper  ( c n -- c' )
-  swap upper-base - swap + letters mod upper-base + ;
-
-: shift-char  ( c n -- c' )
-  { ch n -- c' }
-  ch ch n shift-lower
-  lower-base ch in-range? ?select
-  ch n shift-upper
-  upper-base ch in-range? ?select ;
-
-: caesar  ( c-addr u n -- )
-  { addr len n -- }
-  len 0 ?do
-    addr i + dup c@ n shift-char swap c!
-  loop ;
-
 \ === paste your solution above this line ===
 
 T{ s" abc"      setup 2dup  1 caesar  s" bcd"      expect-str-eq -> }T

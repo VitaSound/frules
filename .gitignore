@@ -17,3 +17,11 @@ sources/*.mobi
 
 # Local scratch (e.g. downloaded tool binaries for sandboxed runs)
 .scratch/
+
+# ML training artifacts
+output/
+.venv-train/
+scripts/__pycache__/
+data/raw.jsonl
+data/augmented.jsonl
+data/eval.jsonl

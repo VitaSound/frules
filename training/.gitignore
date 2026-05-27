@@ -1,0 +1,7 @@
+# Training artifacts — do not commit
+checkpoints/
+adapters/
+merged/
+*.gguf
+wandb/
+__pycache__/

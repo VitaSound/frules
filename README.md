@@ -43,6 +43,9 @@ dialect=gforth
 | `docs/SOURCES.md` | Откуда взята каждая тема в `rules/` |
 | `docs/RULES-ARCHITECTURE.md` | Как работает подгрузка с ИИ |
 | `docs/DISTILL-PROMPT.md` | Промпт для перегонки книги в правила |
+| `data/` | JSONL для SFT (`sandbox.jsonl`, `train.jsonl`) |
+| `scripts/build-dataset.py` | Сборка датасета из tests/examples |
+| `training/` | Конфиги LoRA, Modelfile |
 | `AGENTS.md` | Краткая сводка для любого агента |
 
 ## Как добавлять книги
@@ -83,6 +86,8 @@ dialect=gforth
 |----------|------------|
 | [`docs/CHALLENGE-RUNS.md`](docs/CHALLENGE-RUNS.md) | Cursor / Composer / Agent: новый чат, промпт, `gforth`, таблица результатов |
 | [`docs/LOCAL-GEMMA-BENCHMARK.md`](docs/LOCAL-GEMMA-BENCHMARK.md) | **Gemma 4 через Ollama**: включить/выключить правила, A/B baseline |
+| [`docs/MODEL-TRAINING.md`](docs/MODEL-TRAINING.md) | **Своя LoRA для Forth**: датасет, песочница 0.5B, train 7B, Ollama |
+| [`docs/TRAINING-RUNS.md`](docs/TRAINING-RUNS.md) | Журнал прогонов обучения |
 | [`tests/challenges/`](tests/challenges/) | `01-clamp` … `06-roman` + `README.md` |
 
 ```bash

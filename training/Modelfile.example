@@ -1,0 +1,11 @@
+# Example Ollama Modelfile after merging LoRA and converting to GGUF.
+# Usage: ollama create forth-gforth -f training/Modelfile.example
+#
+# Replace FROM path with your actual .gguf file.
+
+FROM ./output/forth-gforth-q4_K_M.gguf
+
+PARAMETER temperature 0.2
+PARAMETER num_ctx 4096
+
+SYSTEM """You write Gforth. Postfix only. Every colon definition has a stack-effect comment ( before -- after ). Never output C or Python."""

@@ -6,6 +6,8 @@ This is manual QA, not CI.
 **Local Gemma 4 (Ollama):** see [`LOCAL-GEMMA-BENCHMARK.md`](LOCAL-GEMMA-BENCHMARK.md) —
 install model, connect/disconnect `.cursor/rules`, A/B baseline vs frules on.
 
+**Your own LoRA (trained weights):** see [`MODEL-TRAINING.md`](MODEL-TRAINING.md) and log runs in [`TRAINING-RUNS.md`](TRAINING-RUNS.md).
+
 ## What you are measuring
 
 | Signal | Meaning |
