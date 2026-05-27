@@ -1,0 +1,34 @@
+---
+description: Calling C from Gforth — cfunction, argument order, return values
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# C bindings (Gforth)
+
+Use only when the project already binds C libraries. Declare functions first (see manual §5.26.2), then call by name.
+
+## Argument order
+
+Push arguments **deepest first** — same order as C parameter list. Integers and pointers on the **data stack**; floats on the **FP stack**.
+
+```forth
+\ off_t lseek(int fd, off_t offset, int whence);
+fd @ 0 SEEK_SET lseek -1 = if
+  s" seek failed" type cr
+then
+```
+
+Most C functions return a value — **`drop` it explicitly** if unused (Forth does not ignore returns like C often does).
+
+## Wide types
+
+If a C type may not fit one cell, declare the binding with **double cells** (e.g. `dlseek` for large `off_t`). Struct/union pass-by-value is not supported portably — use pointers.
+
+## Variadic functions
+
+No generic `printf` binding — declare one `cfunction` per argument pattern you need.
+
+## Strings
+
+C expects NUL-terminated strings; Forth uses `( c-addr u )`. Convert at the boundary with project helpers — see `forth-strings.mdc`. Do not pass ephemeral `s"` buffers to C that outlive the call unless copied.

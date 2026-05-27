@@ -20,7 +20,14 @@ During compilation of `: bar … ;`, `[print5]` runs at compile time (interpreta
 
 ## Compile-only
 
-Words like `if` should not run at interpret time — mark `compile-only` to get a warning when interpreted accidentally.
+Words like `if` should not run at interpret time — mark `compile-only` to get a warning when interpreted accidentally. Gforth warns on `'` / `[']` for compile-only words too; at interpret time, compile-only words run their compilation semantics (ANS/Gforth conformance).
+
+Document **both** stack effects when compile-time differs from run-time:
+
+```forth
+: [print5] ( Compilation: -- ; Run-time: -- )
+  ['] . compile, 5 , ;  immediate
+```
 
 ## State switches
 
@@ -56,5 +63,15 @@ Chain example:
 ## Execution tokens in meta words
 
 `' word` at interpret time; `['] word` while compiling. Use `postpone` instead of manual `compile,` when wrapping existing words.
+
+## Parsing words
+
+Words like `create`, `'`, `[']` read from the **input stream**, not the stack — hard to call from other words with computed parameters. **Always provide a stack-parameter factor** and implement the parsing word on top with `parse-name` / `parse`.
+
+Do not build new parsing words unless necessary; prefer `( c-addr u )` or stack arguments.
+
+## Recognizers (advanced)
+
+Gforth extends the text interpreter with a recognizer stack (`get-recognizers` / `set-recognizers`). Normal application `.fs` code should not touch this — only meta-tooling and interpreter extensions.
 
 See `forth-defining.mdc` for CREATE/DOES> and `forth-control.mdc` for immediate control-flow words.

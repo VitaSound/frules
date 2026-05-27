@@ -8,6 +8,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ### Added
 
+- **Five Gforth manual topic rules** — `forth-numeric.mdc`, `forth-wordlists.mdc`, `forth-debugging.mdc`, `forth-oof.mdc`, `forth-c-bindings.mdc`.
 - **Gforth Tutorial distillation** (`sources/gforth-manual-tutorial/` → `rules/`):
   - **`forth-memory.mdc`** — `variable`, `create`, `allot`, `here`, `aligned`, `allocate`.
   - **`forth-io.mdc`** — `open-file`, `read-line`, `write-line`, ior/`throw`, `Value fd`.
@@ -22,14 +23,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ### Changed
 
+- **Gforth manual — full distillation** (`sources/gforth-manual/` → `rules/`) — five new topics plus expanded stack/control/defining/meta/memory/io/strings/portability/dialect; covers ch.2–§9 actionable idioms (errors, exceptions, structs, assertions, numeric, wordlists, debugging, OOP/C basics); skip Word Index and engine/assembler internals; `install.sh` FULL_TOPICS, `frules-index.mdc` routing, `docs/SOURCES.md` provenance.
 - **Gforth Tutorial distillation (updated rules)** — `forth-stack` (manipulation, designing stack effects), `forth-control` (exit/leave, recursion, flags), `forth-defining` (simple-field, defer/is), `forth-dialect-gforth` (locals, try/endtry; strings/FP moved to dedicated topics), `forth-style`, `forth-portability`, `forth-anti-patterns`, `forth-naming` (type prefixes).
-- **`frules-index.mdc`** — topic routing table for memory, io, strings, FP, meta.
-- **`install.sh`** — five new topics in `FULL_TOPICS`.
-- **`docs/SOURCES.md`** — per-file provenance from Gforth Tutorial §3.x; skip list (crash-course, decompilation, advanced-macros, compilation-tokens); row for `sources/gforth-manual/*.md`.
-- **Full Gforth manual wired into workflow** — `AGENTS.md`, `rules/forth-dialect-gforth.mdc`, `rules/frules-index.mdc`, `templates/frules-dialect-gforth.mdc`, `docs/AGENT-SOLVE-CHALLENGES.md` (usage section), `docs/CHALLENGE-TO-TRAIN.md`, `docs/MODEL-TRAINING.md`, `data/challenge-solutions/README.md`, `sources/README.md`, `README.md`.
-- **Agent / challenge docs** — allowed references now include `sources/gforth-manual/` alongside tutorial, Brodie, theForthNet.
-- **`docs/CHALLENGE-RUNS.md`** — deny `sources/gforth-manual/` during blind benchmark runs (with tutorial, Brodie, theForthNet).
-- **`TODO.md`** — full manual vendored and documented; open: distill ch.5/ch.8 from `gforth-manual/`, index theForthNet packages.
+- **`docs/SOURCES.md`** — per-file provenance from Gforth Tutorial §3.x and Gforth manual ch.5–9; skip lists documented.
+- **`TODO.md`** — full manual vendored, distilled, and documented; open: index theForthNet packages.
 
 ## [0.1.2] — 2026-05-27
 

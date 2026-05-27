@@ -1,0 +1,52 @@
+---
+description: Double and mixed-precision arithmetic, pictured numeric output
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Numeric (double and mixed precision)
+
+## Double on the stack
+
+A **double** is two cells; **MS cell on TOS**. Document `( d -- )` / `( d1 d2 -- d3 )` in headers.
+
+```forth
+123 s>d              \ signed n → d
+456 0                \ unsigned u → ud (push 0 on TOS)
+d1 d2 d+ d>s         \ double add, narrow to single if in range
+```
+
+Input: `3465.` and `3.465` are the same double; `1.` without `e` is **not** a float — see `forth-floating-point.mdc`.
+
+## Mixed single/double
+
+Use when intermediate product would overflow a cell:
+
+```forth
+1000 3 */            \ (1000*3)/1 in double precision
+n1 n2 m* d.          \ full-width product (signed: m*, unsigned: um*)
+d1 n m+              \ add single into double
+d1 n1 fm/mod         \ floored div/mod of double by single
+```
+
+Pick division semantics explicitly: `fm/mod` (floored) vs `sm/rem` (symmetric remainder).
+
+## Pictured numeric output
+
+Build strings **right-to-left** in the hold area: `<# … #>`. Operates on **unsigned double** — promote singles:
+
+```forth
+: u. ( u -- )
+  0 <<# #s #> type space #>> ;
+
+: . ( n -- )
+  dup abs swap
+  s>d swap over dabs
+  <<# #s rot sign #> type space #>> ;
+```
+
+Gforth nested holds: `<<# … #>>`; reset with `<#` if the hold area is exhausted. **`.r` is formatted output**, not return-stack debug — see `forth-debugging.mdc`.
+
+## Base and conversion
+
+Keep `base` decimal in application code; save/restore around `hex`/`oct` sections. Prefer `base-execute` over manual `base @ >r … r> base !`. Use `$`/`#`/`%` prefixes in source for non-decimal literals when the manual documents them.

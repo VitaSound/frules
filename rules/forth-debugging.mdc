@@ -1,0 +1,44 @@
+---
+description: Inspecting stack and code, print-debugging, Gforth debug tools
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Debugging and inspection
+
+## Prefer print-debugging
+
+Insert probes, run, remove. Faster than stepping debuggers for most Forth work.
+
+```forth
+require debugs.fs
+: foo ( n -- )
+  ~~              \ file:line + .s (Emacs compilation-mode friendly)
+  dup 0< if ~~bt then ;
+```
+
+`~~bt` / `~~1bt` — stack + backtrace; `once` — run probe body only once. After `marker`, `~~` may show `*somewhere*` or wrong filename — do not rely on line numbers past markers.
+
+## Stack and memory inspection
+
+```forth
+.s f.s depth fdepth
+? addr          \ one cell at addr
+dump            \ memory region
+see myword      \ decompile (comments lost)
+xt-see ' myword
+```
+
+**`.r` is pictured numeric output**, not return-stack display. `maxdepth-.s` caps items shown (default 9).
+
+## Other tools
+
+```forth
+\ gforth depth-changes.fs my-file.fs   \ stray stack items at blank lines
++ltrace myword   \ line trace (debugs.fs)
+'replace-word    \ hot-patch: replace-word xt1 xt2 (experiments only)
+```
+
+Assertions — see `forth-dialect-gforth.mdc`. Error message format and backtraces — same file, § ch.6.
+
+Use **`gforth`** while debugging; **`gforth-fast`** gives weaker backtraces on primitive faults.

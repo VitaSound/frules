@@ -42,7 +42,9 @@ When convention conflicts with frequency, favour the rule that helps the common 
 
 ## Stack-effect notation
 
-Document every colon definition: `( inputs -- outputs )`. Use `addr`, `char`, `n`, `u`, `d`, `flag`, `ior` where helpful.
+Document every colon definition: `( inputs -- outputs )`. **Rightmost = TOS** (same as typing order). Gforth manual glossary uses type prefixes on names: `f` flag, `c` char, `w`/`n`/`u` cell or integer, `d`/`ud` double, `r`/`fr` FP stack items; return-stack effects go in prose, not in `( … -- … )`.
+
+Use `addr`, `char`, `n`, `u`, `d`, `flag`, `ior` in project headers — align with manual types where helpful.
 
 ```forth
 : dup* ( n -- n n*n )

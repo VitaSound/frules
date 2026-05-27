@@ -68,9 +68,39 @@ defer action
 ' default-action is action
 ```
 
-## Arrays
+## Quotations and anonymous words
 
-Do not over-build array definers — often `create n cells allot` plus `@`/`!` and `cell+` is enough. Gforth `begin-structure` — see `forth-dialect-gforth.mdc`. Memory idioms — see `forth-memory.mdc`.
+```forth
+: warn ( n -- )
+  [: cr ." warn " . ;] stderr outfile-execute ;
+
+Defer deferred
+:noname ( -- ) ... ;          \ ANS: leaves xt on stack
+latestxt is deferred          \ Gforth: noname + latestxt
+```
+
+Use `[: … ;]` when passing an xt to `catch`, `outfile-execute`, etc. **`include forward.fs`** + **`Forward name`** for mutual recursion without `defer` overhead (colon defs only).
+
+## Aliases
+
+```forth
+' then alias endif            \ same xt, new name
+' foo alias bar immediate     \ immediate flag is per-alias
+```
+
+## Arrays and structures
+
+Do not over-build array definers — often `create n cells allot` plus `@`/`!` and `cell+` is enough.
+
+Gforth `struct` / `begin-structure` — see `forth-dialect-gforth.mdc`. Allocation idioms:
+
+```forth
+list% %allot              \ dictionary, leaves addr
+list% %alloc throw        \ heap via allocate
+list% %size .             \ byte size of one instance
+```
+
+Field words convert `( struct-addr -- field-addr )`. Memory alignment — see `forth-memory.mdc`.
 
 ## Literals and postpone
 
@@ -78,7 +108,7 @@ Do not over-build array definers — often `create n cells allot` plus `@`/`!` a
 
 ## VOCABULARY / search order
 
-Avoid `search-order` tricks in portable code unless the project uses them explicitly — see `forth-portability.mdc`.
+Avoid search-order tricks in portable code unless the project uses them — see `forth-wordlists.mdc`.
 
 ## Parameter stack as array
 

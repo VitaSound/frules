@@ -66,7 +66,9 @@ ALWAYS=(
 # Topic files for `full` profile (alphabetical).
 FULL_TOPICS=(
   forth-anti-patterns.mdc
+  forth-c-bindings.mdc
   forth-control.mdc
+  forth-debugging.mdc
   forth-defining.mdc
   forth-factoring.mdc
   forth-floating-point.mdc
@@ -74,10 +76,13 @@ FULL_TOPICS=(
   forth-memory.mdc
   forth-meta.mdc
   forth-naming.mdc
+  forth-numeric.mdc
+  forth-oof.mdc
   forth-portability.mdc
   forth-stack.mdc
   forth-strings.mdc
   forth-style.mdc
+  forth-wordlists.mdc
 )
 
 # Topic files kept by `core` profile (subset).

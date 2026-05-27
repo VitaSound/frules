@@ -1,0 +1,44 @@
+---
+description: Gforth objects.fs — classes, selectors, overrides (optional OOP)
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Object-oriented Forth (objects.fs)
+
+Gforth-only. Load `objects.fs` when the project already uses this model — do not introduce OOP for problems solvable with `create`/`does>` or structs.
+
+## Class and selector
+
+```forth
+require objects.fs
+
+object class
+  selector draw ( x y obj -- )
+end-class graphical
+
+graphical class
+  cell% field circle-radius
+:noname ( x y circle -- )
+  circle-radius @ draw-circle ;
+overrides draw
+:noname ( n circle -- )
+  circle-radius ! ;
+overrides construct
+end-class circle
+```
+
+`selector` declares an operation; child classes **`overrides`** methods. Parent without overrides is abstract (no concrete `draw`).
+
+## Instances
+
+```forth
+50 circle heap-new constant my-circle
+100 100 my-circle draw
+```
+
+Use **`heap-new`** / **`destroy`** for heap objects; dictionary instances use `new` patterns from the project's objects.fs usage.
+
+## When not to use
+
+Prefer plain Forth data + words for challenges and small utilities. See `forth-defining.mdc` for `defer`/`is`, `forth-dialect-gforth.mdc` for `begin-structure`. OOF/mini-oof are alternate models — match the project, do not mix casually.

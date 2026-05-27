@@ -44,7 +44,20 @@ Interpreted `s"`: buffer is ephemeral — overwritten by the next interpret-time
 : greet ( -- )  s" world" type cr ;
 ```
 
-Prefer `s"` over non-ANS `"hello"` for portability. Do not use C NUL-terminated strings unless binding C.
+Prefer `s"` over non-ANS `"hello"` for portability. Do not use C NUL-terminated strings unless binding C — see `forth-c-bindings.mdc`.
+
+## Extended characters (Unicode)
+
+`xc` = one extended character (one cell). Buffer `( xc-addr u )` — **`u` is byte length (pchars)**, not xchar count.
+
+```forth
+: xtype ( xc-addr u -- )
+  begin  dup  while
+    xc@+ xemit
+  repeat  2drop ;
+```
+
+Iterate with `xc@+`, `xchar+`, `+x/string`. Prefer **`xc!+?`** over unchecked store (returns flag + remaining buffer). Terminal: `xkey`, `xemit`; query `xchar-encoding`.
 
 ## Compile-time literals
 

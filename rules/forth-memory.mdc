@@ -71,3 +71,20 @@ Use `align` before `,` when mixing `c,` and cell stores in one `create` block.
 ## Arrays vs parameter stack
 
 Prefer `create` / `allot` / `variable` buffers over treating the data stack as a random-access array. See `forth-anti-patterns.mdc`.
+
+## Memory block copy
+
+For `( c-addr u )` buffers — source before destination in `move`/`cmove`/`cmove>`:
+
+```forth
+: copy-chars ( src dst u -- )
+  cmove ;
+
+: copy-overlap-low ( src dst u -- )
+  cmove ;          \ safe when dst <= src
+
+: copy-overlap-high ( src dst u -- )
+  cmove> ;         \ safe when dst >= src
+```
+
+`move` works on address units (often prefix `chars` for char buffers). `blank` / `erase` fill with spaces / zero bits.

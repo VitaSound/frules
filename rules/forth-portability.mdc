@@ -33,12 +33,7 @@ Prefer CORE / CORE-EXT words from ANS before vendor extensions. If you must use 
 
 ## Double numbers
 
-Double-cell values occupy two stack cells (low cell on top in ANS storage order, but pushed/popped as a pair). Use the proper word set:
-
-- pure double: `d+ d- d* d/ d= d< dnegate dabs d2* d2/ d.`
-- mixed single/double: `m+ m* m*/ um* um/mod sm/rem fm/mod s>d d>s`
-
-Document `( d -- d' )` or `( d1 d2 -- d3 )` in headers and remember each `d` is two cells deep.
+See **`forth-numeric.mdc`** for `s>d`, `*/`, `m*`, pictured output. Each `d` on the stack is two cells deep.
 
 ## Throw / catch
 
@@ -51,3 +46,60 @@ Use `throw` with standardized or project-assigned codes; document which inputs c
 ## Alignment
 
 Use `aligned` / `align` when mixing `char+` addressing with cell `@` / `!` — unaligned access may fail or be slow on some CPUs. See `forth-memory.mdc`.
+
+## Standard vs Gforth extensions
+
+Prefer standard words where easy; use Gforth extensions when the project targets Gforth only or when `compat/` shims keep the program standard-compliant. Many extensions have drop-in compat files — include them with portable code rather than reimplementing.
+
+Before claiming portability, run:
+
+```forth
+\ batch: gforth ans-report.fs myprog.fs -e "print-ans-report bye"
+include ans-report.fs
+include myprog.fs
+print-ans-report
+```
+
+`ans-report.fs` lists wordsets used and non-standard words; it does **not** detect non-standard *usage* of standard words.
+
+## Environmental queries
+
+Probe the host at run time instead of hard-coding cell size or wordset presence:
+
+```forth
+: need-file? ( -- )
+  s" file" environment? abort" need FILE wordset" ;
+
+s" address-unit-bits" environment? .   \ e.g. 32 or 64
+s" gforth" environment? type cr       \ version string when true
+```
+
+Document required wordsets in the file header **Environmental dependencies**.
+
+## Common throw codes (Gforth / ANS)
+
+Know these when checking `ior` or reading backtraces:
+
+| Code | Typical cause |
+|------|----------------|
+| `-4` | Stack underflow (often caught by text interpreter) |
+| `-3` | Stack overflow |
+| `-5` | Return stack overflow |
+| `-6` | Return stack underflow |
+| `-8` | Dictionary overflow |
+| `-9` | Invalid memory address |
+| `-10` | Division by zero |
+| `-11` | Result out of range |
+| `-12` | Argument type mismatch (control flow, `restore-input`, …) |
+| `-13` | Undefined word |
+| `-16` | Zero-length name (`create` with empty parse) |
+| `-17` | Pictured numeric output overflow |
+| `-19` | Word name too long |
+| `-23` | Address alignment exception |
+| `-32` | Invalid name argument (`to` on non-`value`) |
+
+`gforth-fast` may silently produce wrong results on some arithmetic edge cases; use `gforth` while debugging.
+
+## Legacy blocks
+
+Block files (`block`, `load`, 1024-byte sectors) are pre-OS Forth mass storage. On modern systems use **`include` / `require` and files** — see `forth-io.mdc`. Use blocks only when maintaining legacy block-based codebases.

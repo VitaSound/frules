@@ -53,6 +53,25 @@ fd-in  close-file throw
 fd-out close-file throw
 ```
 
+## CLI arguments
+
+```forth
+: echo-args ( -- )
+  begin  next-arg 2dup 0 0 d<>  while
+    type space
+  repeat  2drop ;
+```
+
+`next-arg ( -- c-addr u )` returns `0 0` when exhausted. Lower level: `argc`, `argv`, `arg`, `shift-args` (`0 arg` = program name).
+
+## Search paths
+
+`fpath` holds source search path; set with `path=` (general path words). `require` resolves through `fpath`, cwd, `-p`, and `GFORTHPATH`.
+
+## Formatted output
+
+Pictured numeric strings — see `forth-numeric.mdc`. Terminal: `type`, `cr`, `emit`, `key`.
+
 ## Stack design
 
 File words follow the ior-on-TOS convention: check errors before using other results. Do not ignore `ior` — see `forth-portability.mdc`.

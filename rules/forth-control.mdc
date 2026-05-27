@@ -80,9 +80,52 @@ Use `recursive` (Gforth) or `recurse` to call the word under definition. Redefin
 
 `2swap` via return stack: `rot >r rot r>` — see `forth-anti-patterns.mdc` for leak traps.
 
-## case / of / endof (if available)
+## case / of / endof
 
 Dispatch on discrete values; keep each `of` branch stack-balanced.
+
+Gforth extended `case` (portable shim: `compat/caseext.fs`):
+
+```forth
+: sgn ( n -- -1|0|1 )
+  case
+    dup 0< ?of drop -1 endof
+    dup 0> ?of drop  1 endof
+    drop 0
+  endcase ;
+
+: collatz-step ( u -- u' )
+  case  dup .
+    1 of  endof
+    dup 1 and ?of 3 * 1+ contof
+    2/
+  next-case ;
+```
+
+`?of` — general condition; `endcase` drops one value (leave a dummy when branches differ). `next-case` / `contof` — loop-style case (manual §5.8.5).
+
+## Multi-exit begin loops
+
+`exit` leaves the **whole colon definition**, not just the loop — awkward for per-exit cleanup. Prefer **`case` / `next-case`** over nested `while` + trailing `then`s when each exit needs different code (manual §5.8.4).
+
+## Conditional throw
+
+When a flag selects a standard `ior` to throw (manual §5.8.8):
+
+```forth
+s" file" errno
+( flag ) 0<> and throw
+```
+
+Typical file idiom — ior already on TOS:
+
+```forth
+r/o open-file throw
+```
+
+## User-defined control structures
+
+Gforth stores control-flow on the data stack (`orig` / `dest`). Do **not** sprinkle `CS-ROLL` / raw `orig`/`dest` in application code — wrap them in `immediate` words (like `while` / `repeat` themselves), then use those words. See manual §5.8.6.1.
 
 ## State smart words
 

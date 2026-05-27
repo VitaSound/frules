@@ -1,0 +1,43 @@
+---
+description: Word lists, search order, vocabularies, private helpers
+globs: "**/*.{fth,fs,4th,forth,fb}"
+alwaysApply: false
+---
+
+# Word lists and search order
+
+## Model
+
+The interpreter searches a **stack of word lists** (top first). New definitions go to the **compilation wordlist** (`get-current` / `set-current`), not necessarily the search-order top.
+
+```forth
+wordlist constant private-wid
+private-wid set-current      \ compile into private list
+private-wid >order           \ make it searchable
+get-order set-order          \ save/restore search order portably
+previous                     \ drop search-order entry
+only forth                   \ reset to standard (Gforth)
+```
+
+## Hide implementation words
+
+Pattern from manual §5.15.3 — helpers in a private vocabulary, API in the public list:
+
+```forth
+get-current ( wid )
+vocabulary gc also gc definitions
+\ ... helper words ...
+( wid ) set-current
+\ ... public API (calls helpers) ...
+previous
+```
+
+## Tables and case-sensitive lists
+
+`table` — case-sensitive wordlist for dispatch tables. `cs-wordlist` / `cs-vocabulary` — case-sensitive compilation/search contexts.
+
+## Portability
+
+Avoid legacy `find` in new code — semantics are underspecified. Prefer `find-name` and related words when meta-programming. For portable programs, minimize search-order tricks; document **Environmental dependencies** when using vocabularies.
+
+See `forth-defining.mdc` for `' word Alias name` (same xt, new header; immediate flag is per-alias).

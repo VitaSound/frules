@@ -40,6 +40,19 @@ Type prefixes: `W:` cell (default), `D:` double, `F:` float, `C:` char.
 
 Prefer locals over long `>r`/`r>` or `rot pick` — but practice without locals to build factoring skill.
 
+**Locals style:** avoid `to` on locals — single-assignment reads clearer. Re-bind iteration locals inside `?do { … }` instead of mutating mid-loop. Wrong stack order? Declare all values as locals and write in desired order.
+
+## Invocation and paths
+
+```forth
+\ gforth [-p path] file.fs -e "code" -e bye
+\ GFORTHPATH, ~/.gforthrc (unless --no-rc), --appl-image for standalone images
+fpath path= ./lib/|./
+require mymodule.fs
+```
+
+Image files / cross-compiler — specialized; see manual ch.13–15. Default batch: `gforth app.fs -e bye`.
+
 ## Values and constants
 
 ```forth
@@ -57,42 +70,73 @@ See dedicated topic files: `forth-strings.mdc`, `forth-floating-point.mdc`.
 ## Exceptions
 
 ```forth
-100 throw          \ nonzero n always throws
-3 0 ' / catch .    \ catch returns exception code (0 = ok)
+100 throw                              \ any nonzero n throws
+s" bad input" exception constant myerr
+myerr throw                            \ user message via exception
+3 0 ' / catch .                       \ 0 = ok, else exception code
+( flag ) 0<> errno and throw           \ throw errno when flag true
 ```
 
-Restore state on all exits — including exceptions:
+After a handled `catch` / `endtry`, call `nothrow` (or `['] false catch 2drop`) so the next error gets a useful backtrace.
+
+Restore state on all exits — put setup **inside** the protected region:
 
 ```forth
 : with-base ( xt -- )
-  base @ >r
-  try  execute 0  restore  r> base !  endtry  throw ;
+  base @ { oldbase }
+  try
+    execute  0
+  restore
+    oldbase base !
+  endtry
+  throw ;
 ```
 
-Gforth `try … restore … endtry` is safe against async interrupts between `catch` and cleanup.
+`try … iferror … then … endtry` runs the error branch when an exception occurs; `restore` is `iferror then` for cleanup-only (unwind-protect). Keep cleanup code exception-free — do not `throw` inside `restore`.
+
+## Reading Gforth errors
+
+Messages show `file:line: text`, highlight the failing token (`>>>word<<<`), include file inclusion chain, and a return-stack backtrace (caller guesses). `gforth-fast` only backtraces from explicit `throw`/`abort`, not primitive faults — use `gforth` while debugging. After `catch`, insert `nothrow` before continuing so later throws trace correctly.
 
 ## Memory and files
 
-Dictionary/heap idioms: `forth-memory.mdc`. File I/O: `forth-io.mdc`.
+Dictionary/heap idioms: `forth-memory.mdc`. File I/O: `forth-io.mdc`. Doubles/pictured output: `forth-numeric.mdc`.
 
-## Development commands
+## Development
+
+Inspection and print-debugging: `forth-debugging.mdc`.
+
+## Assertions
+
+Self-check invariants that maintenance might break:
 
 ```forth
-see foo          \ decompile
-.s               \ print stack
-warnings         \ toggle warnings
+assert( dup 0<> )          \ assert1 — default level
+assert0( critical-flag )   \ always on
+1 assert-level !             \ compile-time: enable assert0+assert1 only
 ```
+
+Assertion code must leave `( -- )` and must not change other stack items. `assert-level` is evaluated at **compile** time.
 
 ## Structs (Gforth)
 
+Two styles — match the project:
+
 ```forth
+\ begin-structure (common in frules examples)
 begin-structure point
   field: point.x
   field: point.y
 end-structure
+
+\ struct/end-struct (manual §5.22)
+struct
+  cell% field list-next
+end-struct list%
+list% %allot constant node    \ prefer when struct has floats
 ```
 
-Match project field syntax; do not invent structures if the project uses plain offsets.
+Name fields `struct-field`, structures `struct%`. Nested struct: `foo% field …`. For floats inside a struct, use `%allot constant` rather than `create … %allot drop` — body alignment may be insufficient for `f@`/`f!`.
 
 ## What not to do
 

@@ -12,21 +12,26 @@ When several Forth rules are in context (Cursor attaches whole `.mdc` files by `
 2. **`forth-dialect-<name>.mdc`** — dialect syntax and idioms.
 3. **`forth-portability.mdc`** — only when the project targets multiple Forths.
 4. **`forth-anti-patterns.mdc`** — fix violations before adding more code.
-5. **Other `forth-*.mdc`** — generic guidance (stack, style, control, factoring, defining, memory, io, strings, floating-point, meta).
+5. **Other `forth-*.mdc`** — generic guidance (stack, style, control, factoring, defining, memory, io, strings, numeric, wordlists, debugging, oof, c-bindings, floating-point, meta).
 
 Topic routing (pick the most specific file for the task):
 
 | Task | Rule file |
 |------|-----------|
 | Stack order, manipulation, stack-effect design | `forth-stack.mdc` |
-| if/loop/exit/recursion/flags | `forth-control.mdc` |
-| CREATE/DOES>, defer, value | `forth-defining.mdc` |
-| immediate, postpone, `[`/`]` | `forth-meta.mdc` |
-| variable, create, allot, alignment | `forth-memory.mdc` |
-| open-file, read-line, write-line | `forth-io.mdc` |
-| s", c-addr u, counted strings | `forth-strings.mdc` |
+| Double/mixed precision, pictured numeric output | `forth-numeric.mdc` |
+| if/loop/exit/recursion/flags, extended case | `forth-control.mdc` |
+| CREATE/DOES>, defer, quotations, forward, alias | `forth-defining.mdc` |
+| immediate, postpone, `[`/`]`, parsing/recognizers | `forth-meta.mdc` |
+| variable, create, allot, move/cmove, alignment | `forth-memory.mdc` |
+| open-file, CLI args, search paths | `forth-io.mdc` |
+| s", c-addr u, xchars | `forth-strings.mdc` |
 | FP stack, 1e, f~abs | `forth-floating-point.mdc` |
-| Gforth locals, require, try/endtry | `forth-dialect-gforth.mdc` |
+| Word lists, vocabularies, search order | `forth-wordlists.mdc` |
+| see, ~~, depth-changes, inspection | `forth-debugging.mdc` |
+| objects.fs classes (optional OOP) | `forth-oof.mdc` |
+| cfunction, calling C libraries | `forth-c-bindings.mdc` |
+| Gforth locals, require, try/endtry, structs | `forth-dialect-gforth.mdc` |
 
 Do not repeat stack-tutorial material inside a defining-word edit.
 

@@ -15,7 +15,7 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
     - [x] Gforth manual (полный) vendored: `sources/gforth-manual/` (~304 HTML-узла, `extract.sh`, `http(s)_proxy`).
     - [x] **Ссылки на полный мануал** — `gforth-manual/` в AGENT-SOLVE, CHALLENGE-RUNS (deny), SOURCES, README, rules/templates, training docs.
     - [x] **Дистилляция Gforth Tutorial** — прогнать `docs/DISTILL-PROMPT.md` по разделам `gforth-manual-tutorial/*.md`; дополнить `rules/*.mdc` (`forth-memory`, `forth-io`, `forth-meta`, `forth-strings`, `forth-floating-point` + updates); обновить `docs/SOURCES.md`.
-    - [ ] **Дистилляция Gforth manual (полный)** — выборочно ch.5 Words, ch.8 conformance, error messages → `rules/*.mdc` (см. `sources/gforth-manual/index.md`).
+    - [x] **Дистилляция Gforth manual (полный)** — все темы ch.2–§9, §7 → `rules/*.mdc` (+5 новых: numeric, wordlists, debugging, oof, c-bindings); skip: словарь Word Index, assembler per-CPU, engine ch.14, cross ch.15, Emacs ch.12.
     - [x] theForthNet packages vendored: `sources/theforth.net-packages/` (`.4th` / `.fs`).
     - [ ] **Индексация theForthNet packages** — каталог переиспользуемых идиом/паттернов (по пакетам или темам) → выборочная дистилляция в `rules/` + строки в `docs/SOURCES.md` (аналог pass по Brodie; возможно `docs/BOOK-INDEX.md` или отдельный `sources/theforth.net-packages/INDEX.md`).
 - [ ] **Pre-commit hook** (`.git/hooks/pre-commit` или husky): запускать `./test.sh`, блокировать коммит при FAIL.

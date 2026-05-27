@@ -89,3 +89,14 @@ Similar operations on different types use different names — Forth does not ove
 | `f` | floating-point |
 
 When signed and unsigned behave identically (e.g., `+`), only the prefix-less form exists. No compile-time type checking — wrong prefix means silent misinterpretation.
+
+## Structure names (Gforth manual §5.22)
+
+Avoid generic field names (`counter`, `next`) at top level — prefix with the structure:
+
+| shape | example |
+|-------|---------|
+| `struct%` | `list%`, `point%` — structure descriptor |
+| `struct-field` | `list-next`, `point-x` — field accessor |
+
+Extended structures may reuse a base field name (`list-next` inside `intlist%`, not `intlist-next`).
