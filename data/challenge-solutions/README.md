@@ -15,7 +15,7 @@ python3 scripts/gen_solve_queue.py
 
 Verified solutions for the **train_for_sft** split only (~100 files).
 
-При написании можно опираться на `tests/ans/`, `examples/`, `sources/theforth.net-packages/`, `sources/brodie-thinking-forth/`, `sources/gforth-manual-tutorial/` и уже готовые файлы здесь — см. [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
+При написании можно опираться на `tests/ans/`, `examples/`, `sources/theforth.net-packages/`, `sources/brodie-thinking-forth/`, `sources/gforth-manual-tutorial/`, `sources/gforth-manual/` и уже готовые файлы здесь — см. [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
 - Copy from `tests/challenges/NNN-slug.fs`
 - Paste model code **between** the `=== paste your solution ===` markers

@@ -1,6 +1,6 @@
 # Distillation prompt template
 
-Use this prompt (in English) when asking an AI to convert a book chapter from `sources/` into rule files under `rules/`.
+Use this prompt (in English) when asking an AI to convert a book chapter or manual section from `sources/` (e.g. `brodie-thinking-forth/`, `gforth-manual-tutorial/`, `gforth-manual/`) into rule files under `rules/`.
 
 ---
 

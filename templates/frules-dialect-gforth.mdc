@@ -14,4 +14,4 @@ Quick checks before suggesting code:
 - Scripts: `#!/usr/bin/env gforth` and `include` / `require` as appropriate.
 - Deviations from strict ANS are OK when idiomatic for Gforth; say so in a one-line comment if non-standard.
 
-Reference: https://gforth.org/manual/
+Reference: https://gforth.org/manual/ (vendored in frules: `sources/gforth-manual/`, tutorial: `sources/gforth-manual-tutorial/`)

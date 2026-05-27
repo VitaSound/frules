@@ -24,6 +24,10 @@
   (chapter 3 of the [Gforth manual](https://gforth.org/manual/Tutorial.html)).
   Markdown per section; refresh: `bash gforth-manual-tutorial/extract.sh`.
 
+- **Gforth manual — full** (GNU GPL) — [`gforth-manual/`](gforth-manual/)
+  ([gforth.org/manual/](https://gforth.org/manual/)); one `.md` per HTML node.
+  Refresh: `bash gforth-manual/extract.sh` (uses `http(s)_proxy` when set).
+
 - **Thinking Forth** (Leo Brodie, CC BY-NC-SA 2.0) — `brodie-thinking-forth/`,
   главы `chapter1.md` … `chapter8.md` + `appendix{a..e}.md` + `epilog.md`.
   Пересборка: `bash brodie-thinking-forth/extract.sh` (требует `pandoc`,

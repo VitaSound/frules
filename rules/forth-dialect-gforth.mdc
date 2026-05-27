@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Gforth
 
-Assume **Gforth** (0.7+). Default: case-insensitive word lookup.
+Assume **Gforth** (0.7+). Default: case-insensitive word lookup. Word-level detail: `sources/gforth-manual/` (full manual) or https://gforth.org/manual/ ; hands-on intro: `sources/gforth-manual-tutorial/`.
 
 ## Program layout
 

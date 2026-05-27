@@ -30,4 +30,4 @@ Topic routing (pick the most specific file for the task):
 
 Do not repeat stack-tutorial material inside a defining-word edit.
 
-If a needed topic is missing, prefer portable ANS words and ask to add `rules/forth-<topic>.mdc` from `sources/`.
+If a needed topic is missing, prefer portable ANS words and ask to add `rules/forth-<topic>.mdc` from `sources/` (e.g. `gforth-manual/`, `gforth-manual-tutorial/`, `brodie-thinking-forth/`).

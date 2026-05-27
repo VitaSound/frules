@@ -13,4 +13,4 @@ Core habits:
 - Prefer ANS words and portable sizing (`CELL`, `CHARS`, `ALIGNED`) over machine-specific assumptions.
 - Name words for **what** they do (English), max 31 characters, functional not implementation detail.
 
-Full detail: see `rules/` in the frules package.
+Full detail: see `rules/` in the frules package. Reference prose and word glossary: `sources/gforth-manual/`, `sources/gforth-manual-tutorial/`.

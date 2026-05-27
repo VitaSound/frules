@@ -85,7 +85,7 @@ Keep the index short. Put examples and edge cases in topic files.
 - One 500-line mega-rule (hard to maintain, burns context)  
 - Assuming markdown links auto-load other rules  
 - Russian (or mixed) text inside `.mdc` bodies meant for the model  
-- Duplicating the ANS dictionary (use Gforth manual + project words)
+- Duplicating the ANS dictionary (use `sources/gforth-manual/` or https://gforth.org/manual/ + project words)
 
 ## Glob caveat
 

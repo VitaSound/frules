@@ -42,6 +42,7 @@ For a **foreign** Forth project, run `install.sh` there so `.cursor/rules/` cont
 - `tests/gforth/` — same
 - `examples/` — curated good/bad samples
 - `sources/brodie-thinking-forth/` — full book text
+- `sources/gforth-manual/` — full Gforth manual
 - `sources/gforth-manual-tutorial/` — Gforth manual tutorial (ch.3)
 - `sources/theforth.net-packages/` — vendored library source
 - Any file you already solved in an earlier chat for the same challenge

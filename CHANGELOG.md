@@ -15,6 +15,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
   - **`forth-strings.mdc`** — `( c-addr u )`, `s"`, `c"`, counted strings, `c,`/`c@`.
   - **`forth-floating-point.mdc`** — separate FP stack, `1e` literals, `f~abs`/`f~rel`.
 - **`sources/gforth-manual-tutorial/`** — Gforth manual ch.3 Tutorial (§3.1–§3.37) as per-section Markdown; `extract.sh` for refresh from [gforth.org/manual/Tutorial.html](https://gforth.org/manual/Tutorial.html).
+- **`sources/gforth-manual/`** — full Gforth manual ([gforth.org/manual/](https://gforth.org/manual/)); ~304 HTML nodes → Markdown (`index.md`, `pages.list`, `extract.sh`; honours `http(s)_proxy`; `upstream/` gitignored).
 - **`tests/challenges/`** — 139 bank (`001`–`139`) + 6 seeds = **145** hold-out; `eval-slices.yaml`, [`docs/BENCHMARK-SIZING.md`](docs/BENCHMARK-SIZING.md).
 - **14 training-oriented tasks** (126–139): linked, parse, graph topo, DP knapsack/edit, LRU, Collatz, etc.
 - **`scripts/_build_catalog.py`**, **`scripts/challenge_catalog.py`**, **`scripts/challenge_scaffolds.py`**, **`scripts/gen_challenges.py`**, **`scripts/check_manifest_dedup.py`**, **`scripts/verify_challenges.sh`** — generate and smoke-test the bank.
@@ -24,13 +25,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 - **Gforth Tutorial distillation (updated rules)** — `forth-stack` (manipulation, designing stack effects), `forth-control` (exit/leave, recursion, flags), `forth-defining` (simple-field, defer/is), `forth-dialect-gforth` (locals, try/endtry; strings/FP moved to dedicated topics), `forth-style`, `forth-portability`, `forth-anti-patterns`, `forth-naming` (type prefixes).
 - **`frules-index.mdc`** — topic routing table for memory, io, strings, FP, meta.
 - **`install.sh`** — five new topics in `FULL_TOPICS`.
-- **`docs/SOURCES.md`** — per-file provenance from Gforth Tutorial §3.x; skip list (crash-course, decompilation, advanced-macros, compilation-tokens).
-- **`TODO.md`** — Gforth Tutorial distillation marked done.
-- **Agent / challenge docs** — `docs/AGENT-SOLVE-CHALLENGES.md`, `docs/CHALLENGE-TO-TRAIN.md`, `data/challenge-solutions/README.md`: `sources/theforth.net-packages/`, `sources/brodie-thinking-forth/`, and `sources/gforth-manual-tutorial/` listed as allowed references (same spirit as Brodie).
-- **`docs/CHALLENGE-RUNS.md`** — deny `sources/` (tutorial, Brodie, theForthNet) during blind benchmark runs; document 131-challenge catalog, cognitive tiers, regeneration workflow.
-- **`docs/MODEL-TRAINING.md`** — Track B chunks may use Brodie, Gforth tutorial, or theForthNet fragments.
-- **`docs/SOURCES.md`**, **`sources/README.md`**, **`README.md`**, **`tests/challenges/README.md`** — document vendored tutorial and theForthNet packages.
-- **`TODO.md`** — open task: index theForthNet packages into `rules/` (Brodie-style pass).
+- **`docs/SOURCES.md`** — per-file provenance from Gforth Tutorial §3.x; skip list (crash-course, decompilation, advanced-macros, compilation-tokens); row for `sources/gforth-manual/*.md`.
+- **Full Gforth manual wired into workflow** — `AGENTS.md`, `rules/forth-dialect-gforth.mdc`, `rules/frules-index.mdc`, `templates/frules-dialect-gforth.mdc`, `docs/AGENT-SOLVE-CHALLENGES.md` (usage section), `docs/CHALLENGE-TO-TRAIN.md`, `docs/MODEL-TRAINING.md`, `data/challenge-solutions/README.md`, `sources/README.md`, `README.md`.
+- **Agent / challenge docs** — allowed references now include `sources/gforth-manual/` alongside tutorial, Brodie, theForthNet.
+- **`docs/CHALLENGE-RUNS.md`** — deny `sources/gforth-manual/` during blind benchmark runs (with tutorial, Brodie, theForthNet).
+- **`TODO.md`** — full manual vendored and documented; open: distill ch.5/ch.8 from `gforth-manual/`, index theForthNet packages.
 
 ## [0.1.2] — 2026-05-27
 

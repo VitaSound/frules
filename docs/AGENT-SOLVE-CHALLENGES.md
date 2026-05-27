@@ -78,12 +78,15 @@ Open:
 - [`sources/theforth.net-packages/`](../sources/theforth.net-packages/) — theForthNet libraries (`<pkg>/current/*.4th`, `*.fs`)
 - [`sources/brodie-thinking-forth/`](../sources/brodie-thinking-forth/) — idioms and style (prose; do not paste verbatim into `.fs`)
 - [`sources/gforth-manual-tutorial/`](../sources/gforth-manual-tutorial/) — Gforth manual ch.3 Tutorial (stack, loops, locals, defining words; prose + code examples)
+- [`sources/gforth-manual/`](../sources/gforth-manual/) — full Gforth manual (word reference ch.5, environment, conformance, tools; prose + code)
 - rest of [`sources/`](../sources/) — see [`sources/README.md`](../sources/README.md)
 - plus [`data/challenge-solutions/`](../data/challenge-solutions/), [`tests/ans/`](../tests/ans/), [`tests/gforth/`](../tests/gforth/), [`examples/`](../examples/), seeds `01-clamp.fs` … `06-roman.fs`, web via Source
 
 **theforth.net-packages:** use `current/` or `recent/`, search with `rg -l '…' sources/theforth.net-packages/`. Copy **ideas and fragments** into the paste zone (adapt to Gforth and `WORD`); prefer inlining words between markers over fragile `include` paths from `tests/challenges/`.
 
 **gforth-manual-tutorial:** start from [`index.md`](../sources/gforth-manual-tutorial/index.md); pick sections by topic (`stack.md`, `factoring.md`, `local-variables.md`, …). Use for stack effects, control flow, and Gforth idioms — adapt examples to `WORD`; do not paste prose into `.fs`.
+
+**gforth-manual:** start from [`index.md`](../sources/gforth-manual/index.md); search with `rg -l 'wordname' sources/gforth-manual/` or open topic files (`words.md`, `memory.md`, `assertions.md`, `standard-conformance.md`, …). Use for exact word semantics, stack effects, and Gforth-specific behaviour — adapt to `WORD`; do not paste prose into `.fs`. Prefer tutorial sections for pedagogy; prefer full manual for glossary-level detail.
 
 **brodie-thinking-forth:** style and factoring guidance; same as above — ideas only, no verbatim prose in solution files.
 
@@ -223,7 +226,7 @@ Task: tests/challenges/NNN-slug.fs → word WORD → data/challenge-solutions/NN
 
 Environment: gforth and python3 are already installed.
 
-You MAY read and reuse examples from anywhere in the repo: sources/ (theforth.net-packages, brodie-thinking-forth, gforth-manual-tutorial, …), data/challenge-solutions/, tests/ans/, tests/gforth/, examples/, similar challenges, Source URL. Prefer inlining adapted idioms in the paste zone over fragile includes.
+You MAY read and reuse examples from anywhere in the repo: sources/ (theforth.net-packages, brodie-thinking-forth, gforth-manual-tutorial, gforth-manual, …), data/challenge-solutions/, tests/ans/, tests/gforth/, examples/, similar challenges, Source URL. Prefer inlining adapted idioms in the paste zone over fragile includes.
 
 Follow this project's Forth rules: AGENTS.md, rules/*.mdc, .cursor/rules/ if present, frules-index.mdc. Match Style guard in the challenge header.
 
@@ -273,7 +276,7 @@ Eval only on `eval_holdout`, not `train_for_sft`.
 
 - [ ] First `- [ ]` from `SOLVE-QUEUE.md`
 - [ ] English spec and `T{ }T` verified; obvious errors fixed in `tests/challenges/` (paste empty)
-- [ ] Used `sources/` (theforth.net-packages, brodie-thinking-forth, gforth-manual-tutorial, …) and `rules/` / `AGENTS.md`
+- [ ] Used `sources/` (theforth.net-packages, brodie-thinking-forth, gforth-manual-tutorial, gforth-manual, …) and `rules/` / `AGENTS.md`
 - [ ] Solution in `data/challenge-solutions/`
 - [ ] `gforth` → `TESTS OK`
 - [ ] **Review request** sent to user (step 6 template, English)
