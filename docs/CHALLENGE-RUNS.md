@@ -42,9 +42,11 @@ For a **foreign** Forth project, run `install.sh` there so `.cursor/rules/` cont
 - `tests/gforth/` — same
 - `examples/` — curated good/bad samples
 - `sources/brodie-thinking-forth/` — full book text
+- `sources/gforth-manual-tutorial/` — Gforth manual tutorial (ch.3)
+- `sources/theforth.net-packages/` — vendored library source
 - Any file you already solved in an earlier chat for the same challenge
 
-If the model searches the repo on its own, say explicitly: *solve only from the attached challenge + rules; do not open `tests/ans` or `examples`.*
+If the model searches the repo on its own, say explicitly: *solve only from the attached challenge + rules; do not open `tests/ans`, `examples`, or `sources/`.*
 
 ## Fresh-chat procedure (one challenge)
 

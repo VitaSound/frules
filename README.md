@@ -66,7 +66,9 @@ dialect=gforth
 - [DPANS94](http://lars.nocrew.org/dpans/dpanse.htm) — переносимость, ячейки, стеки
 - Общепринятые идиомы сообщества (факторизация, осторожность с `PICK`/`ROLL`)
 
-После добавления ваших книг (Thinking Forth, Forth Application Techniques, …) правила в `rules/` следует дополнять и при необходимости сужать под ваш диалект (Gforth, SwiftForth, …).
+В каталоге [`sources/`](sources/) уже vendored: *Thinking Forth* (`brodie-thinking-forth/`), [Gforth Tutorial](https://gforth.org/manual/Tutorial.html) (`gforth-manual-tutorial/`), [theForthNet packages](sources/theforth.net-packages/) — см. [`sources/README.md`](sources/README.md).
+
+После добавления других книг (Forth Application Techniques, …) правила в `rules/` следует дополнять и при необходимости сужать под ваш диалект (Gforth, SwiftForth, …).
 
 ## Диалект
 
