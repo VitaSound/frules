@@ -4,8 +4,8 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
 
 ## Near term (next 1–2 sessions)
 
-- [~] **`tests/challenges/`** — задачи без решений (только условие + ассерты + ожидаемый стек). Скармливать свежему чату Cursor, смотреть, что модель напишет «вслепую». Это единственный честный сигнал «правила работают».
-    - [x] Seed: `01-clamp`, `02-min-max`, `03-reverse-string`, `04-caesar-shift`, `05-balanced-parens`, `06-roman` + `_tester.fs` (форвард на `tests/ans/ttester*`) + `README.md`. Без решения файл аборится `Undefined word: <name>`; решение пасте́ится между маркерами. `test.sh` сам каталог не сканирует — CI не ломается.
+- [x] **`tests/challenges/`** — 6 seeds + 125 bank (`001`–`125`), 131 total; `manifest.yaml`, `INDEX.md`, `taxonomy-coverage.md`; генераторы `scripts/_build_catalog.py`, `gen_challenges.py`, `verify_challenges.sh`. Hold-out, без решений между маркерами.
+    - [x] Seed: `01`–`06` + `_tester.fs`. Bank: LeetCode Top 100 + Codewars/kata/PE/Rosetta, unique `pattern_key`, cognitive 0–10.
     - [ ] Добить набор: `07-parse-decimal`, `08-anagram?`, `09-rle-encode`, `10-binary-search` — по одному на оставшиеся непокрытые правила (`forth-defining-words.mdc`, `forth-stack.mdc`, FP/double если появятся).
     - [~] Бенчмарковый прогон: `docs/CHALLENGE-RUNS.md` (Cursor) + `docs/LOCAL-GEMMA-BENCHMARK.md` (Gemma 4 / Ollama, rules on/off). Первая строка в CHALLENGE-RUNS — Composer 2.5 / Agent на `01-clamp`.
 - [~] **Дистилляция первой книги.** Положить в `sources/` (например, *Thinking Forth* / *Starting Forth* / конспект), прогнать `docs/DISTILL-PROMPT.md`, обновить `rules/*.mdc` и `docs/SOURCES.md`.

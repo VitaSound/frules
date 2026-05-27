@@ -44,6 +44,7 @@ dialect=gforth
 | `docs/RULES-ARCHITECTURE.md` | Как работает подгрузка с ИИ |
 | `docs/DISTILL-PROMPT.md` | Промпт для перегонки книги в правила |
 | `data/` | JSONL для SFT (`sandbox.jsonl`, `train.jsonl`) |
+| `data/challenge-solutions/SOLVE-QUEUE.md` | Чеклист ~94 train-челленджей (`- [ ]` / `- [x]`) для агента |
 | `scripts/build-dataset.py` | Сборка датасета из tests/examples |
 | `training/` | Конфиги LoRA, Modelfile |
 | `AGENTS.md` | Краткая сводка для любого агента |
@@ -88,11 +89,11 @@ dialect=gforth
 | [`docs/LOCAL-GEMMA-BENCHMARK.md`](docs/LOCAL-GEMMA-BENCHMARK.md) | **Gemma 4 через Ollama**: включить/выключить правила, A/B baseline |
 | [`docs/MODEL-TRAINING.md`](docs/MODEL-TRAINING.md) | **Своя LoRA для Forth**: датасет, песочница 0.5B, train 7B, Ollama |
 | [`docs/TRAINING-RUNS.md`](docs/TRAINING-RUNS.md) | Журнал прогонов обучения |
-| [`tests/challenges/`](tests/challenges/) | `01-clamp` … `06-roman` + `README.md` |
+| [`tests/challenges/`](tests/challenges/) | 145 hold-out (6 seeds + 139 bank), `eval-slices.yaml`, [`docs/BENCHMARK-SIZING.md`](docs/BENCHMARK-SIZING.md) |
 
 ```bash
 ./install.sh . gforth          # правила ВКЛ  → .cursor/rules/
-cd tests/challenges && gforth 01-clamp.fs   # без решения → Undefined word (норма)
+cd tests/challenges && gforth 01-clamp.fs   # или 052-two-sum.fs — без решения → Undefined word (норма)
 ```
 
 Отключить правила для baseline: см. раздел «Отключить frules» в `docs/LOCAL-GEMMA-BENCHMARK.md`.

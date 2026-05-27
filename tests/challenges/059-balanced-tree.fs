@@ -1,0 +1,43 @@
+\ tests/challenges/059-balanced-tree.fs
+\
+\ CHALLENGE: Balanced Binary Tree
+\ Source: leetcode  https://leetcode.com/problems/balanced-binary-tree/
+\ Cognitive: 5/10  |  Pattern: balanced-binary-tree
+\
+\ Define a word
+\
+\   : balanced?  ( root -- flag )
+\
+\ Return TRUE if heights of subtrees differ by at most 1 everywhere.
+\
+\ Style guard (rules/forth-factoring.mdc, forth-style.mdc):
+\   - Post-order height check.
+\   - Return true/false.
+\   - scaffold data is read-only for tests — do not mutate fixtures
+\
+include _tester.fs
+
+\ --- scaffold (buffers / arrays / lists only) ---
+\ Node i: val, left, right at offsets i*3 (0 = null child)
+12 constant ch-max-nodes
+create ch-tree ch-max-nodes 3 * cells allot
+
+: ch-t@  ( off -- n )  cells ch-tree + @ ;
+: ch-t! ( n off -- )  swap cells ch-tree + ! ;
+3 0 ch-t!  2 1 ch-t!  3 2 ch-t!
+9 3 ch-t!  0 4 ch-t!  0 5 ch-t!
+20 6 ch-t!  4 7 ch-t!  5 8 ch-t!
+1 constant ch-root
+1 9 ch-t!  2 10 ch-t!  2 11 ch-t!
+3 12 ch-t!  0 13 ch-t!  0 14 ch-t!
+3 15 ch-t!  0 16 ch-t!  0 17 ch-t!
+1 constant ch-root-unbal
+
+\ === paste your solution below this line ===
+
+\ === paste your solution above this line ===
+
+T{ 3 balanced? -> true }T
+T{ 1 balanced? -> false }T
+
+report bye

@@ -1,0 +1,383 @@
+#!/usr/bin/env python3
+"""Generate tests/challenges/001-slug.fs from challenge_catalog.py."""
+
+from __future__ import annotations
+
+import sys
+from collections import defaultdict
+import math
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+CH_DIR = ROOT / "tests" / "challenges"
+SCRIPTS = Path(__file__).resolve().parent
+
+sys.path.insert(0, str(SCRIPTS))
+from challenge_catalog import get_challenges  # noqa: E402
+from challenge_scaffolds import SCAFFOLDS  # noqa: E402
+
+SEEDS = [
+    {
+        "file": "01-clamp.fs",
+        "word": "clamp",
+        "pattern_key": "scalar-bounds",
+        "cognitive": 2,
+        "title": "clamp(n, lo, hi)",
+        "taxonomy_block": "scalar-math",
+        "source": "seed",
+    },
+    {
+        "file": "02-min-max.fs",
+        "word": "min-max",
+        "pattern_key": "scalar-pair-extrema",
+        "cognitive": 1,
+        "title": "min-max",
+        "taxonomy_block": "scalar-math",
+        "source": "seed",
+    },
+    {
+        "file": "03-reverse-string.fs",
+        "word": "reverse",
+        "pattern_key": "string-reverse-in-place",
+        "cognitive": 3,
+        "title": "reverse a string in place",
+        "taxonomy_block": "strings",
+        "source": "seed",
+    },
+    {
+        "file": "04-caesar-shift.fs",
+        "word": "caesar",
+        "pattern_key": "string-cipher-mod",
+        "cognitive": 4,
+        "title": "Caesar shift, in place",
+        "taxonomy_block": "strings",
+        "source": "seed",
+    },
+    {
+        "file": "05-balanced-parens.fs",
+        "word": "balanced?",
+        "pattern_key": "paren-balance-round",
+        "cognitive": 4,
+        "title": "round-bracket balance",
+        "taxonomy_block": "stack-queue",
+        "source": "seed",
+    },
+    {
+        "file": "06-roman.fs",
+        "word": "roman",
+        "pattern_key": "table-encode-roman",
+        "cognitive": 5,
+        "title": "integer -> Roman numeral",
+        "taxonomy_block": "strings",
+        "source": "seed",
+    },
+]
+
+TAXONOMY = [
+    "scalar-math",
+    "strings",
+    "arrays-hash",
+    "two-pointers",
+    "stack-queue",
+    "binary-search",
+    "linked-structure",
+    "trees-bst",
+    "dynamic-programming",
+    "graph",
+    "greedy",
+    "heap-topk",
+    "matrix",
+    "sliding-window",
+    "bit-xor",
+    "trie-design",
+    "parse-interpreter",
+    "recursion",
+]
+
+
+def forth_comment_lines(lines: list[str], prefix: str = "\\ ") -> str:
+    return "\n".join(f"{prefix}{line}" for line in lines)
+
+
+def style_guard(style: list[str], scaffold: str) -> str:
+    rules = list(style)
+    if scaffold in ("cell-array", "linked-cells", "tree-cells", "grid"):
+        rules.append("scaffold data is read-only for tests — do not mutate fixtures")
+    return forth_comment_lines(
+        ["Style guard (rules/forth-factoring.mdc, forth-style.mdc):"] + [f"  - {r}" for r in rules]
+    )
+
+
+def render_challenge(c: dict) -> str:
+    """Emit challenge header in English (title, spec, style) for agent training."""
+    nid = f"{c['id']:03d}"
+    path = f"tests/challenges/{nid}-{c['slug']}.fs"
+    src = c["source"]
+    url = c.get("url", "")
+    scaf = c["scaffold"]
+    base_scaffold = SCAFFOLDS.get(scaf, "")
+    extra = c.get("extra_scaffold", "").strip()
+    scaffold_block = ""
+    if base_scaffold or extra:
+        parts = ["\\ --- scaffold (buffers / arrays / lists only) ---"]
+        if base_scaffold.strip():
+            parts.append(base_scaffold.strip())
+        if extra:
+            parts.append(extra)
+        scaffold_block = "\n".join(parts) + "\n\n"
+
+    tests = "\n".join(f"T{{ {t} }}T" for t in c["tests"])
+    spec = forth_comment_lines(c["spec"])
+    style = style_guard(c["style"], scaf)
+
+    return f"""\\ {path}
+\\
+\\ CHALLENGE: {c['title']}
+\\ Source: {src}  {url}
+\\ Cognitive: {c['cognitive']}/10  |  Pattern: {c['pattern_key']}
+\\
+\\ Define a word
+\\
+\\   : {c['word']}  {c['stack']}
+\\
+{spec}
+\\
+{style}
+\\
+include _tester.fs
+
+{scaffold_block}\\ === paste your solution below this line ===
+
+\\ === paste your solution above this line ===
+
+{tests}
+
+report bye
+"""
+
+
+def assign_train_splits(challenges: list[dict]) -> tuple[list[dict], list[dict]]:
+    """~100 train / ~39 bank holdout (+ 6 seeds always holdout)."""
+    by_block: dict[str, list[dict]] = defaultdict(list)
+    for c in challenges:
+        by_block[c["taxonomy_block"]].append(c)
+    train: list[dict] = []
+    holdout: list[dict] = []
+    for block in TAXONOMY:
+        items = sorted(by_block.get(block, []), key=lambda x: x["id"])
+        if not items:
+            continue
+        n_hold = max(1, math.ceil(len(items) * 0.28))
+        holdout.extend(items[:n_hold])
+        train.extend(items[n_hold:])
+    for c in train:
+        c["split"] = "train"
+    for c in holdout:
+        c["split"] = "holdout"
+    return train, holdout
+
+
+def write_manifest(challenges: list[dict]) -> None:
+    lines = [
+        "# tests/challenges/manifest.yaml — generated by scripts/gen_challenges.py",
+        "# Do not hand-edit challenge .fs files; regenerate instead.",
+        "",
+        "seeds:",
+    ]
+    for s in SEEDS:
+        lines.append(f"  - file: {s['file']}")
+        lines.append(f"    word: {s['word']}")
+        lines.append(f"    pattern_key: {s['pattern_key']}")
+        lines.append(f"    cognitive: {s['cognitive']}")
+        lines.append(f"    taxonomy_block: {s['taxonomy_block']}")
+        lines.append(f"    source: seed")
+        lines.append("")
+
+    lines.append("taxonomy:")
+    for t in TAXONOMY:
+        lines.append(f"  - {t}")
+    lines.append("")
+    lines.append("challenges:")
+    for c in challenges:
+        lines.append(f"  - id: {c['id']}")
+        lines.append(f"    file: \"{c['id']:03d}-{c['slug']}.fs\"")
+        lines.append(f"    slug: {c['slug']}")
+        lines.append(f"    word: {c['word']}")
+        lines.append(f"    stack: \"{c['stack']}\"")
+        lines.append(f"    pattern_key: {c['pattern_key']}")
+        lines.append(f"    cognitive: {c['cognitive']}")
+        lines.append(f"    source: {c['source']}")
+        lines.append(f"    url: \"{c['url']}\"")
+        lines.append(f"    taxonomy_block: {c['taxonomy_block']}")
+        lines.append(f"    scaffold: {c['scaffold']}")
+        title = c["title"].replace('"', "'")
+        lines.append(f'    title: "{title}"')
+        lines.append(f"    split: {c.get('split', 'train')}")
+        lines.append("")
+
+    (CH_DIR / "manifest.yaml").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_index(challenges: list[dict]) -> None:
+    rows = ["# Challenge index", "", "Generated by `scripts/gen_challenges.py`.", ""]
+    rows.append(f"**Total:** {len(SEEDS)} seeds + {len(challenges)} generated = **{len(SEEDS) + len(challenges)}**")
+    rows.append("")
+    rows.append("## Seeds (`01`–`06`)")
+    rows.append("")
+    rows.append("| File | Word | Pattern | Cog | Block |")
+    rows.append("|------|------|---------|-----|-------|")
+    for s in SEEDS:
+        rows.append(
+            f"| `{s['file']}` | `{s['word']}` | `{s['pattern_key']}` | {s['cognitive']} | {s['taxonomy_block']} |"
+        )
+    rows.append("")
+    rows.append("## Bank (`001`–`125`)")
+    rows.append("")
+    rows.append("| ID | File | Word | Pattern | Cog | Source | Block |")
+    rows.append("|----|------|------|---------|-----|--------|-------|")
+    for c in challenges:
+        fid = f"{c['id']:03d}-{c['slug']}.fs"
+        rows.append(
+            f"| {c['id']} | `{fid}` | `{c['word']}` | `{c['pattern_key']}` | "
+            f"{c['cognitive']} | {c['source']} | {c['taxonomy_block']} |"
+        )
+    (CH_DIR / "INDEX.md").write_text("\n".join(rows) + "\n", encoding="utf-8")
+
+
+def write_eval_slices(challenges: list[dict]) -> None:
+    """Hold-out eval + train_for_sft split for challenge-derived JSONL."""
+    train_bank, holdout_bank = assign_train_splits([dict(c) for c in challenges])
+    train_files = [f"{c['id']:03d}-{c['slug']}.fs" for c in train_bank]
+    holdout_bank_files = [f"{c['id']:03d}-{c['slug']}.fs" for c in holdout_bank]
+    seed_files = [s["file"] for s in SEEDS]
+    eval_holdout = seed_files + holdout_bank_files
+
+    by_block: dict[str, dict] = {}
+    for c in challenges:
+        b = c["taxonomy_block"]
+        if b not in by_block:
+            by_block[b] = c
+    quick_bank = [f"{c['id']:03d}-{c['slug']}.fs" for b in TAXONOMY if b in by_block for c in [by_block[b]]]
+
+    tier_a = [f"{c['id']:03d}-{c['slug']}.fs" for c in challenges if c["cognitive"] <= 3]
+    tier_b = [f"{c['id']:03d}-{c['slug']}.fs" for c in challenges if 4 <= c["cognitive"] <= 6]
+    tier_c = [f"{c['id']:03d}-{c['slug']}.fs" for c in challenges if c["cognitive"] >= 7]
+    standard = seed_files + quick_bank[:18]
+
+    lines = [
+        "# eval-slices.yaml — train vs eval splits (see docs/CHALLENGE-TO-TRAIN.md)",
+        "",
+        f"bank_size: {len(challenges)}",
+        f"train_for_sft_count: {len(train_files)}",
+        f"eval_holdout_count: {len(eval_holdout)}",
+        "",
+        "slices:",
+        "  train_for_sft:",
+        "    description: Large model solves these -> data/challenge-solutions/ -> challenge-train.jsonl",
+        "    files:",
+        *[f"      - {f}" for f in train_files],
+        "",
+        "  eval_holdout:",
+        "    description: Never in SFT; tests/challenges/ stay empty; blind eval after train",
+        "    files:",
+        *[f"      - {f}" for f in eval_holdout],
+        "",
+        "  smoke:",
+        "    description: Quick checkpoint (subset of eval_holdout)",
+        "    files:",
+        *[f"      - {f}" for f in (seed_files + holdout_bank_files[:6])],
+        "",
+        "  standard:",
+        "    description: Post-train eval (~1h)",
+        f"    count: {len(standard)}",
+        "    files:",
+        *[f"      - {f}" for f in standard],
+        "",
+        "  stratified_20:",
+        "    description: Pick ~20 from eval_holdout only (not train_for_sft)",
+        "    cognitive_tiers:",
+        "      easy_0_3:",
+        *[f"        - {f}" for f in tier_a[:8] if f in eval_holdout],
+        "      medium_4_6:",
+        *[f"        - {f}" for f in tier_b[:8] if f in eval_holdout],
+        "      hard_7_10:",
+        *[f"        - {f}" for f in tier_c[:8] if f in eval_holdout],
+        "",
+        "  full:",
+        "    description: All 145 files (reference)",
+        "    files:",
+        *[f"      - {f}" for f in seed_files],
+        *[f"      - {c['id']:03d}-{c['slug']}.fs" for c in challenges],
+    ]
+    (CH_DIR / "eval-slices.yaml").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_taxonomy_coverage(challenges: list[dict]) -> None:
+    covered: dict[str, list[str]] = defaultdict(list)
+    for s in SEEDS:
+        covered[s["taxonomy_block"]].append(s["file"])
+    for c in challenges:
+        covered[c["taxonomy_block"]].append(f"{c['id']:03d}-{c['slug']}.fs")
+
+    rows = [
+        "# Taxonomy coverage",
+        "",
+        "Which thematic blocks have at least one challenge (seed or generated).",
+        "",
+        "| Block | Count | Status | Examples |",
+        "|-------|-------|--------|----------|",
+    ]
+    for block in TAXONOMY:
+        items = covered.get(block, [])
+        status = "OK" if items else "**EMPTY**"
+        ex = ", ".join(f"`{x}`" for x in items[:3])
+        if len(items) > 3:
+            ex += f", … (+{len(items) - 3})"
+        rows.append(f"| {block} | {len(items)} | {status} | {ex or '—'} |")
+
+    empty = [b for b in TAXONOMY if b not in covered]
+    rows.append("")
+    if empty:
+        rows.append(f"**Uncovered blocks:** {', '.join(empty)}")
+    else:
+        rows.append("All taxonomy blocks have at least one challenge.")
+    (CH_DIR / "taxonomy-coverage.md").write_text("\n".join(rows) + "\n", encoding="utf-8")
+
+
+def main() -> int:
+    challenges = get_challenges()
+    if len(challenges) < 115 or len(challenges) > 145:
+        print(f"error: bank size {len(challenges)} outside 115..145", file=sys.stderr)
+        return 1
+
+    keys = [c["pattern_key"] for c in challenges]
+    seed_keys = {s["pattern_key"] for s in SEEDS}
+    overlap = seed_keys & set(keys)
+    if overlap:
+        print(f"error: pattern_key overlap with seeds: {overlap}", file=sys.stderr)
+        return 1
+    if len(keys) != len(set(keys)):
+        print("error: duplicate pattern_key in catalog", file=sys.stderr)
+        return 1
+
+    # Remove old generated files only (NNN-slug.fs)
+    for p in CH_DIR.glob("[0-9][0-9][0-9]-*.fs"):
+        p.unlink()
+
+    train_list, holdout_list = assign_train_splits(challenges)
+    for c in challenges:
+        out = CH_DIR / f"{c['id']:03d}-{c['slug']}.fs"
+        out.write_text(render_challenge(c), encoding="utf-8")
+
+    write_manifest(challenges)
+    print(f"  split: {len(train_list)} train_for_sft, {len(holdout_list)} bank holdout (+6 seeds)")
+    write_index(challenges)
+    write_taxonomy_coverage(challenges)
+    write_eval_slices(challenges)
+    total = len(challenges) + len(SEEDS)
+    print(f"Generated {len(challenges)} bank files ({total} with seeds) in {CH_DIR}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

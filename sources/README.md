@@ -4,6 +4,22 @@
 
 ## Уже добавлено
 
+- **theForthNet packages** — [`theforth.net-packages/`](theforth.net-packages/)
+  (vendored-копия репозитория [theforth.net-packages](https://github.com/theforth/theforth.net-packages)
+  или аналог с [theforth.net/packages](https://theforth.net/packages)).
+  Лицензии — в `package.4th` каждого пакета. Для челленджей — см.
+  [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
+
+  Если каталог склонирован как отдельный репозиторий (`git clone …` внутрь frules),
+  Git видит **embedded repository** и добавляет gitlink вместо файлов. Исправление
+  (обратно в upstream не коммитим — только vendored-копия в frules):
+
+  ```bash
+  git rm --cached -f sources/theforth.net-packages 2>/dev/null || true
+  rm -rf sources/theforth.net-packages/.git
+  git add sources/theforth.net-packages
+  ```
+
 - **Thinking Forth** (Leo Brodie, CC BY-NC-SA 2.0) — `brodie-thinking-forth/`,
   главы `chapter1.md` … `chapter8.md` + `appendix{a..e}.md` + `epilog.md`.
   Пересборка: `bash brodie-thinking-forth/extract.sh` (требует `pandoc`,

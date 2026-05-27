@@ -4,6 +4,18 @@ All notable changes to `frules` are recorded here.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- **`tests/challenges/`** — 139 bank (`001`–`139`) + 6 seeds = **145** hold-out; `eval-slices.yaml`, [`docs/BENCHMARK-SIZING.md`](docs/BENCHMARK-SIZING.md).
+- **14 training-oriented tasks** (126–139): linked, parse, graph topo, DP knapsack/edit, LRU, Collatz, etc.
+- **`scripts/_build_catalog.py`**, **`scripts/challenge_catalog.py`**, **`scripts/challenge_scaffolds.py`**, **`scripts/gen_challenges.py`**, **`scripts/check_manifest_dedup.py`**, **`scripts/verify_challenges.sh`** — generate and smoke-test the bank.
+
+### Changed
+
+- **`tests/challenges/README.md`**, **`README.md`**, **`docs/CHALLENGE-RUNS.md`**, **`docs/MODEL-TRAINING.md`** — document 131-challenge catalog, cognitive tiers, regeneration workflow.
+
 ## [0.1.2] — 2026-05-27
 
 ### Added

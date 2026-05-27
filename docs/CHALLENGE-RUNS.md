@@ -32,7 +32,7 @@ For a **foreign** Forth project, run `install.sh` there so `.cursor/rules/` cont
 
 **Allow (attach or @-mention):**
 
-- One challenge: `tests/challenges/NN-name.fs`
+- One challenge: `tests/challenges/NN-name.fs` (seed) or `NNN-slug.fs` (bank `001`–`125`)
 - Rules (full benchmark): all `rules/forth-*.mdc` + `rules/frules-index.mdc`
 - Dialect marker is applied automatically after `install.sh` (`frules-dialect.mdc`, `forth-dialect-gforth.mdc`)
 
@@ -83,24 +83,42 @@ If the model searches the repo on its own, say explicitly: *solve only from the 
 
 6. **Record** one row in the log table below (optional but recommended).
 
-## Full matrix (current seed set)
+## Seed set (6 files)
 
 Run **six separate fresh chats** — one file per chat. Order does not matter; use the same model and prompt template for comparability.
 
-| File | Word | Rules stressed |
-|------|------|----------------|
-| `01-clamp.fs` | `clamp` | style, anti-patterns |
-| `02-min-max.fs` | `min-max` | factoring |
-| `03-reverse-string.fs` | `reverse` | anti-patterns, factoring |
-| `04-caesar-shift.fs` | `caesar` | anti-patterns, naming/constants |
-| `05-balanced-parens.fs` | `balanced?` | naming, control |
-| `06-roman.fs` | `roman` | factoring (table/lexicon) |
+| File | Word | Cog | Rules stressed |
+|------|------|-----|----------------|
+| `01-clamp.fs` | `clamp` | 2 | style, anti-patterns |
+| `02-min-max.fs` | `min-max` | 1 | factoring |
+| `03-reverse-string.fs` | `reverse` | 3 | anti-patterns, factoring |
+| `04-caesar-shift.fs` | `caesar` | 4 | anti-patterns, naming/constants |
+| `05-balanced-parens.fs` | `balanced?` | 4 | naming, control |
+| `06-roman.fs` | `roman` | 5 | factoring (table/lexicon) |
 
-Suggested pass criteria for a "rules work" release:
+Suggested pass criteria for a "rules work" release (seeds):
 
 - ≥ 5/6 green on first attempt **or** green within one fix turn after `TESTS FAILED`
 - No `PICK`/`ROLL` in solutions where the challenge forbids them
 - Every new word has `( … -- … )`
+
+## Full bank (145 total)
+
+**139** generated challenges (`001`–`139`) plus **6** seeds. Catalog: [`tests/challenges/INDEX.md`](../tests/challenges/INDEX.md). Eval subsets: [`eval-slices.yaml`](../tests/challenges/eval-slices.yaml). Sizing rationale: [`BENCHMARK-SIZING.md`](BENCHMARK-SIZING.md).
+
+For large model benchmarks, do **not** run all 131 in one session. Suggested slices:
+
+| Slice | Files | Purpose |
+|-------|-------|---------|
+| Smoke | `01`–`06` + 5 random `NNN` | Quick rules check |
+| Tier A | cognitive 0–3 from INDEX | Warm-up |
+| Tier B | cognitive 4–6 | Core interview level |
+| Tier C | cognitive 7–10 | Hard / structure-heavy |
+| `stratified_20` | 20 from tier lists in eval-slices.yaml | Training eval (see MODEL-TRAINING.md) |
+| `standard` | ~24 (seeds + 1/block) | Track B milestone |
+| `full` | 145 | Release only |
+
+One `pattern_key` per skill — no duplicate themes (e.g. only one in-place string reverse in seeds; bank uses distinct keys).
 
 ## Quick check without the model
 

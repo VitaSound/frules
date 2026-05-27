@@ -24,7 +24,7 @@
 | **QLoRA** | LoRA + 4-bit база (влезает в 16 GB VRAM) |
 | **Merge** | слить adapter в полные веса |
 | **GGUF** | формат для llama.cpp / Ollama |
-| **Hold-out** | `tests/challenges/` — не в train, только оценка |
+| **Hold-out** | `tests/challenges/` — **145** файлов (6 seed + 139 bank), не в train, только оценка |
 
 ---
 
@@ -97,7 +97,7 @@ pip install -r training/requirements-train.txt
 | `tests/ans/` | ~25 | да |
 | `tests/gforth/` | ~2 | да |
 | `examples/gforth/good.fs` | ~9 | да (без `gforth` тестов в файле) |
-| `tests/challenges/` | 0 в train | **только eval** |
+| `tests/challenges/` | 0 в train | **только eval** (см. [`BENCHMARK-SIZING.md`](BENCHMARK-SIZING.md), [`eval-slices.yaml`](../tests/challenges/eval-slices.yaml)) |
 | Внешний Gforth `.fs` | 0 | **вы добавляете** для Track B (500+) |
 
 ### Сборка JSONL
@@ -117,7 +117,8 @@ python3 scripts/build-dataset.py --sandbox --validate
 
 - **Не** включайте `tests/challenges/` в train.
 - В `01-clamp.fs` и `04-caesar-shift.fs` между маркерами могут быть черновики — **очистите** перед честным бенчмарком или не используйте эти файлы как эталон в train.
-- Эталоны для eval: решить 02–06, `gforth` → `TESTS OK`, хранить в `data/labels/` (отдельно от train).
+- Решения для **обучения**: только срез `train_for_sft` (~100 bank) → [`data/challenge-solutions/`](../data/challenge-solutions/) → [`CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md). **Не** в `tests/challenges/*.fs`.
+- **Eval:** только `eval_holdout` (6 seeds + ~39 bank) — не попадают в `challenge-train.jsonl`.
 
 ### Расширение датасета (Track B)
 
@@ -218,7 +219,7 @@ Smoke: один промпт `: gcd`. Опционально вставка в �
 | +LoRA | off | on |
 | +LoRA+frules | on | on |
 
-По каждому из 6 челленджей — протокол [`CHALLENGE-RUNS.md`](CHALLENGE-RUNS.md): новый чат, промпт, `cd tests/challenges && gforth NN-name.fs` → `TESTS OK`.
+Hold-out: **145** файла (6 seeds + 139 bank). Полный прогон не обязателен — используйте срезы из [`eval-slices.yaml`](../tests/challenges/eval-slices.yaml): `smoke` (~12), `standard` (~24), `stratified_20`. Протокол: [`CHALLENGE-RUNS.md`](CHALLENGE-RUNS.md), размер: [`BENCHMARK-SIZING.md`](BENCHMARK-SIZING.md).
 
 Заполнить [`TRAINING-RUNS.md`](TRAINING-RUNS.md) и таблицу в `CHALLENGE-RUNS.md`.
 
@@ -247,7 +248,7 @@ Smoke: один промпт `: gcd`. Опционально вставка в �
 | 1 | Ubuntu + GPU + Трек A (0.5B) |
 | 2 | Gemma baseline — [`LOCAL-GEMMA-BENCHMARK.md`](LOCAL-GEMMA-BENCHMARK.md) |
 | 3 | Датасет 500+, внешний Gforth |
-| 4 | Трек B 7B → Ollama → 6 challenges |
+| 4 | Трек B 7B → Ollama → eval на challenges (seeds + stratified sample из 125) |
 | 5+ | Больше данных, повтор train, опционально DPO |
 
 ---
@@ -280,7 +281,7 @@ Smoke: один промпт `: gcd`. Опционально вставка в �
 - [ ] `data/train.jsonl` ≥ 500
 - [ ] QLoRA 7B завершился
 - [ ] `ollama run forth-gforth` отвечает
-- [ ] challenges: N/6 записан
+- [ ] challenges: N/M записан (seeds 6 + stratified bank sample)
 - [ ] hold-out: challenges не в train
 
 ---
