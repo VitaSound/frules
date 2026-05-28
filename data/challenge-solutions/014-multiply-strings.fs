@@ -31,106 +31,44 @@ create ch-buf 64 chars allot
 
 \ === paste your solution below this line ===
 
-create prod 128 cells allot
+\ Grade-school multiply: digit products accumulate in prod[], one decimal
+\ digit per cell; result string is built in ch-buf, valid until next call.
+128 constant mul-max
+create prod mul-max cells allot
 
-: prod@ ( i -- n )  cells prod + @ ;
-: prod! ( n i -- )  cells prod + ! ;
-: prod+! ( n i -- )  cells prod + dup @ rot + swap ! ;
-: prod-clear ( plen -- )  cells prod swap 0 fill ;
+: prod@  ( i -- n )  cells prod + @ ;
+: prod!  ( n i -- )  cells prod + ! ;
 
-: str-mul-pack ( plen start -- c-addr cu )
-  { plen start | k }
-  plen start = if
-    s" 0" 2dup ch-buf swap move  ch-buf 1
-  else
-    plen start - to k
-    k 0 ?do
-      start i + prod@ [char] 0 +  ch-buf i + c!
-    loop
-    ch-buf k
-  then ;
-
-: prod-start ( plen -- start )
-  >r
-  0 r@ ?do
-    i prod@ 0<> if
-      r> drop  i  unloop  exit
-    then
-  loop
-  r> ;
-
-: str-mul-core ( a-addr au b-addr bu -- plen )
-  { a au b bu | da db pos d plen }
-  au bu + to plen
-  plen prod-clear
-  au 0 ?do
-    bu 0 ?do
-      au 1- i - a + c@ [char] 0 - to da
-      bu 1- j - b + c@ [char] 0 - to db
-      i j + 1+ to pos
-      da db * pos prod@ + pos prod!
-    loop
-  loop
-  plen 1- dup 0> if
-    plen 1- 0 ?do
-      plen 1- i - to pos
-      pos prod@ to d
-      d 10 / pos 1- prod+!
-      d 10 mod pos prod!
-    loop
-  then
-  plen ;
-
-: str-mul ( a-addr au b-addr bu -- c-addr cu )
-  str-mul-core  dup prod-start  str-mul-pack ;
-
-: str-mul-stack-add-term ( a au b bu plen ii jj -- plen )
-  >r >r
-  4 pick 3 pick 1- r@ -  4 pick + c@ [char] 0 -
-  >r
-  2 pick 1 pick 1- r@ -  2 pick + c@ [char] 0 -
-  r> r> *  >r
-  r@ 2 pick + 1+  dup prod@ r> + swap prod!
-  drop ;
-
-: str-mul-stack-multiply ( a au b bu plen -- plen )
-  0 >r
-  begin  r@ 3 pick <
-  while
-    0 >r
-    begin  r@ 2 pick <
-    while
-      5 pick 5 pick 5 pick 5 pick 5 pick  r@ r@
-      str-mul-stack-add-term
-      r> 1+ >r
+: str-mul  ( a-addr au b-addr bu -- c-addr cu )
+  0 0 0 0  { a au b bu ia ja n outp }
+  au bu + to n
+  0 to ia
+  begin ia n < while  0 ia prod!  ia 1+ to ia  repeat
+  au 1- to ia
+  begin ia -1 > while
+    bu 1- to ja
+    begin ja -1 > while
+      a ia + c@ [char] 0 -  b ja + c@ [char] 0 -  *
+      ia ja + 1+ prod@ +                  ( sum )
+      dup 10 mod  ia ja + 1+ prod!        ( sum )  \ low digit at i+j+1
+      10 /  ia ja + prod@ +  ia ja + prod!         \ carry into i+j
+      ja 1- to ja
     repeat
-    r> drop
-    r> 1+ >r
+    ia 1- to ia
   repeat
-  r> drop ;
-
-: str-mul-stack-carry ( plen -- plen )
-  dup 1- dup 0> if
-    >r  0 r@ ?do
-      dup r@ i - 1-  dup prod@ swap
-      dup 10 / rot 1- prod+!
-      10 mod swap prod!
-    loop
-  else  drop  then ;
-
-: str-mul-stack ( a-addr au b-addr bu -- c-addr cu )
-  2 pick 0 pick +  dup prod-clear
-  str-mul-stack-multiply  str-mul-stack-carry
-  dup prod-start  str-mul-pack ;
+  0 to ia
+  begin ia n 1- <  ia prod@ 0=  and while  ia 1+ to ia  repeat
+  0 to outp
+  begin ia n < while
+    ia prod@ [char] 0 +  ch-buf outp + c!
+    outp 1+ to outp  ia 1+ to ia
+  repeat
+  ch-buf outp ;
 
 \ === paste your solution above this line ===
 
 T{ s" 2" a-setup s" 3" b-setup str-mul s" 6" expect-str-eq -> }T
 T{ s" 123" a-setup s" 456" b-setup str-mul s" 56088" expect-str-eq -> }T
 T{ s" 0" a-setup s" 999" b-setup str-mul s" 0" expect-str-eq -> }T
-
-T{ s" 2" a-setup s" 3" b-setup str-mul-stack s" 6" expect-str-eq -> }T
-T{ s" 123" a-setup s" 456" b-setup str-mul-stack s" 56088" expect-str-eq -> }T
-T{ s" 0" a-setup s" 999" b-setup str-mul-stack s" 0" expect-str-eq -> }T
 
 report bye
