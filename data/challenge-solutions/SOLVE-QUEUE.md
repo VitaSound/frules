@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **17 / 94**
+Progress: **20 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -23,9 +23,9 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 024-majority-element.fs  (`majority`)
 - [x] 027-three-sum-closest.fs  (`three-sum-closest`)
 - [x] 028-trap-rain.fs  (`trap-rain`)
-- [ ] 029-merge-sorted.fs  (`merge-into`)
-- [ ] 030-sort-by-parity.fs  (`sort-parity`)
-- [ ] 031-remove-pal-sub.fs  (`remove-pal-sub`)
+- [x] 029-merge-sorted.fs  (`merge-into`)
+- [x] 030-sort-by-parity.fs  (`sort-parity`)
+- [x] 031-remove-pal-sub.fs  (`remove-pal-sub`)
 - [ ] 034-eval-rpn.fs  (`eval-rpn`)
 - [ ] 035-daily-temp.fs  (`daily-temp`)
 - [ ] 036-decode-string-len.fs  (`decode-len`)

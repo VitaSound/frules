@@ -31,6 +31,33 @@ create ch-data ch-max cells allot
 
 \ === paste your solution below this line ===
 
+variable parity-lo
+variable swap-x
+variable swap-y
+
+: ch-swap  ( ia ib -- )
+  swap-x !  swap-y !
+  swap-x @ ch@  swap-y @ ch@
+  2dup swap-x @ ch!  nip nip  swap-y @ ch! ;
+
+: reverse-range  ( lo hi -- )
+  swap-y !  swap-x !
+  begin swap-x @ swap-y @ < while
+    swap-x @ swap-y @ ch-swap
+    swap-x @ 1+ swap-x !
+    swap-y @ 1- swap-y !
+  repeat ;
+
+: sort-parity  ( -- )
+  0 parity-lo !
+  ch-n 0 ?do
+    i ch@ 1 and 0= if
+      parity-lo @ i ch-swap
+      parity-lo @ 1+ parity-lo !
+    then
+  loop
+  parity-lo @ ch-n 1- reverse-range ;
+
 \ === paste your solution above this line ===
 
 T{ sort-parity }T

@@ -33,6 +33,30 @@ create ch-data ch-max cells allot
 
 \ === paste your solution below this line ===
 
+create ch-work  ch-max cells allot
+
+: work@  ( i -- n )  cells ch-work + @ ;
+: work!  ( n i -- )  cells ch-work + ! ;
+
+: merge-into  ( -- len )
+  ch-a-len 0 0 { ib ia w }
+  begin ia ch-a-len < ib ch-n < and while
+    ia ch@ ib ch@ <= if
+      ia ch@ w work!  ia 1+ to ia
+    else
+      ib ch@ w work!  ib 1+ to ib
+    then
+    w 1+ to w
+  repeat
+  begin ia ch-a-len < while
+    ia ch@ w work!  ia 1+ to ia  w 1+ to w
+  repeat
+  begin ib ch-n < while
+    ib ch@ w work!  ib 1+ to ib  w 1+ to w
+  repeat
+  ch-n 0 ?do  i work@ i ch!  loop
+  ch-n ;
+
 \ === paste your solution above this line ===
 
 T{ merge-into -> 6 }T
