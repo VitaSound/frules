@@ -25,42 +25,27 @@ create ch-buf 64 chars allot
 
 \ === paste your solution below this line ===
 
-: pal-at ( c-addr u l r -- n )
-  { c u l r | left right }
-  l to left
-  r to right
+\ Expand-around-center: for each center grow outward while the mirrored
+\ characters match, then report the widest span seen.
+: pal-at  ( c-addr u l r -- len )
+  { c u l r }
   begin
-    left 0>=  right u <  and
-    left c + c@  right c + c@  =
-    and
+    l 0 >=  r u <  and
+    dup if  drop  c l + c@  c r + c@  =  then   \ compare only when in range
   while
-    1 left - to left
-    1 right + to right
+    l 1- to l
+    r 1+ to r
   repeat
-  right left - 1- ;
+  r l - 1- ;
 
-: longest-pal-len ( c-addr u -- len )
-  { c u | best n }
-  0 to best
-  u 0 ?do
-    c u i i pal-at to n
-    n best max to best
-    i 1+ u < if
-      c u i i 1+ pal-at to n
-      n best max to best
-    then
-  loop
+: longest-pal-len  ( c-addr u -- len )
+  0 0  { c u best p }
+  begin p u < while
+    c u p p     pal-at  best max to best     \ odd-length center
+    p 1+ u < if  c u p p 1+ pal-at  best max to best  then  \ even-length center
+    p 1+ to p
+  repeat
   best ;
-
-: longest-pal-len-stack ( c-addr u -- len )
-  >r 0 >r
-  r@ 0 ?do
-    r@ i i 3 pick pal-at  r> max >r
-    i 1+ r@ < if
-      r@ i i 1+ 3 pick pal-at  r> max >r
-    then
-  loop
-  r> r> swap drop ;
 
 \ === paste your solution above this line ===
 
@@ -68,10 +53,5 @@ T{ s" babad" ch-setup longest-pal-len -> 3 }T
 T{ s" cbbd" ch-setup longest-pal-len -> 2 }T
 T{ s" a" ch-setup longest-pal-len -> 1 }T
 T{ s" racecar" ch-setup longest-pal-len -> 7 }T
-
-T{ s" babad" ch-setup longest-pal-len-stack -> 3 }T
-T{ s" cbbd" ch-setup longest-pal-len-stack -> 2 }T
-T{ s" a" ch-setup longest-pal-len-stack -> 1 }T
-T{ s" racecar" ch-setup longest-pal-len-stack -> 7 }T
 
 report bye
