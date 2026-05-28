@@ -29,31 +29,25 @@ create b-buf 64 chars allot
 
 \ === paste your solution below this line ===
 
+\ O(n) count table over a-z: +1 for each char in a, -1 for each in b.
+\ The strings are anagrams iff every count returns to zero.
 create counts 26 cells allot
 
-: counts-clear ( -- )  26 cells counts 0 fill ;
+: counts-clear  ( -- )  counts 26 cells erase ;
 
-: count+ ( ch -- )  [char] a -  cells counts +  1 swap  dup @ +  swap ! ;
+: bump  ( ch delta -- )                 \ counts[ch-'a'] += delta
+  swap [char] a -  cells counts +
+  dup @ rot + swap ! ;
 
-: count- ( ch -- )  [char] a -  cells counts +  1 swap  dup @ +  swap ! ;
+: counts-zero?  ( -- flag )             \ true iff all 26 counts are 0
+  0  26 0 ?do  i cells counts + @ abs +  loop  0= ;
 
-: counts-zero? ( -- flag )
-  26 0 ?do  i cells counts + @ 0<> if  0 unloop unloop exit  then  loop  -1 ;
-
-: anagram? ( a-addr au b-addr bu -- flag )
+: anagram?  ( a-addr au b-addr bu -- flag )
   { a au b bu }
-  au bu <> if  0  else
+  au bu <> if  false  else
     counts-clear
-    au 0 ?do  a i + c@ count+  loop
-    bu 0 ?do  b i + c@ [char] a -  cells counts +  1 swap  dup @ 1-  swap !  loop
-    counts-zero?
-  then ;
-
-: anagram?-stack ( a-addr au b-addr bu -- flag )
-  2over <> if  2drop 2drop 0  else
-    counts-clear
-    2dup 0 ?do  2dup i + c@ count+  loop  drop
-    0 ?do  2over i + c@ [char] a -  cells counts +  dup @ 1-  swap !  loop  drop
+    au 0 ?do  a i + c@   1 bump  loop
+    bu 0 ?do  b i + c@  -1 bump  loop
     counts-zero?
   then ;
 
@@ -63,10 +57,5 @@ T{ s" anagram" a-setup s" nagaram" b-setup anagram? -> true }T
 T{ s" rat" a-setup s" car" b-setup anagram? -> false }T
 T{ s" a" a-setup s" a" b-setup anagram? -> true }T
 T{ s" ab" a-setup s" ba" b-setup anagram? -> true }T
-
-T{ s" anagram" a-setup s" nagaram" b-setup anagram?-stack -> true }T
-T{ s" rat" a-setup s" car" b-setup anagram?-stack -> false }T
-T{ s" a" a-setup s" a" b-setup anagram?-stack -> true }T
-T{ s" ab" a-setup s" ba" b-setup anagram?-stack -> true }T
 
 report bye

@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **14 / 94**
+Progress: **15 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -15,7 +15,7 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 013-strstr.fs  (`strstr-idx`)
 - [x] 014-multiply-strings.fs  (`str-mul`)
 - [x] 015-longest-pal-sub.fs  (`longest-pal-len`)
-- [-] 016-valid-anagram.fs  (`anagram?`) — blocked: crash in count-table / locals path
+- [x] 016-valid-anagram.fs  (`anagram?`)
 - [-] 020-first-missing-pos.fs  (`first-missing`) — blocked: segfault in seen-table scan
 - [x] 021-next-permutation.fs  (`next-perm?`)
 - [x] 022-sort-colors.fs  (`sort-colors`)
