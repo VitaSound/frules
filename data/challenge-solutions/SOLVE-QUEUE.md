@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **4 / 94**
+Progress: **5 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -10,7 +10,7 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 005-is-prime.fs  (`prime?`)
 - [x] 006-fib-nth.fs  (`fib`)
 - [x] 007-gcd.fs  (`gcd`)
-- [ ] 008-lcm.fs  (`lcm`)
+- [x] 008-lcm.fs  (`lcm`)
 - [ ] 012-count-and-say.fs  (`count-say`)
 - [ ] 013-strstr.fs  (`strstr-idx`)
 - [ ] 014-multiply-strings.fs  (`str-mul`)
