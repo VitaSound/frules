@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **15 / 94**
+Progress: **16 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -16,7 +16,7 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 014-multiply-strings.fs  (`str-mul`)
 - [x] 015-longest-pal-sub.fs  (`longest-pal-len`)
 - [x] 016-valid-anagram.fs  (`anagram?`)
-- [-] 020-first-missing-pos.fs  (`first-missing`) — blocked: segfault in seen-table scan
+- [x] 020-first-missing-pos.fs  (`first-missing`)
 - [x] 021-next-permutation.fs  (`next-perm?`)
 - [x] 022-sort-colors.fs  (`sort-colors`)
 - [x] 023-contains-dup.fs  (`has-dup?`)

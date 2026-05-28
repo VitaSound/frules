@@ -29,29 +29,22 @@ create ch-data ch-max cells allot
 
 \ === paste your solution below this line ===
 
-create seen ch-max cells allot
+\ O(n): mark which values in 1..ch-n appear (ch-data stays read-only), then
+\ scan upward for the first unmarked positive. Answer is at most ch-n+1.
+create seen ch-max 1+ cells allot
 
-: note-val ( n -- )
-  dup 0>  swap 1 >=  and  over ch-n 1+  2dup >  rot 1 >=  and  and  if
-    1-  cells seen +  1 swap c!
-  else  drop  then ;
-
-: first-missing ( -- n )
-  ch-n cells seen 0 fill
-  ch-n 0 ?do  i ch@ note-val  loop
-  1 begin  dup 1- cells seen + c@  while  1+  repeat ;
-
-: first-missing-stack ( -- n )
-  ch-n cells seen 0 fill
-  ch-n 0 ?do  i ch@ note-val  loop
-  1 >r
-  begin  r@ 1- cells seen + c@  while  r> 1+ >r  repeat
-  r> ;
+: first-missing  ( -- n )
+  seen  ch-max 1+ cells  erase
+  ch-n 0 ?do
+    i ch@
+    dup 0 >  over ch-n 1+ <  and if   \ keep only 1..ch-n
+      cells seen +  true swap !
+    else drop then
+  loop
+  1 begin  dup cells seen + @  while  1+  repeat ;
 
 \ === paste your solution above this line ===
 
 T{ first-missing -> 2 }T
-
-T{ first-missing-stack -> 2 }T
 
 report bye
