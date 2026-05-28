@@ -30,6 +30,18 @@ create ned-buf 64 chars allot
 
 \ === paste your solution below this line ===
 
+: strstr-idx ( h-addr hu n-addr nu -- idx )
+  { z0 z1 z2 z3 | z4 z5 }
+  z3 0= if  0 exit  then
+  z1 z3 < if  -1 exit  then
+  -1 to z5
+  z1 z3 - 1+ 0 ?do
+    i z0 + z3 z2 z3 compare 0= if
+      i to z5  leave
+    then
+  loop
+  z5 ;
+
 \ === paste your solution above this line ===
 
 T{ s" hello" hay-setup s" ll" ned-setup strstr-idx -> 2 }T

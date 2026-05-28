@@ -4,6 +4,7 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
 
 ## Near term (next 1–2 sessions)
 
+- [ ] **`013-strstr.fs` stack variant** — `strstr-idx-stack` без locals (как `fib-stack` в 006); pick/return-stack вместо `{ z0 … }`.
 - [x] **`tests/challenges/`** — 6 seeds + 125 bank (`001`–`125`), 131 total; `manifest.yaml`, `INDEX.md`, `taxonomy-coverage.md`; генераторы `scripts/_build_catalog.py`, `gen_challenges.py`, `verify_challenges.sh`. Hold-out, без решений между маркерами.
     - [x] Seed: `01`–`06` + `_tester.fs`. Bank: LeetCode Top 100 + Codewars/kata/PE/Rosetta, unique `pattern_key`, cognitive 0–10.
     - [ ] Добить набор: `07-parse-decimal`, `08-anagram?`, `09-rle-encode`, `10-binary-search` — по одному на оставшиеся непокрытые правила (`forth-defining-words.mdc`, `forth-stack.mdc`, FP/double если появятся).
