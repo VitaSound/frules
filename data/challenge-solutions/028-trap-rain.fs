@@ -15,8 +15,6 @@
 \   - Uses preloaded heights.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: removed stray "heights" preload line (undefined word); ch! lines load the array.
-\
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
@@ -30,6 +28,24 @@ create ch-data ch-max cells allot
 12 constant ch-n
 
 \ === paste your solution below this line ===
+
+: trap-rain  ( -- vol )
+  ch-n 2 < if  0 exit  then
+  ch-n 1- 0 0 0 0 0 0 { hi lo vol lmax rmax hlo hhi }
+  begin lo hi < while
+    lo ch@ to hlo
+    hi ch@ to hhi
+    hlo hhi <= if
+      hlo lmax > if  hlo to lmax  then
+      lmax hlo > if  lmax hlo - vol + to vol  then
+      lo 1+ to lo
+    else
+      hhi rmax > if  hhi to rmax  then
+      rmax hhi > if  rmax hhi - vol + to vol  then
+      hi 1- to hi
+    then
+  repeat
+  vol ;
 
 \ === paste your solution above this line ===
 
