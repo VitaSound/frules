@@ -13,23 +13,27 @@
 \
 \ Style guard (rules/forth-factoring.mdc, forth-style.mdc):
 \   - O(n) count table.
-\   - Use ch-setup.
+\   - a-setup / b-setup for two operand copies.
 \
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
-create ch-buf 64 chars allot
+create a-buf 64 chars allot
+create b-buf 64 chars allot
 
-: ch-setup  ( c-addr u -- ch-buf u )
-  dup >r  ch-buf swap  move  ch-buf r> ;
+: a-setup  ( c-addr u -- a-buf u )
+  dup >r  a-buf swap  move  a-buf r> ;
+
+: b-setup  ( c-addr u -- b-buf u )
+  dup >r  b-buf swap  move  b-buf r> ;
 
 \ === paste your solution below this line ===
 
 \ === paste your solution above this line ===
 
-T{ s" anagram" ch-setup s" nagaram" ch-setup anagram? -> true }T
-T{ s" rat" ch-setup s" car" ch-setup anagram? -> false }T
-T{ s" a" ch-setup s" a" ch-setup anagram? -> true }T
-T{ s" ab" ch-setup s" ba" ch-setup anagram? -> true }T
+T{ s" anagram" a-setup s" nagaram" b-setup anagram? -> true }T
+T{ s" rat" a-setup s" car" b-setup anagram? -> false }T
+T{ s" a" a-setup s" a" b-setup anagram? -> true }T
+T{ s" ab" a-setup s" ba" b-setup anagram? -> true }T
 
 report bye

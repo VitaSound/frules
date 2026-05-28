@@ -13,9 +13,9 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 008-lcm.fs  (`lcm`)
 - [-] 012-count-and-say.fs  (`count-say`) — blocked: Gforth locals/control-flow issues in paste zone
 - [x] 013-strstr.fs  (`strstr-idx`)
-- [ ] 014-multiply-strings.fs  (`str-mul`)
-- [ ] 015-longest-pal-sub.fs  (`longest-pal-len`)
-- [ ] 016-valid-anagram.fs  (`anagram?`)
+- [-] 014-multiply-strings.fs  (`str-mul`) — blocked: prod-start / pack stack bugs under Gforth locals
+- [-] 015-longest-pal-sub.fs  (`longest-pal-len`) — blocked: Gforth `to` on locals breaks expand loop
+- [-] 016-valid-anagram.fs  (`anagram?`) — blocked: crash in count-table / locals path
 - [ ] 020-first-missing-pos.fs  (`first-missing`)
 - [ ] 021-next-permutation.fs  (`next-perm?`)
 - [ ] 022-sort-colors.fs  (`sort-colors`)
