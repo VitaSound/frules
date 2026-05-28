@@ -16,8 +16,6 @@
 \   - Preload temps in ch-data, ch-out same size.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: index 4 has warmer day at +1; check index 6 (last warm day) for 0.
-\
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
@@ -33,6 +31,28 @@ create ch-out 16 cells allot
 : ch-out! ( n i -- ) cells ch-out + ! ;
 
 \ === paste your solution below this line ===
+
+create st-idx  16 cells allot
+variable st-sp
+
+variable warm-idx
+
+: daily-temp  ( -- )
+  0 st-sp !
+  ch-n 0 ?do
+    begin
+      st-sp @ if  i ch@  st-sp @ 1- cells st-idx + @ ch@  >  else  0  then
+    while
+      st-sp @ 1- cells st-idx + @ warm-idx !
+      i warm-idx @ -  warm-idx @ ch-out!
+      st-sp @ 1- st-sp !
+    repeat
+    i  st-sp @ cells st-idx + !  st-sp @ 1+ st-sp !
+  loop
+  begin  st-sp @  while
+    0  st-sp @ 1- cells st-idx + @  ch-out!
+    st-sp @ 1- st-sp !
+  repeat ;
 
 \ === paste your solution above this line ===
 

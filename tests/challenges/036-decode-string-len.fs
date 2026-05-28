@@ -15,6 +15,8 @@
 \   - Use count stack.
 \   - Use ch-setup.
 \
+\ Fixed: expected length is 12 (abc + cd×3 + xyz), not 9.
+\
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
@@ -28,7 +30,7 @@ create ch-buf 64 chars allot
 \ === paste your solution above this line ===
 
 T{ s" 3[a]2[bc]" ch-setup decode-len -> 7 }T
-T{ s" abc3[cd]xyz" ch-setup decode-len -> 9 }T
+T{ s" abc3[cd]xyz" ch-setup decode-len -> 12 }T
 T{ s" a" ch-setup decode-len -> 1 }T
 
 report bye
