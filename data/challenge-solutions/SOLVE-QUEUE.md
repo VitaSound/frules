@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **10 / 94**
+Progress: **11 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -21,7 +21,7 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 022-sort-colors.fs  (`sort-colors`)
 - [x] 023-contains-dup.fs  (`has-dup?`)
 - [x] 024-majority-element.fs  (`majority`)
-- [ ] 027-three-sum-closest.fs  (`three-sum-closest`)
+- [x] 027-three-sum-closest.fs  (`three-sum-closest`)
 - [ ] 028-trap-rain.fs  (`trap-rain`)
 - [ ] 029-merge-sorted.fs  (`merge-into`)
 - [ ] 030-sort-by-parity.fs  (`sort-parity`)
