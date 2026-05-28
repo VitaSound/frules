@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **6 / 94**
+Progress: **10 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -17,10 +17,10 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [-] 015-longest-pal-sub.fs  (`longest-pal-len`) — blocked: Gforth `to` on locals breaks expand loop
 - [-] 016-valid-anagram.fs  (`anagram?`) — blocked: crash in count-table / locals path
 - [-] 020-first-missing-pos.fs  (`first-missing`) — blocked: segfault in seen-table scan
-- [ ] 021-next-permutation.fs  (`next-perm?`)
-- [ ] 022-sort-colors.fs  (`sort-colors`)
-- [ ] 023-contains-dup.fs  (`has-dup?`)
-- [ ] 024-majority-element.fs  (`majority`)
+- [x] 021-next-permutation.fs  (`next-perm?`)
+- [x] 022-sort-colors.fs  (`sort-colors`)
+- [x] 023-contains-dup.fs  (`has-dup?`)
+- [x] 024-majority-element.fs  (`majority`)
 - [ ] 027-three-sum-closest.fs  (`three-sum-closest`)
 - [ ] 028-trap-rain.fs  (`trap-rain`)
 - [ ] 029-merge-sorted.fs  (`merge-into`)
