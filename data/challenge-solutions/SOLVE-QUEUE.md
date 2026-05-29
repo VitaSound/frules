@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **81 / 94**
+Progress: **85 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -29,13 +29,13 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 034-eval-rpn.fs  (`eval-rpn`)
 - [x] 035-daily-temp.fs  (`daily-temp`)
 - [x] 036-decode-string-len.fs  (`decode-len`)
-- [-] 037-asteroid-collision.fs  (`asteroid-survive`)
+- [x] 037-asteroid-collision.fs  (`asteroid-survive`)
 - [x] 041-search-range.fs  (`search-range`)
 - [x] 042-search-matrix.fs  (`matrix-search?`)
 - [x] 043-sqrt-binary.fs  (`isqrt-n`)
 - [x] 044-peak-index.fs  (`peak-idx`)
 - [x] 048-middle-node.fs  (`middle-node`)
-- [-] 049-remove-nth-end.fs  (`remove-nth`)
+- [x] 049-remove-nth-end.fs  (`remove-nth`)
 - [x] 050-swap-pairs.fs  (`swap-pairs`)
 - [x] 051-add-two-numbers.fs  (`add-lists`)
 - [x] 055-invert-tree.fs  (`invert-tree`)
@@ -46,9 +46,9 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 063-min-path-sum.fs  (`min-path-sum`)
 - [x] 064-max-prod-sub.fs  (`max-prod-sub`)
 - [x] 065-coin-change.fs  (`coin-change`)
-- [-] 066-word-break.fs  (`word-break?`)
+- [x] 066-word-break.fs  (`word-break?`)
 - [x] 067-lis-length.fs  (`lis-len`)
-- [-] 071-rotting-oranges.fs  (`rotten-days`)
+- [x] 071-rotting-oranges.fs  (`rotten-days`)
 - [-] 072-word-ladder-len.fs  (`ladder-len`)
 - [x] 073-surrounded-regions.fs  (`capture-count`)
 - [x] 074-pe-multiples.fs  (`pe-mult3-5`)

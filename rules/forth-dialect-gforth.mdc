@@ -26,7 +26,9 @@ Use **`gforth-fast`** for performance; **`gforth`** for clearer errors while dev
 
 ## Locals
 
-Rightmost name = TOS. Gforth allows **multiple** `{ … }` blocks per definition (non-standard elsewhere).
+In `{ a b -- … }`, names are bound in **stack order**: **rightmost name = TOS** (`b`), left name = next cell down (`a`). Gforth allows **multiple** `{ … }` blocks per definition (non-standard elsewhere).
+
+Locals remove their inputs from the data stack at entry; they do **not** fix unbalanced `if` branches — each branch must still leave the same stack depth unless documented.
 
 ```forth
 : swap { a b -- b a }  b a ;

@@ -22,6 +22,15 @@ Use `0=` / `0<>` to canonicalize. Combine flags with `and` / `or` / `xor` to avo
 
 Do not assume `1` is true.
 
+### Comparisons and `if` — stack discipline (Gforth)
+
+- `1=` / `2=` / `0=` **consume** the value(s) compared and leave one **flag** (`-1` or `0`) on TOS.
+- **`dup 1 = if drop …`** often leaves the **flag** (`-1`) on the stack — you dropped the duplicate value, not the flag. Prefer `… 1 = if` (no extra `dup`) or **`drop` in both** `if` / `else` branches.
+- `and` / `or` combine flags; do not leave operands under the flag unless the next word consumes them.
+- Each branch of `if` / `else` must leave the **same** data-stack depth (see below). `forth-debugging.mdc` — `.s` / `depth` after suspect words.
+
+`T{ word -> n }T` with **`WRONG NUMBER OF RESULTS`** usually means **depth mismatch** after `word`, not a wrong numeric value — run `depth . word . depth .` or `word .s`.
+
 ## if / else / then
 
 ```forth
@@ -36,6 +45,20 @@ Each branch must leave the **same** stack effect unless documented otherwise.
 ```forth
 : wait-key ( -- key )
   begin key? until key ;
+```
+
+| Form | Flag / stack notes |
+|------|-------------------|
+| `BEGIN xt WHILE … REPEAT` | `WHILE` consumes the flag each test; on exit, **leftover flags** on the data stack are possible — verify with `depth` / `.s` after `REPEAT`; add `drop` / `2drop` if needed. |
+| `BEGIN … UNTIL` | discards the flag when the condition is **true** (loop exits). |
+| `BEGIN … AGAIN` | no flag; infinite until `exit`. |
+
+```forth
+\ BFS / simulation: stop on problem invariant, not on auxiliary queue size
+  begin  fresh-count @ while
+    spread-wave
+    minutes @ 1+ minutes !
+  repeat  drop   \ only if .s shows stray flags — confirm first
 ```
 
 `2/` floors toward zero; `/` rounds toward zero — pick the one your algorithm needs.

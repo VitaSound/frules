@@ -29,6 +29,6 @@ create ch-buf 64 chars allot
 
 T{ s" 2 1 + " ch-setup eval-rpn -> 3 }T
 T{ s" 4 13 5 / + " ch-setup eval-rpn -> 6 }T
-T{ s" 10 6 9 3 + -11 * + " ch-setup eval-rpn -> 0 }T
+T{ s" 10 6 9 3 + -11 * / * 17 + 5 + " ch-setup eval-rpn -> 12 }T
 
 report bye

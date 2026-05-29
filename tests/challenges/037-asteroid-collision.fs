@@ -31,6 +31,6 @@ create ch-data ch-max cells allot
 
 \ === paste your solution above this line ===
 
-T{ asteroid-survive -> 1 }T
+T{ asteroid-survive -> 2 }T
 
 report bye

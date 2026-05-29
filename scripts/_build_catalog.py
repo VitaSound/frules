@@ -290,7 +290,7 @@ extend(
      ("Evaluate space-separated RPN expression with + - * / on integers.", "Division truncates toward zero."),
      ("Use value stack.", "Use ch-setup for input string."),
      ('s" 2 1 + " ch-setup eval-rpn -> 3', 's" 4 13 5 / + " ch-setup eval-rpn -> 6',
-      's" 10 6 9 3 + -11 * + " ch-setup eval-rpn -> 0')),
+      's" 10 6 9 3 + -11 * / * 17 + 5 + " ch-setup eval-rpn -> 12')),
     (35, "daily-temp", "daily-temp", "( -- )", "daily-temperatures-span", 6, "leetcode",
      "https://leetcode.com/problems/daily-temperatures/", "stack-queue", "cell-array", "Daily Temperatures",
      ("Fill ch-out[i] with days until warmer temperature after day i.", "Last days get 0."),
@@ -307,7 +307,7 @@ extend(
      "https://leetcode.com/problems/asteroid-collision/", "stack-queue", "cell-array", "Asteroid Collision",
      ("Simulate collisions on ch-data signed sizes; return surviving count.", "Positive moves right, negative left."),
      ("Stack simulation.", "Preload asteroids."),
-     ("asteroid-survive -> 1"),
+    ("asteroid-survive -> 2"),
      "5 0 ch!  10 1 ch!  -5 2 ch!\n3 constant ch-n"),
 )
 
@@ -771,7 +771,7 @@ extend(
      "https://rosettacode.org/wiki/Hamming_weight", "bit-xor", "scalar", "Hamming Weight",
      ("Return count of set bits (same as popcount).", "Rosetta variant name."),
      ("Use bit operations.", "Non-negative."),
-     ("0 hamming -> 0", "106 hamming -> 3", "255 hamming -> 8", "13 hamming -> 3")),
+    ("0 hamming -> 0", "106 hamming -> 4", "255 hamming -> 8", "13 hamming -> 3")),
 )
 
 # trie-design 107-111

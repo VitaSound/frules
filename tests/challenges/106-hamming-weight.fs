@@ -22,7 +22,7 @@ include _tester.fs
 \ === paste your solution above this line ===
 
 T{ 0 hamming -> 0 }T
-T{ 106 hamming -> 3 }T
+T{ 106 hamming -> 4 }T
 T{ 255 hamming -> 8 }T
 T{ 13 hamming -> 3 }T
 
