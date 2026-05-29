@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **87 / 94**
+Progress: **88 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -72,7 +72,7 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 100-max-vowels.fs  (`max-vowels`)
 - [x] 103-count-bits.fs  (`count-bits`)
 - [x] 104-reverse-bits.fs  (`reverse-bits`)
-- [ ] 105-divide-int.fs  (`divide-int`)
+- [x] 105-divide-int.fs  (`divide-int`)
 - [x] 106-hamming-weight.fs  (`hamming`)
 - [x] 109-word-dict.fs  (`word-dict?`)
 - [x] 110-prefix-suffix.fs  (`prefix-suffix?`)
