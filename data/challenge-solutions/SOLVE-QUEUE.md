@@ -76,7 +76,7 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 106-hamming-weight.fs  (`hamming`)
 - [-] 109-word-dict.fs  (`word-dict?`)
 - [-] 110-prefix-suffix.fs  (`prefix-suffix?`)
-- [-] 111-longest-dict-word.fs  (`longest-dict`)
+- [x] 111-longest-dict-word.fs  (`longest-dict`)
 - [-] 114-parse-int-hex.fs  (`parse-hex`)
 - [-] 115-atom-count.fs  (`atom-count`)
 - [x] 116-fizzbuzz-count.fs  (`fizzbuzz-n`)

@@ -1976,7 +1976,7 @@ _CHALLENGES: list[dict] = [{'id': 1,
   'title': 'Longest Dictionary Word',
   'spec': ['Return length of longest word from dictionary buildable by adding one char at a time.'],
   'style': ['Trie + BFS/DFS.', 'Dictionary preloaded.'],
-  'tests': ['s" w" ch-setup longest-dict -> 3'],
+  'tests': ['s" w" ch-setup longest-dict -> 5'],
   'extra_scaffold': 's" w" ch-setup dict-add drop\n'
                     's" wo" ch-setup dict-add drop\n'
                     's" wor" ch-setup dict-add drop\n'

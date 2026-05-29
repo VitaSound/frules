@@ -31,6 +31,6 @@ s" world" ch-setup dict-add drop
 
 \ === paste your solution above this line ===
 
-T{ s" w" ch-setup longest-dict -> 3 }T
+T{ s" w" ch-setup longest-dict -> 5 }T
 
 report bye
