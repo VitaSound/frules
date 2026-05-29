@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **71 / 94**
+Progress: **76 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -77,8 +77,8 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [-] 109-word-dict.fs  (`word-dict?`)
 - [-] 110-prefix-suffix.fs  (`prefix-suffix?`)
 - [x] 111-longest-dict-word.fs  (`longest-dict`)
-- [-] 114-parse-int-hex.fs  (`parse-hex`)
-- [-] 115-atom-count.fs  (`atom-count`)
+- [x] 114-parse-int-hex.fs  (`parse-hex`)
+- [x] 115-atom-count.fs  (`atom-count`)
 - [x] 116-fizzbuzz-count.fs  (`fizzbuzz-n`)
 - [x] 120-permute-count.fs  (`permute-n`)
 - [x] 121-subsets-count.fs  (`subsets-n`)
@@ -89,14 +89,14 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [-] 126-list-partition.fs  (`part-list`)
 - [-] 127-reorder-list.fs  (`reorder-list`)
 - [-] 128-bf-steps.fs  (`bf-steps`)
-- [-] 129-count-words.fs  (`word-count`)
+- [x] 129-count-words.fs  (`word-count`)
 - [x] 130-union-find.fs  (`uf-find`)
 - [x] 131-topo-len.fs  (`topo-len`)
 - [-] 132-bt-zigzag.fs  (`zigzag-sum`)
 - [-] 133-knapsack01.fs  (`knapsack01?`)
 - [-] 134-edit-distance.fs  (`edit-dist`)
 - [-] 135-lru-get.fs  (`lru-get`)
-- [-] 136-run-length-len.fs  (`rle-len`)
+- [x] 136-run-length-len.fs  (`rle-len`)
 - [-] 137-morse-len.fs  (`morse-len`)
 - [x] 138-collatz-steps.fs  (`collatz`)
 - [x] 139-sorted-median.fs  (`sorted-median`)
