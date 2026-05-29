@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **29 / 94**
+Progress: **31 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -38,8 +38,8 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [-] 049-remove-nth-end.fs  (`remove-nth`)
 - [x] 050-swap-pairs.fs  (`swap-pairs`)
 - [x] 051-add-two-numbers.fs  (`add-lists`)
-- [ ] 055-invert-tree.fs  (`invert-tree`)
-- [ ] 056-valid-bst.fs  (`valid-bst?`)
+- [x] 055-invert-tree.fs  (`invert-tree`)
+- [x] 056-valid-bst.fs  (`valid-bst?`)
 - [ ] 057-kth-smallest.fs  (`kth-smallest`)
 - [ ] 058-path-sum.fs  (`path-sum?`)
 - [ ] 059-balanced-tree.fs  (`balanced?`)

@@ -32,6 +32,24 @@ create ch-tree ch-max-nodes 3 * cells allot
 
 \ === paste your solution below this line ===
 
+: n-left@  ( i -- n )  3 * 1 + ch-t@ ;
+: n-right@ ( i -- n )  3 * 2 + ch-t@ ;
+: n-left!  ( n i -- )  swap >r 3 * 1 + r> swap ch-t! ;
+: n-right! ( n i -- )  swap >r 3 * 2 + r> swap ch-t! ;
+
+variable ch-node
+variable ch-L
+variable ch-R
+
+: swap-children ( i -- )
+  ch-node !
+  ch-node @ n-left@  ch-L !
+  ch-node @ n-right@ ch-R !
+  ch-R @ ch-node @ n-left!
+  ch-L @ ch-node @ n-right! ;
+
+: invert-tree ( root -- root )  dup swap-children ;
+
 \ === paste your solution above this line ===
 
 T{ 1 invert-tree -> 1 }T

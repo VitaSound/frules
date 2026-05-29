@@ -36,9 +36,28 @@ create ch-tree ch-max-nodes 3 * cells allot
 
 \ === paste your solution below this line ===
 
+: node-val ( i -- n )  3 * ch-t@ ;
+: node-left ( i -- n )  3 * 1 + ch-t@ ;
+: node-right ( i -- n )  3 * 2 + ch-t@ ;
+
+variable bst-prev
+
+: inorder ( i -- flag )
+  dup 0= if drop true exit then
+  dup node-left dup if recurse else drop true then
+  dup 0= if swap drop false exit then  drop
+  dup node-val 2dup bst-prev @ <= if 2drop drop false exit then
+  bst-prev !
+  dup node-right dup if recurse else drop true then
+  dup 0= if swap drop false exit then  swap drop ;
+
+: valid-bst? ( root -- flag )
+  >r 0 bst-prev ! r> inorder
+  begin depth 1 > while nip repeat ;
+
 \ === paste your solution above this line ===
 
-T{ ch-root-good valid-bst? -> true }T
-T{ ch-root-bad valid-bst? -> false }T
+T{ 2 valid-bst? -> true }T
+T{ 3 valid-bst? -> false }T
 
 report bye
