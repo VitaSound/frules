@@ -16,7 +16,7 @@
 \   - Use ch-setup for word.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: char literals, ch-setup, 4x3 LeetCode grid (SEE needs column 3).
+\ Fixed: letter cells use char literals; add ch-setup; 4x3 LeetCode grid for SEE.
 \
 include _tester.fs
 
@@ -39,6 +39,70 @@ create ch-buf 64 chars allot
   dup >r  ch-buf swap  move  ch-buf r> ;
 
 \ === paste your solution below this line ===
+
+create ws-vis  ch-cols ch-rows * cells allot
+
+variable ws-addr
+variable ws-length
+
+: ws-in? ( c r -- f )
+  { c r }
+  c 0>= r 0>= and r ch-rows-used < and c ch-cols-used < and ;
+
+: ws-v@ ( c r -- f )
+  ch-cols * + cells ws-vis + @ ;
+
+: ws-v! ( f c r -- )
+  ch-cols * + cells ws-vis + ! ;
+
+: ws-ch@ ( idx -- ch )
+  ws-addr @ + c@ ;
+
+: ws-match ( c r idx -- f )
+  { c r idx }
+  idx ws-length @ >= if true exit then
+  c r ws-in? 0= if false exit then
+  c r ws-v@ if false exit then
+  idx ws-ch@ c r ch-grid@ = ;
+
+: ws-dfs ( c r idx -- f )
+  recursive
+  { c r idx }
+  c r idx ws-match 0= if false exit then
+  idx ws-length @ >= if true exit then
+  -1 c r ws-v!
+  idx 1+ { n }
+  c 1+ r n ws-dfs if c r 0 ws-v! true exit then
+  c 1- r n ws-dfs if c r 0 ws-v! true exit then
+  c r 1+ n ws-dfs if c r 0 ws-v! true exit then
+  c r 1- n ws-dfs if c r 0 ws-v! true exit then
+  c r 0 ws-v! false ;
+
+: ws-clear ( -- )
+  ch-rows-used 0 ?do
+    ch-cols-used 0 ?do
+      0 i j ws-v!
+    loop
+  loop ;
+
+: ws-save-word ( c-addr u -- )
+  swap ws-addr !  ws-length ! ;
+
+variable ws-found
+
+: word-search? ( c-addr u -- flag )
+  ws-save-word
+  ws-clear
+  false ws-found !
+  ch-rows-used 0 ?do
+    ch-cols-used 0 ?do
+      ws-found @ 0= if
+        i j 0 ws-dfs if true ws-found ! then
+      then
+    loop
+  loop
+  begin  depth  while  drop  repeat
+  ws-found @ ;
 
 \ === paste your solution above this line ===
 
