@@ -19,6 +19,21 @@ alwaysApply: false
 : field@ ( addr -- x ) cell+ @ ;
 ```
 
+## Cell size discipline
+
+ANS Forth does **not** fix stack cell width. A **cell** is the portable unit (minimum 16 bits; common values: 16 on small MCUs, 32 on ARM/desktop, 64 on some hosts). Do **not** treat a cell as `int32_t` or assume 4 bytes unless the project declares a single target.
+
+**Portability model:** one algorithm + **declared environmental dependencies** + swap `platform/` — not write-once-run-anywhere like a VM. Document in the file header when range matters, e.g. `Environmental: cell=16 on AVR; cell=32 on Gforth`.
+
+| Situation | Risk if cell width is ignored |
+|-----------|--------------------------------|
+| CORE logic, small indices, parsing in range | Usually low |
+| Struct offsets, arrays | Low if you use `cell+` / `cells` |
+| Large products, big counters | Medium — overflow earlier on 16-bit |
+| Bit masks (`$FFFFFFFF`), CRC/hash, wire formats | High — use bytes/`chars`, doubles, or target-specific code |
+
+When numeric range or bit width matters, use `s>d`, `m*`, `*/` (see `forth-numeric.mdc`), probe `s" address-unit-bits" environment?`, and test on the smallest cell size you support.
+
 ## Char vs address units
 
 Use `char`, `chars`, `char+` for character buffers; do not assume 1 char = 1 address unit on all systems.
@@ -51,7 +66,9 @@ Use `aligned` / `align` when mixing `char+` addressing with cell `@` / `!` — u
 
 Prefer standard words where easy; use Gforth extensions when the project targets Gforth only or when `compat/` shims keep the program standard-compliant. Many extensions have drop-in compat files — include them with portable code rather than reimplementing.
 
-**Why embedded Forths omit extensions:** implementation cost (locals, FILE, FP, structured exceptions) vs Flash/RAM — see **`docs/FORTH-FEATURE-COMPLEXITY.md`** for a feature-by-feature complexity guide.
+**Why embedded Forths omit extensions:** implementation cost (locals, FILE, FP, structured exceptions) vs Flash/RAM — see **`docs/FORTH-FEATURE-COMPLEXITY.md`** for a feature-by-feature complexity guide. For memory models and system profiles (FMAP), see **`docs/FORTH-SYSTEM-ARCHITECTURE.md`** and **`data/forth-fmap-profiles.json`**. For threading (ITC/DTC/STC vs bytecode VM), see **`docs/FORTH-THREADING.md`** and **`data/forth-threading-models.json`**.
+
+**Portable algorithms across targets:** keep application logic in an **ANS wordset subset** (layer 1); platform/FMAP is layer 3 — see **`docs/FORTH-ANS-PORTABILITY-LAYER.md`**.
 
 Before claiming portability, run:
 

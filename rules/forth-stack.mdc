@@ -65,3 +65,13 @@ At the interpreter, numbers and words execute immediately. Inside `: … ;` they
 ## Mental model
 
 The data stack is the primary parameter-passing mechanism — not a temporary expression stack. Design words assuming the caller prepared the documented contract.
+
+## Typing mental model
+
+Forth has **no compile-time or runtime type checking**. A “type” is a **convention**, not a declaration:
+
+1. **Representation** — what occupies the stack: signed cell (default), `u`, `c`, `d` (two cells, MS on TOS), `f` on the FP stack. Similar operations use **different names** (`+`, `d+`, `f+`) — no overloading. See type prefixes in `forth-naming.mdc`.
+2. **Contract** — every `: word` documents `( inputs -- outputs )`; wrong items mean **misinterpreted bits**, rarely a catchable error.
+3. **Domain** — agreed shapes via factoring: `( c-addr u )` for strings, `create` / `does>` for indexed access — not struct/class types unless the project already uses them.
+
+**Do not import habits from C/TS:** no `int32_t`, no generic “multiply”, no implicit fixed width. For challenges and portable algo code, stack comments + name prefixes are enough; prefer `create`/`does>` over `objects.fs` unless OOP is already in the project.

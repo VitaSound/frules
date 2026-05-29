@@ -9,16 +9,21 @@ alwaysApply: false
 When several Forth rules are in context (Cursor attaches whole `.mdc` files by `globs`; cross-references do not auto-load), apply this order on conflict:
 
 1. **`frules-dialect.mdc`** — chosen dialect (always applied).
-2. **`forth-dialect-<name>.mdc`** — dialect syntax and idioms.
-3. **`forth-portability.mdc`** — only when the project targets multiple Forths.
-4. **`forth-anti-patterns.mdc`** — fix violations before adding more code.
-5. **Other `forth-*.mdc`** — generic guidance (stack, style, control, factoring, defining, memory, io, strings, numeric, wordlists, debugging, oof, c-bindings, floating-point, meta).
+2. **`forth-system-context.mdc`** — route **system/architecture** questions vs **code/challenge** tasks (always applied).
+3. **`forth-dialect-<name>.mdc`** — dialect syntax and idioms.
+4. **`forth-portability.mdc`** — only when the project targets multiple Forths.
+5. **`forth-anti-patterns.mdc`** — fix violations before adding more code.
+6. **Other `forth-*.mdc`** — generic guidance (stack, style, control, factoring, defining, memory, io, strings, numeric, wordlists, debugging, oof, c-bindings, floating-point, meta).
 
 Topic routing (pick the most specific file for the task):
 
 | Task | Rule file |
 |------|-----------|
+| **System / niche / architecture** (FMAP, threading, layers, co-design, FORTH-X, choosing a Forth) | `forth-system-context.mdc` → linked `docs/FORTH-*.md` |
+| **Implement or fix Forth code** (challenges, `.fs`, stack effects) | `forth-stack`, `forth-style`, `forth-control`, … — **not** architecture docs unless porting |
 | Stack order, manipulation, stack-effect design | `forth-stack.mdc` |
+| Typing model (no type check, stack contract) | `forth-stack.mdc` |
+| Cell size, portable numeric range, multi-target deps | `forth-portability.mdc` |
 | Double/mixed precision, pictured numeric output | `forth-numeric.mdc` |
 | if/loop/exit/recursion/flags, extended case | `forth-control.mdc` |
 | CREATE/DOES>, defer, quotations, forward, alias | `forth-defining.mdc` |
@@ -32,7 +37,14 @@ Topic routing (pick the most specific file for the task):
 | objects.fs classes (optional OOP) | `forth-oof.mdc` |
 | cfunction, calling C libraries | `forth-c-bindings.mdc` |
 | Gforth locals, require, try/endtry, structs | `forth-dialect-gforth.mdc` |
+| FORTH architecture docs (human reference) | `docs/FORTH-*-eng.md` (English) or `docs/FORTH-*.md` (Russian) |
+| Custom hardware / FPGA co-design with Forth | `docs/FORTH-HARDWARE-CODESIGN.md` (human reference) |
+| Choosing Forth system for a project / domain | `docs/FORTH-FMAP-GUIDE.md` (human reference) |
+| Threading models (ITC/DTC/STC), colon body format | `docs/FORTH-THREADING.md` (human reference) |
+| Embedded port, system architecture, FMAP/FTAS | `docs/FORTH-SYSTEM-ARCHITECTURE.md` (human reference) |
 | Embedded port, missing wordsets, feature cost | `docs/FORTH-FEATURE-COMPLEXITY.md` (human reference) |
+| Domain dialects FORTH-X, layer 0 | `docs/FORTH-DIALECT-LAYERS.md` (human reference) |
+| Route architecture vs coding tasks | `forth-system-context.mdc` |
 
 Do not repeat stack-tutorial material inside a defining-word edit.
 

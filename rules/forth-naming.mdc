@@ -90,6 +90,8 @@ Similar operations on different types use different names — Forth does not ove
 
 When signed and unsigned behave identically (e.g., `+`), only the prefix-less form exists. No compile-time type checking — wrong prefix means silent misinterpretation.
 
+For the full typing model (contracts, domain shapes), see **`forth-stack.mdc`** § Typing mental model.
+
 ## Structure names (Gforth manual §5.22)
 
 Avoid generic field names (`counter`, `next`) at top level — prefix with the structure:
