@@ -94,7 +94,7 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 131-topo-len.fs  (`topo-len`)
 - [x] 132-bt-zigzag.fs  (`zigzag-sum`)
 - [x] 133-knapsack01.fs  (`knapsack01?`)
-- [ ] 134-edit-distance.fs  (`edit-dist`)
+- [x] 134-edit-distance.fs  (`edit-dist`)
 - [ ] 135-lru-get.fs  (`lru-get`)
 - [x] 136-run-length-len.fs  (`rle-len`)
 - [x] 137-morse-len.fs  (`morse-len`)
