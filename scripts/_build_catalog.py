@@ -948,7 +948,7 @@ extend(
      "0/1 Knapsack Possible",
      ("Return TRUE if some subset of ch-data sums exactly to cap.", "Each item used at most once."),
      ("Bitset or DP.", "cap on stack."),
-     ("5 knapsack01? -> true", "12 knapsack01? -> false", "11 knapsack01? -> true"),
+     ("5 knapsack01? -> true", "12 knapsack01? -> true", "11 knapsack01? -> true"),
      "1 0 ch!  5 1 ch!  11 2 ch!  5 3 ch!\n4 constant ch-n"),
     (134, "edit-distance", "edit-dist", "( a-addr a-u b-addr b-u -- d )", "levenshtein-distance", 7, "leetcode",
      "https://leetcode.com/problems/edit-distance/", "dynamic-programming", "string", "Edit Distance",

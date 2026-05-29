@@ -29,6 +29,17 @@ create ch-data ch-max cells allot
 
 \ === paste your solution below this line ===
 
+: knapsack01?  ( cap -- flag )
+  dup 0< if  drop false exit  then
+  >r
+  1
+  ch-n 0 ?do
+    i ch@ >r
+    dup r@ lshift or
+    rdrop
+  loop
+  r> rshift 1 and 0<> ;
+
 \ === paste your solution above this line ===
 
 T{ 5 knapsack01? -> true }T
