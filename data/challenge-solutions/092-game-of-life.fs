@@ -33,6 +33,54 @@ create ch-grid ch-cols ch-rows * cells allot
 
 \ === paste your solution below this line ===
 
+create life-scr  ch-cols ch-rows * cells allot
+
+: lscr@ ( col row -- n )  ch-cols * + cells life-scr + @ ;
+: lscr! ( n col row -- )  ch-cols * + cells life-scr + ! ;
+
+: life-in? ( col row -- f )
+  { col row }
+  col 0>= row 0>= and row ch-rows-used < and col ch-cols-used < and ;
+
+: life-live? ( col row -- n )
+  2dup life-in? if  ch-grid@ 1 and  else  2drop 0  then ;
+
+: life-nbrs ( col row -- n )
+  { c r }
+  0
+  c r 1- life-live? +
+  c 1+ r 1- life-live? +
+  c 1+ r life-live? +
+  c 1+ r 1+ life-live? +
+  c r 1+ life-live? +
+  c 1- r 1+ life-live? +
+  c 1- r life-live? +
+  c 1- r 1- life-live? + ;
+
+: life-next-cell ( col row -- n )
+  { col row }
+  col row life-nbrs { n }
+  col row ch-grid@ 1 and if
+    n 2 = n 3 = or if 1 else 0 then
+  else
+    n 3 = if 1 else 0 then
+  then ;
+
+: life-copy-back ( -- )
+  ch-rows-used 0 ?do
+    ch-cols-used 0 ?do
+      j i lscr@ j i ch-grid!
+    loop
+  loop ;
+
+: life-next ( -- )
+  ch-rows-used 0 ?do
+    ch-cols-used 0 ?do
+      j i life-next-cell j i lscr!
+    loop
+  loop
+  life-copy-back ;
+
 \ === paste your solution above this line ===
 
 T{ life-next }T

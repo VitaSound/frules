@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **51 / 94**
+Progress: **52 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -63,7 +63,7 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 087-last-stone.fs  (`last-stone`)
 - [x] 090-spiral-len.fs  (`spiral-cells`)
 - [x] 091-set-zeroes.fs  (`set-zeroes`)
-- [ ] 092-game-of-life.fs  (`life-next`)
+- [x] 092-game-of-life.fs  (`life-next`)
 - [ ] 093-word-search.fs  (`word-search?`)
 - [ ] 094-max-area-island.fs  (`max-island`)
 - [ ] 097-max-consecutive-ones.fs  (`max-ones`)
