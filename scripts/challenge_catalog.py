@@ -2343,13 +2343,14 @@ _CHALLENGES: list[dict] = [{'id': 1,
   'spec': ['Return sum of values on zigzag level-order traversal.',
            'Alternating left-right per level.'],
   'style': ['BFS with direction flag.', 'Uses TREE scaffold.'],
-  'tests': ['1 zigzag-sum -> 22', '2 zigzag-sum -> 2'],
-  'extra_scaffold': ': ch-t! ( n off -- )  swap cells ch-tree + ! ;\n'
+  'tests': ['1 zigzag-sum -> 45', '2 zigzag-sum -> 27'],
+  'extra_scaffold': ': ch-t! ( n off -- )  cells ch-tree + ! ;\n'
                     '3 0 ch-t!  2 1 ch-t!  3 2 ch-t!\n'
                     '9 3 ch-t!  0 4 ch-t!  0 5 ch-t!\n'
                     '20 6 ch-t!  4 7 ch-t!  5 8 ch-t!\n'
                     '15 9 ch-t!  0 10 ch-t!  0 11 ch-t!\n'
                     '7 12 ch-t!  0 13 ch-t!  0 14 ch-t!\n'
+                    '0 15 ch-t!  0 16 ch-t!  0 17 ch-t!\n'
                     '1 constant ch-root\n'
                     '2 constant ch-root-small'},
  {'id': 133,
