@@ -976,7 +976,7 @@ extend(
      "https://www.codewars.com/kata/5262119038c0985a5b00029", "strings", "string", "Morse Decode Len",
      ("Return length of decoded message from morse string (space-separated codes).", "Invalid -> 0."),
      ("Table lookup.", "Use ch-setup."),
-     ('s" .... . -.-- . .-. .." ch-setup morse-len -> 8', 's" -.... . .-.. .-.. --- .--." ch-setup morse-len -> 10')),
+    ('s" .... . -.-- . .-. .." ch-setup morse-len -> 6', 's" -.... . .-.. .-.. --- .--." ch-setup morse-len -> 6')),
     (138, "collatz-steps", "collatz", "( n -- steps )", "collatz-sequence-length", 4, "project-euler",
      "https://projecteuler.net/problem=14", "recursion", "scalar", "Collatz Steps",
      ("Return number of steps to reach 1 in Collatz sequence starting at n.", "n>=1."),

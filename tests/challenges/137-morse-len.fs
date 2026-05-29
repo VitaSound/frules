@@ -27,7 +27,7 @@ create ch-buf 64 chars allot
 
 \ === paste your solution above this line ===
 
-T{ s" .... . -.-- . .-. .." ch-setup morse-len -> 8 }T
-T{ s" -.... . .-.. .-.. --- .--." ch-setup morse-len -> 10 }T
+T{ s" .... . -.-- . .-. .." ch-setup morse-len -> 6 }T
+T{ s" -.... . .-.. .-.. --- .--." ch-setup morse-len -> 6 }T
 
 report bye
