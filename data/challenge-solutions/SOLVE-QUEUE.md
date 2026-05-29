@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **53 / 94**
+Progress: **57 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -64,11 +64,11 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 090-spiral-len.fs  (`spiral-cells`)
 - [x] 091-set-zeroes.fs  (`set-zeroes`)
 - [x] 092-game-of-life.fs  (`life-next`)
-- [ ] 093-word-search.fs  (`word-search?`)
-- [ ] 094-max-area-island.fs  (`max-island`)
-- [ ] 097-max-consecutive-ones.fs  (`max-ones`)
-- [ ] 098-fruit-baskets.fs  (`fruit-baskets`)
-- [ ] 099-subarray-product.fs  (`subarray-prod`)
+- [x] 093-word-search.fs  (`word-search?`)
+- [x] 094-max-area-island.fs  (`max-island`)
+- [x] 097-max-consecutive-ones.fs  (`max-ones`)
+- [x] 098-fruit-baskets.fs  (`fruit-baskets`)
+- [x] 099-subarray-product.fs  (`subarray-prod`)
 - [ ] 100-max-vowels.fs  (`max-vowels`)
 - [ ] 103-count-bits.fs  (`count-bits`)
 - [ ] 104-reverse-bits.fs  (`reverse-bits`)

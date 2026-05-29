@@ -30,6 +30,45 @@ create ch-data ch-max cells allot
 
 \ === paste your solution below this line ===
 
+create fb-cnt  ch-max cells allot
+
+variable fb-left
+variable fb-best
+variable fb-kinds
+
+: fb-cnt@ ( val -- n )  cells fb-cnt + @ ;
+: fb-cnt! ( n val -- )  cells fb-cnt + ! ;
+
+: fb-clear ( -- )
+  ch-max 0 ?do  0 i fb-cnt!  loop
+  0 fb-left !  0 fb-best !  0 fb-kinds ! ;
+
+: fb-add ( val -- )
+  dup fb-cnt@ dup if
+    1+ swap fb-cnt!
+  else
+    drop  1 swap fb-cnt!  1 fb-kinds +!
+  then ;
+
+: fb-remove ( val -- )
+  dup fb-cnt@ 1- dup if
+    swap fb-cnt!
+  else
+    drop  0 swap fb-cnt!  -1 fb-kinds +!
+  then ;
+
+: fruit-baskets ( -- len )
+  fb-clear
+  ch-n 0 ?do
+    i ch@ fb-add
+    begin  fb-kinds @ 2 >  while
+      fb-left @ ch@ fb-remove
+      fb-left @ 1+ fb-left !
+    repeat
+    i fb-left @ - 1+ fb-best @ max fb-best !
+  loop
+  fb-best @ ;
+
 \ === paste your solution above this line ===
 
 T{ fruit-baskets -> 4 }T

@@ -15,7 +15,7 @@
 \   - k on stack.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: k=2 expected 9 (three zeros in array).
+\ Fixed: k=2 expected 9 (array has 3 zeros; full length needs k>=3).
 \
 include _tester.fs
 
@@ -29,6 +29,24 @@ create ch-data ch-max cells allot
 10 constant ch-n
 
 \ === paste your solution below this line ===
+
+variable mo-k
+variable mo-left
+variable mo-zeros
+variable mo-best
+
+: max-ones ( k -- len )
+  mo-k !
+  0 mo-left !  0 mo-zeros !  0 mo-best !
+  ch-n 0 ?do
+    i ch@ 0= if  1 mo-zeros +!  then
+    begin  mo-zeros @ mo-k @ >  while
+      mo-left @ ch@ 0= if  -1 mo-zeros +!  then
+      mo-left @ 1+ mo-left !
+    repeat
+    i mo-left @ - 1+ mo-best @ max mo-best !
+  loop
+  mo-best @ ;
 
 \ === paste your solution above this line ===
 

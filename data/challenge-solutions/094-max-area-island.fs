@@ -15,7 +15,7 @@
 \   - Uses grid scaffold.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: 2x3 island block yields area 6.
+\ Fixed: 2x3 island block yields area 6 (was 3 on old grid).
 \
 include _tester.fs
 
@@ -33,6 +33,32 @@ create ch-grid ch-cols ch-rows * cells allot
 3 constant ch-rows-used
 
 \ === paste your solution below this line ===
+
+: isl-in? ( c r -- f )
+  { c r }
+  c 0>= r 0>= and r ch-rows-used < and c ch-cols-used < and ;
+
+: isl-dfs ( c r -- area )
+  recursive
+  { c r }
+  c r isl-in? 0= if 0 exit then
+  c r ch-grid@ 1 <> if 0 exit then
+  0 c r ch-grid!
+  1
+  c 1+ r isl-dfs +
+  c 1- r isl-dfs +
+  c r 1+ isl-dfs +
+  c r 1- isl-dfs + ;
+
+: max-island ( -- area )
+  0
+  ch-rows-used 0 ?do
+    ch-cols-used 0 ?do
+      i j ch-grid@ 1 = if
+        i j isl-dfs max
+      then
+    loop
+  loop ;
 
 \ === paste your solution above this line ===
 
