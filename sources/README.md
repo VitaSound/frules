@@ -62,3 +62,5 @@ starting-forth-ch01-stack.txt
 - дублирование полного словаря ANS (есть в справочниках реализации).
 
 После добавления файла обновите `docs/SOURCES.md` и соответствующие `.mdc` в `rules/`.
+
+Справочник по **стоимости реализации** возможностей Forth (ядро, locals, cross-compile, …) — [`docs/FORTH-FEATURE-COMPLEXITY.md`](../docs/FORTH-FEATURE-COMPLEXITY.md) (не привязан к конкретным источникам в `sources/`).

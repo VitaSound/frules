@@ -32,6 +32,7 @@ Topic routing (pick the most specific file for the task):
 | objects.fs classes (optional OOP) | `forth-oof.mdc` |
 | cfunction, calling C libraries | `forth-c-bindings.mdc` |
 | Gforth locals, require, try/endtry, structs | `forth-dialect-gforth.mdc` |
+| Embedded port, missing wordsets, feature cost | `docs/FORTH-FEATURE-COMPLEXITY.md` (human reference) |
 
 Do not repeat stack-tutorial material inside a defining-word edit.
 

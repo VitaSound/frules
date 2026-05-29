@@ -41,6 +41,7 @@ dialect=gforth
 | `examples/` | Эталоны `good.fs` / `bad.fs` для модели |
 | `sources/` | Исходники: книги, главы, выписки (PDF, txt, md) |
 | `docs/SOURCES.md` | Откуда взята каждая тема в `rules/` |
+| `docs/FORTH-FEATURE-COMPLEXITY.md` | Сложность реализации фич Forth (ядро, locals, FILE, …) |
 | `docs/RULES-ARCHITECTURE.md` | Как работает подгрузка с ИИ |
 | `docs/DISTILL-PROMPT.md` | Промпт для перегонки книги в правила |
 | `data/` | JSONL для SFT (`sandbox.jsonl`, `train.jsonl`) |

@@ -51,6 +51,8 @@ Use `aligned` / `align` when mixing `char+` addressing with cell `@` / `!` — u
 
 Prefer standard words where easy; use Gforth extensions when the project targets Gforth only or when `compat/` shims keep the program standard-compliant. Many extensions have drop-in compat files — include them with portable code rather than reimplementing.
 
+**Why embedded Forths omit extensions:** implementation cost (locals, FILE, FP, structured exceptions) vs Flash/RAM — see **`docs/FORTH-FEATURE-COMPLEXITY.md`** for a feature-by-feature complexity guide.
+
 Before claiming portability, run:
 
 ```forth
