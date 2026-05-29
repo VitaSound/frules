@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **22 / 94**
+Progress: **25 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -31,9 +31,9 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 036-decode-string-len.fs  (`decode-len`)
 - [-] 037-asteroid-collision.fs  (`asteroid-survive`)
 - [x] 041-search-range.fs  (`search-range`)
-- [ ] 042-search-matrix.fs  (`matrix-search?`)
-- [ ] 043-sqrt-binary.fs  (`isqrt-n`)
-- [ ] 044-peak-index.fs  (`peak-idx`)
+- [x] 042-search-matrix.fs  (`matrix-search?`)
+- [x] 043-sqrt-binary.fs  (`isqrt-n`)
+- [x] 044-peak-index.fs  (`peak-idx`)
 - [ ] 048-middle-node.fs  (`middle-node`)
 - [ ] 049-remove-nth-end.fs  (`remove-nth`)
 - [ ] 050-swap-pairs.fs  (`swap-pairs`)

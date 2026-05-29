@@ -29,6 +29,15 @@ create ch-data ch-max cells allot
 
 \ === paste your solution below this line ===
 
+: peak-idx ( -- idx )
+  0 { lo }
+  ch-n 1- { hi }
+  begin  lo hi <  while
+    lo hi + 2/ { mid }
+    mid ch@ mid 1+ ch@ < if  mid 1+ to lo  else  mid to hi  then
+  repeat
+  lo ;
+
 \ === paste your solution above this line ===
 
 T{ peak-idx -> 3 }T
