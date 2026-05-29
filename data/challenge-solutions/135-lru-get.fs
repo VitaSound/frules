@@ -24,8 +24,6 @@ create ch-data ch-max cells allot
 
 : ch@  ( i -- n )  cells ch-data + @ ;
 : ch!  ( n i -- )  cells ch-data + ! ;
-: lru-init ( -- ) ;
-: lru-put ( key val -- ) ;
 
 \ === paste your solution below this line ===
 
