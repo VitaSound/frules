@@ -8,6 +8,9 @@
 | `train.jsonl` | Track B seed from frules only (~40 pairs); extend to 500+ |
 | `eval.jsonl` | Optional hold-out (generate with `--split` later) |
 | `raw.jsonl` | Optional intermediate from `build-dataset.py` |
+| `forth-fmap-profiles.json` | FMAP profiles of Forth systems (SFT conditioning, retrieval) |
+| `forth-threading-models.json` | Threading models (ITC/DTC/STC/…); join via `ex_c` / `fmap_ex_c` |
+| `forth-use-case-templates.json` | Use-case → FMAP templates (embedded, ECU, hosted, …) |
 
 ## Regenerate
 

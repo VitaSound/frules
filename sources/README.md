@@ -63,4 +63,13 @@ starting-forth-ch01-stack.txt
 
 После добавления файла обновите `docs/SOURCES.md` и соответствующие `.mdc` в `rules/`.
 
-Справочник по **стоимости реализации** возможностей Forth (ядро, locals, cross-compile, …) — [`docs/FORTH-FEATURE-COMPLEXITY.md`](../docs/FORTH-FEATURE-COMPLEXITY.md) (не привязан к конкретным источникам в `sources/`).
+Справочники (hand-authored, не distill из `sources/`):
+
+Hand-authored references (not distilled from `sources/`). Each has an **English** `-eng.md` twin:
+
+- **ANS portable algorithm layer** — [`docs/FORTH-ANS-PORTABILITY-LAYER.md`](../docs/FORTH-ANS-PORTABILITY-LAYER.md) · [eng](../docs/FORTH-ANS-PORTABILITY-LAYER-eng.md)
+- **Hardware + Forth co-design** — [`docs/FORTH-HARDWARE-CODESIGN.md`](../docs/FORTH-HARDWARE-CODESIGN.md) · [eng](../docs/FORTH-HARDWARE-CODESIGN-eng.md)
+- **Using FMAP** — [`docs/FORTH-FMAP-GUIDE.md`](../docs/FORTH-FMAP-GUIDE.md) · [eng](../docs/FORTH-FMAP-GUIDE-eng.md)
+- **System architecture, FMAP** — [`docs/FORTH-SYSTEM-ARCHITECTURE.md`](../docs/FORTH-SYSTEM-ARCHITECTURE.md) · [eng](../docs/FORTH-SYSTEM-ARCHITECTURE-eng.md); profiles — [`data/forth-fmap-profiles.json`](../data/forth-fmap-profiles.json)
+- **Threaded code** — [`docs/FORTH-THREADING.md`](../docs/FORTH-THREADING.md) · [eng](../docs/FORTH-THREADING-eng.md); models — [`data/forth-threading-models.json`](../data/forth-threading-models.json)
+- **Feature implementation cost** — [`docs/FORTH-FEATURE-COMPLEXITY.md`](../docs/FORTH-FEATURE-COMPLEXITY.md) · [eng](../docs/FORTH-FEATURE-COMPLEXITY-eng.md)

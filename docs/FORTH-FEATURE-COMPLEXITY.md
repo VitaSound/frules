@@ -1,5 +1,7 @@
 # Сложность реализации возможностей Forth
 
+> **English:** [FORTH-FEATURE-COMPLEXITY-eng.md](FORTH-FEATURE-COMPLEXITY-eng.md)
+
 Справочник для авторов **ядра**, **embedded-портов** и **прикладного кода**: что стоит за «простой» фичей в Forth и почему минимальные системы сознательно её не включают.
 
 Не привязан к конкретным челленджам frules — описывает **любую** Forth-систему (eForth, FlashForth, Mecrisp, Gforth, SwiftForth, …).
@@ -9,7 +11,7 @@
 1. **Минимальное ядро (bootstrap)** — сколько примитивов зашить в asm/C, чтобы остальное определить в Forth.
 2. **Сложность фич** — что стоит добавлять после bootstrap и почему embedded это урезают.
 
-См. также: [`forth-portability.mdc`](../rules/forth-portability.mdc), [`forth-dialect-gforth.mdc`](../rules/forth-dialect-gforth.mdc), [`docs/DIALECT-TEST.md`](DIALECT-TEST.md).
+См. также: [`FORTH-FMAP-GUIDE.md`](FORTH-FMAP-GUIDE.md) (выбор системы под задачу), [`FORTH-THREADING.md`](FORTH-THREADING.md) (ITC/DTC/STC, inner interpreter), [`FORTH-SYSTEM-ARCHITECTURE.md`](FORTH-SYSTEM-ARCHITECTURE.md) (FMAP/FTAS, Harvard, каталог систем), [`forth-portability.mdc`](../rules/forth-portability.mdc), [`forth-dialect-gforth.mdc`](../rules/forth-dialect-gforth.mdc), [`docs/DIALECT-TEST.md`](DIALECT-TEST.md).
 
 ---
 
@@ -35,7 +37,7 @@
 
 | Компонент | Назначение |
 |-----------|------------|
-| Inner interpreter | Цикл `NEXT` / `docol` / `doprim` (ITC, DTC или STC) |
+| Inner interpreter | Цикл `NEXT` / `docol` / `doprim` — только **ITC/DTC**; STC без inner loop — см. [`FORTH-THREADING.md`](FORTH-THREADING.md) |
 | Карта памяти | Стеки, heap словаря, cold start |
 | Формат заголовка слова | Link, name, code field — хотя бы неявно в примитивах `CREATE` |
 
@@ -297,6 +299,6 @@
 | `dialect=gforth`, desktop, челленджи | locals, Gforth strings — OK |
 | `dialect=ans`, несколько Forth | без `{ }`; стандартные wordsets |
 | Embedded / cross-compile | проектировать на стеке; globals только для железа и singleton state |
-| Обучение модели | в датасете явно помечать **environmental dependencies** |
+| Обучение модели | в датасете явно помечать **environmental dependencies**, **FMAP** целевой системы и **разделение algo/platform** — см. [`FORTH-ANS-PORTABILITY-LAYER.md`](FORTH-ANS-PORTABILITY-LAYER.md), [`FORTH-SYSTEM-ARCHITECTURE.md`](FORTH-SYSTEM-ARCHITECTURE.md) §13, [`data/forth-fmap-profiles.json`](../data/forth-fmap-profiles.json) |
 
-При добавлении нового `forth-dialect-*.mdc` для embedded-системы — зафиксировать **подмножество wordsets** и отсутствующие фичи; сложность реализации недостающего — по таблицам выше.
+При добавлении нового `forth-dialect-*.mdc` для embedded-системы — зафиксировать **подмножество wordsets** и отсутствующие фичи; сложность реализации недостающего — по таблицам выше; профиль системы — в FMAP JSON.

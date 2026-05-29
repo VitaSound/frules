@@ -1,0 +1,271 @@
+{
+  "_meta": {
+    "schema": "forth-use-case-templates/v1",
+    "description": "Use-case templates mapping domain requirements to FMAP axis ranges and example profiles. Human guide: docs/FORTH-FMAP-GUIDE.md",
+    "related_files": [
+      "docs/FORTH-FMAP-GUIDE.md",
+      "docs/FORTH-SYSTEM-ARCHITECTURE.md",
+      "data/forth-fmap-profiles.json"
+    ]
+  },
+  "templates": [
+    {
+      "id": "embedded-frozen-product",
+      "name_ru": "Embedded: продукт без REPL",
+      "name_en": "Embedded frozen product firmware",
+      "domain": ["sensor", "actuator", "ecu-ship", "iot-ship"],
+      "description": "Reset runs prebuilt app; no QUIT loop in field; logic changes via reflash or host cross only.",
+      "fmap_target": {
+        "rp": [0, 1],
+        "mm": ["S", "F", "D"],
+        "ex_o": ["C", "M"],
+        "ex_c": ["S", "N"],
+        "ex_p": ["A", "G"],
+        "cg": ["E", "M"],
+        "bm": ["C", "T"],
+        "nc": [0, 3]
+      },
+      "tags": ["+C"],
+      "tags_optional": ["+F"],
+      "example_profile_ids": ["j1"],
+      "avoid": ["RP=5", "FILE wordset", "full locals", "assume REPL"],
+      "lifecycle_note": "Often paired with embedded-field-repl for lab build."
+    },
+    {
+      "id": "embedded-field-repl",
+      "name_ru": "Embedded: REPL в поле (UART/CAN)",
+      "name_en": "Embedded with field REPL",
+      "domain": ["mcu-dev", "factory-calibration", "ecu-lab", "hobby-mcu"],
+      "description": "QUIT loop, INTERPRET, compile new words on device; often Flash-backed dictionary.",
+      "fmap_target": {
+        "rp": [3, 4],
+        "mm": ["S", "D"],
+        "ex_o": ["M"],
+        "ex_c": ["S", "N"],
+        "ex_p": ["A", "G"],
+        "cg": ["E", "M"],
+        "bm": ["T", "H"],
+        "nc": [0, 3]
+      },
+      "tags": ["+F"],
+      "tags_optional": ["+C", "+B", "+L"],
+      "example_profile_ids": ["stm8ef", "flashforth", "amforth", "mecrisp-stellaris", "taliforth2"],
+      "avoid": ["Gforth { locals } by default", "ITC-only idioms on STC", "HERE , for Flash without NVM path"]
+    },
+    {
+      "id": "ecu-dual-phase",
+      "name_ru": "ECU: lab (REPL) + series (frozen)",
+      "name_en": "ECU dual-phase lab and production",
+      "domain": ["automotive", "engine-control", "industrial-controller"],
+      "description": "Two FMAP profiles: development firmware with REPL; shipping firmware cross-compiled AOT.",
+      "phases": [
+        {
+          "phase": "lab",
+          "fmap_target": { "rp": [4], "mm": ["S"], "ex_c": ["N", "S"], "tags": ["+C", "+F"] },
+          "example_profile_ids": ["mecrisp-stellaris"]
+        },
+        {
+          "phase": "series",
+          "fmap_target": { "rp": [0, 1], "mm": ["S", "F"], "ex_c": ["N"], "tags": ["+C"] },
+          "example_profile_ids": []
+        }
+      ],
+      "avoid": ["single RP=5 image for both phases", "FILE on series ECU without strong justification"]
+    },
+    {
+      "id": "hosted-desktop-tool",
+      "name_ru": "Hosted: утилита / CLI на Linux или Windows",
+      "name_en": "Hosted desktop CLI tool",
+      "domain": ["scripting", "log-analysis", "dev-tool", "education"],
+      "description": "Full OS; Gforth-class; FILE, paths, optional C bindings.",
+      "fmap_target": {
+        "rp": [5],
+        "mm": ["U"],
+        "ex_o": ["M"],
+        "ex_c": ["I", "N"],
+        "ex_p": ["G"],
+        "cg": ["M"],
+        "bm": ["N"],
+        "nc": [2, 3]
+      },
+      "tags": ["+L"],
+      "tags_optional": [],
+      "example_profile_ids": ["gforth"],
+      "avoid": ["STC assumptions", "Flash compile paths", "embedded memory maps"]
+    },
+    {
+      "id": "hosted-mobile-userland",
+      "name_ru": "Hosted: Forth как процесс (Android, Termux, chroot)",
+      "name_en": "Hosted Forth in mobile/Linux userland",
+      "domain": ["smartphone", "tablet", "embedded-linux-hmi"],
+      "description": "Not bare-metal; Forth runs under OS with unified memory and full REPL.",
+      "fmap_target": {
+        "rp": [5],
+        "mm": ["U"],
+        "ex_o": ["M"],
+        "ex_c": ["I", "N"],
+        "ex_p": ["G"],
+        "cg": ["M"],
+        "bm": ["N"],
+        "nc": [2, 3]
+      },
+      "tags": ["+L"],
+      "tags_optional": [],
+      "example_profile_ids": ["gforth"],
+      "avoid": ["confusing with FlashForth on AVR", "Harvard MM on phone"]
+    },
+    {
+      "id": "fpga-cross-only",
+      "name_ru": "FPGA / soft-CPU: только cross",
+      "name_en": "FPGA soft-CPU cross-only",
+      "domain": ["fpga", "accelerator", "custom-silicon"],
+      "description": "Forth on host builds opcode stream; device has no text interpreter.",
+      "fmap_target": {
+        "rp": [0, 1],
+        "mm": ["V"],
+        "ex_o": ["C"],
+        "ex_c": ["V"],
+        "ex_p": ["A"],
+        "cg": ["I", "C"],
+        "bm": ["C"],
+        "nc": [0]
+      },
+      "tags": [],
+      "tags_optional": [],
+      "example_profile_ids": ["j1", "mecrisp-ice"],
+      "avoid": ["REPL on device", "ITC/DTC on stack CPU"]
+    },
+    {
+      "id": "hardware-codesign",
+      "name_ru": "Co-design: новое железо + Forth под задачу",
+      "name_en": "Hardware-software co-design with Forth",
+      "domain": ["ecu-custom", "nn-accelerator", "systolic", "custom-peripherals", "ttl-hobby", "asic-prototype"],
+      "description": "Design CPU/peripherals together with Forth model; host Gforth cross generates image; no C compiler on target. Custom timers, PWM banks, sensor cells, MAC arrays as memory-mapped words or opcodes.",
+      "fmap_target": {
+        "rp": [0, 1, 2],
+        "mm": ["V"],
+        "ex_o": ["C"],
+        "ex_c": ["V"],
+        "ex_p": ["A", "G"],
+        "cg": ["I", "E", "M"],
+        "bm": ["C"],
+        "nc": [0],
+        "class": [0]
+      },
+      "tags": [],
+      "tags_optional": ["+C", "+HW"],
+      "example_profile_ids": ["j1", "mecrisp-ice"],
+      "implementation_levels": ["L1-ttl-retro", "L2-fpga-soft-cpu", "L3-fpga-datapath", "L4-asic", "L5-mcu-fpga-copro"],
+      "avoid": [
+        "C compiler port as first step",
+        "full libc on target",
+        "RP=5 meta on silicon",
+        "STM32 HAL idioms",
+        "assuming ITC/NEXT unless hybrid MCU path"
+      ],
+      "doc": "docs/FORTH-HARDWARE-CODESIGN.md",
+      "when_prefer_over_mcu": [
+        "timing cannot be met in software ISR loop",
+        "many parallel identical channels",
+        "structured datapath (PWM bank, MAC array, sensor snapshot RAM)",
+        "pedagogical or experimental platform",
+        "small series where FPGA/ASIC + simple runtime beats powerful MCU + complex firmware"
+      ]
+    },
+    {
+      "id": "retro-self-host",
+      "name_ru": "Retro: self-host на 6502/Z80",
+      "name_en": "Retro self-hosting Forth",
+      "domain": ["retro", "6502", "z80", "hobby"],
+      "description": "REPL on vintage hardware; often STC; cross from modern host for bootstrap.",
+      "fmap_target": {
+        "rp": [4],
+        "mm": ["U", "S"],
+        "ex_o": ["M"],
+        "ex_c": ["S", "I"],
+        "ex_p": ["A"],
+        "cg": ["E", "F"],
+        "bm": ["C", "H"],
+        "nc": [0, 1]
+      },
+      "tags": [],
+      "tags_optional": ["+F"],
+      "example_profile_ids": ["taliforth2", "cerberus-z80", "firth"],
+      "avoid": ["32-bit native compile assumptions"]
+    },
+    {
+      "id": "teaching-bootstrap",
+      "name_ru": "Обучение: eForth bootstrap",
+      "name_en": "Teaching eForth bootstrap",
+      "domain": ["education", "os-course", "forth-internals"],
+      "description": "Understand ITC, ~31 prims, build system in Forth; usually hosted or emulator.",
+      "fmap_target": {
+        "rp": [3, 5],
+        "mm": ["U"],
+        "ex_o": ["M"],
+        "ex_c": ["I"],
+        "ex_p": ["V", "G"],
+        "cg": ["F", "M"],
+        "bm": ["C", "N"],
+        "nc": [0]
+      },
+      "tags": [],
+      "tags_optional": ["+L"],
+      "example_profile_ids": ["eforth-minimal", "gforth"],
+      "avoid": ["skipping inner interpreter discussion on ITC systems"]
+    },
+    {
+      "id": "industrial-linux-panel",
+      "name_ru": "Industrial HMI: Linux panel",
+      "name_en": "Industrial HMI Linux panel",
+      "domain": ["hmi", "scada-panel", "factory-ui"],
+      "description": "Touch panel, OS present; Forth for logic/glue or domain DSL; may be read-only in production.",
+      "fmap_target": {
+        "rp": [2, 5],
+        "mm": ["U"],
+        "ex_o": ["M", "I"],
+        "ex_c": ["I", "N"],
+        "ex_p": ["G"],
+        "cg": ["M"],
+        "bm": ["N", "T"],
+        "nc": [2, 3]
+      },
+      "tags": ["+L"],
+      "tags_optional": [],
+      "example_profile_ids": ["gforth"],
+      "avoid": ["STC Flash paths", "8-bit RAM limits"]
+    }
+  ],
+  "decision_questions": [
+    {
+      "id": "repl-in-field",
+      "question_ru": "Нужен ли интерактивный Forth (QUIT) на устройстве в эксплуатации?",
+      "yes": { "rp_min": 3 },
+      "no": { "rp_max": 1 }
+    },
+    {
+      "id": "flash-compile",
+      "question_ru": "Нужно ли сохранять новые слова в Flash без перепрошивки всего образа?",
+      "yes": { "tags": ["+F"], "rp_min": 4, "mm": ["S", "D"] },
+      "no": { "rp_max": 3, "bm": ["C"] }
+    },
+    {
+      "id": "c-integration",
+      "question_ru": "Есть ли критичный код на C (ISR, drivers, RTOS)?",
+      "yes": { "tags": ["+C"] },
+      "no": {}
+    },
+    {
+      "id": "harvard-mcu",
+      "question_ru": "MCU с отдельным Flash для кода?",
+      "yes": { "mm": ["S", "D"], "ex_c_prefer": ["S", "N"] },
+      "no": { "mm": ["U"] }
+    },
+    {
+      "id": "os-present",
+      "question_ru": "Есть полноценная ОС (Linux, Windows, Android userland)?",
+      "yes": { "class": [4], "rp": [5], "mm": ["U"] },
+      "no": { "class": [0, 1, 2, 3] }
+    }
+  ]
+}

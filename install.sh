@@ -61,6 +61,7 @@ mkdir -p "$RULES_DST"
 # Files always installed regardless of profile/dialect.
 ALWAYS=(
   frules-index.mdc
+  forth-system-context.mdc
 )
 
 # Topic files for `full` profile (alphabetical).

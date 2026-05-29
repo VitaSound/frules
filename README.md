@@ -38,10 +38,22 @@ dialect=gforth
 |------|------------|
 | `rules/` | Модули для ИИ (`.mdc`, English) |
 | `rules/frules-index.mdc` | Приоритеты при конфликте правил |
+| `rules/forth-system-context.mdc` | Маршрутизация: архитектура vs код/challenges |
 | `examples/` | Эталоны `good.fs` / `bad.fs` для модели |
 | `sources/` | Исходники: книги, главы, выписки (PDF, txt, md) |
 | `docs/SOURCES.md` | Откуда взята каждая тема в `rules/` |
-| `docs/FORTH-FEATURE-COMPLEXITY.md` | Сложность реализации фич Forth (ядро, locals, FILE, …) |
+| `docs/DOC-AUTHORSHIP.md` | Оговорки: AI-assisted FORTH-docs · [eng](docs/DOC-AUTHORSHIP-eng.md) |
+| `docs/FORTH-*-eng.md` | English copies of FORTH architecture docs (paired with Russian `FORTH-*.md`) |
+| `docs/FORTH-ANS-PORTABILITY-LAYER.md` | ANS as portable algorithm layer (RU) · [eng](docs/FORTH-ANS-PORTABILITY-LAYER-eng.md) |
+| `docs/FORTH-DIALECT-LAYERS.md` | Domain dialects FORTH-X, layer 0 (RU) · [eng](docs/FORTH-DIALECT-LAYERS-eng.md) |
+| `docs/FORTH-HARDWARE-CODESIGN.md` | Co-design hardware + Forth (RU) · [eng](docs/FORTH-HARDWARE-CODESIGN-eng.md) |
+| `docs/FORTH-FMAP-GUIDE.md` | Using FMAP to choose Forth (RU) · [eng](docs/FORTH-FMAP-GUIDE-eng.md) |
+| `docs/FORTH-SYSTEM-ARCHITECTURE.md` | Forth system architecture, FMAP (RU) · [eng](docs/FORTH-SYSTEM-ARCHITECTURE-eng.md) |
+| `docs/FORTH-THREADING.md` | Threaded code ITC/DTC/STC (RU) · [eng](docs/FORTH-THREADING-eng.md) |
+| `docs/FORTH-FEATURE-COMPLEXITY.md` | Feature implementation cost (RU) · [eng](docs/FORTH-FEATURE-COMPLEXITY-eng.md) |
+| `data/forth-fmap-profiles.json` | Машиночитаемые профили систем (для SFT / retrieval) |
+| `data/forth-threading-models.json` | Модели threading (EX-C), связь с профилями |
+| `data/forth-use-case-templates.json` | Шаблоны use case → FMAP (embedded, ECU, hosted, …) |
 | `docs/RULES-ARCHITECTURE.md` | Как работает подгрузка с ИИ |
 | `docs/DISTILL-PROMPT.md` | Промпт для перегонки книги в правила |
 | `data/` | JSONL для SFT (`sandbox.jsonl`, `train.jsonl`) |

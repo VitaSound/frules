@@ -129,6 +129,25 @@ python3 scripts/build-dataset.py --sandbox --validate
 
 Приоритет: **код с gforth** > rules в system > prose (Brodie, Gforth tutorial).
 
+### Embedded и портирование (FMAP)
+
+Пошаговый выбор системы под задачу — [`FORTH-FMAP-GUIDE.md`](FORTH-FMAP-GUIDE.md); шаблоны — [`data/forth-use-case-templates.json`](../data/forth-use-case-templates.json).
+
+Для пар «промпт → Forth под конкретное железо» добавляйте в **system** или **user** контекст:
+
+1. Целевую систему (`stm8ef`, `Mecrisp-Stellaris`, …).
+2. Краткий **FMAP** (MM, EX-C, RP) — см. [`FORTH-SYSTEM-ARCHITECTURE.md`](FORTH-SYSTEM-ARCHITECTURE.md) §13, [`FORTH-THREADING.md`](FORTH-THREADING.md) §11 для EX-C.
+3. Профиль из [`data/forth-fmap-profiles.json`](../data/forth-fmap-profiles.json) (поле `id`) + модель из [`data/forth-threading-models.json`](../data/forth-threading-models.json) (join по `ex_c` = `fmap_ex_c`).
+
+Пример system-фрагмента:
+
+```text
+Target: stm8ef (STM8 Harvard). FMAP: MM=D EX-C=S RP=4 — STC, not bytecode VM.
+No Gforth { locals } unless shim documented. Flash compile uses NVM path, not HERE ,.
+```
+
+**Hold-out:** не смешивать Gforth desktop idioms с embedded без явной метки dialect/FMAP в записи JSONL.
+
 ---
 
 ## 3. Трек A — песочница (~30–60 мин)
