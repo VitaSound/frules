@@ -56,6 +56,34 @@ When the scaffold gives `ch-vals` + `ch-nexts` (or `x`/`y` pairs), **index = nod
 
 Same idea for BFS/DP grids: separate `create` tables per dimension, not one overloaded name per cell.
 
+## Singly-linked lists (heap or dictionary nodes)
+
+When parallel arrays are not enough, use **nodes linked by address**. Keep the head in a **`variable`** (stable address for insert/shift):
+
+```forth
+\ Node: first cell = next (0 = end); payload in following cells or inline
+
+: list-prepend ( node head-var -- )
+  2dup @ swap !  ! ;          \ node.next := old head; head := node
+
+: list-shift ( head-var -- node )
+  dup @ dup >r @ swap !  r> ; \ pop head; advance head to next
+
+: list-walk ( xt head-var -- )
+  >r r@ @ begin dup while
+    dup r@ swap r@ swap execute if r> 2drop exit then
+    @
+  repeat r> drop drop ;
+```
+
+`list-walk` calls `( node head-var -- flag )`; **true** stops. Guard nil before `@` when the caller might dereference an empty list.
+
+`bounds` for `( c-addr u -- end start )` — use with `?do`/`+loop` over a cell region:
+
+```forth
+: bounds ( c-addr u -- end start )  over + swap ;
+```
+
 ## Dictionary memory (here / allot)
 
 ```forth

@@ -18,6 +18,16 @@ Normal words: compile time appends their **interpretation** semantics. Control w
 
 During compilation of `: bar … ;`, `[print5]` runs at compile time (interpretation semantics). Mark non-default words with bracket names or `immediate`.
 
+### Early `[IMMEDIATE]` marker
+
+Optional sugar (theForthNet `immediate` package): declare intent at the start of the body:
+
+```forth
+: [print5] ( -- )  [immediate]  5 . ;
+```
+
+Equivalent to `: [print5] … ; immediate` when supported. **Portable code:** keep trailing `; immediate` unless the target loads the extension. `IMMEDIATE` before `;` inside `: … does> … ;` is ambiguous on some systems — avoid in portable defining words.
+
 ## Compile-only
 
 Words like `if` should not run at interpret time — mark `compile-only` to get a warning when interpreted accidentally. Gforth warns on `'` / `[']` for compile-only words too; at interpret time, compile-only words run their compilation semantics (ANS/Gforth conformance).
@@ -70,8 +80,14 @@ Words like `create`, `'`, `[']` read from the **input stream**, not the stack �
 
 Do not build new parsing words unless necessary; prefer `( c-addr u )` or stack arguments.
 
+## Interpret-only wordlist (advanced)
+
+`interpretive.fs` (theForthNet) puts helpers in a wordlist searched **first in interpret state only** — same notation at compile vs interpret time without state-smart `'`. Example: interpret-time `' name` vs compile-time `['] name` wrapped as one immediate word.
+
+**Not a standard system** after loading — changes search order with `[` / `]` / `:`. Use only in meta-libraries; do not pull into challenge solutions unless the scaffold already depends on it.
+
 ## Recognizers (advanced)
 
-Gforth extends the text interpreter with a recognizer stack (`get-recognizers` / `set-recognizers`). Normal application `.fs` code should not touch this — only meta-tooling and interpreter extensions.
+Gforth extends the text interpreter with a recognizer stack (`get-recognizers` / `set-recognizers`). Normal application `.fs` code should not touch this — only meta-tooling and interpreter extensions. Example recognizers: `sources/theforth.net-packages/recognizers/current/`.
 
 See `forth-defining.mdc` for CREATE/DOES> and `forth-control.mdc` for immediate control-flow words.

@@ -9,7 +9,7 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
     - [x] Seed: `01`–`06` + `_tester.fs`. Bank: LeetCode Top 100 + Codewars/kata/PE/Rosetta, unique `pattern_key`, cognitive 0–10.
     - [x] Добить набор seed `07`–`10` — **заменено банком `001`–`139`** (parse/anagram/RLE/binary-search в банке; taxonomy OK). Defining words / FP / double — см. «Среднесрочно» ниже.
     - [~] Бенчмарковый прогон: `docs/CHALLENGE-RUNS.md` (Cursor) + `docs/LOCAL-GEMMA-BENCHMARK.md` (Gemma 4 / Ollama, rules on/off). Первая строка в CHALLENGE-RUNS — Composer 2.5 / Agent на `01-clamp`.
-- [~] **Дистилляция источников в `rules/`.** Vendored-текст в `sources/` → `docs/DISTILL-PROMPT.md` → обновить `rules/*.mdc` и `docs/SOURCES.md` (как для Brodie).
+- [x] **Дистилляция источников в `rules/`.** Vendored-текст в `sources/` → `docs/DISTILL-PROMPT.md` → обновить `rules/*.mdc` и `docs/SOURCES.md` (как для Brodie).
     - [x] Thinking Forth: исходники в `sources/brodie-thinking-forth/chapter*.md` + `appendix*.md` + `epilog.md` (`extract.sh`). Картинки в `figures/` — только для человека.
     - [x] Прогнать `docs/DISTILL-PROMPT.md` по главам Brodie; обновить `rules/*.mdc` (`forth-factoring`, `forth-style`, `forth-anti-patterns`, `forth-naming`; `docs/SOURCES.md` отмечает источник).
     - [x] Gforth manual Tutorial vendored: `sources/gforth-manual-tutorial/` (§3.1–§3.37, `extract.sh`).
@@ -18,7 +18,8 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
     - [x] **Дистилляция Gforth Tutorial** — прогнать `docs/DISTILL-PROMPT.md` по разделам `gforth-manual-tutorial/*.md`; дополнить `rules/*.mdc` (`forth-memory`, `forth-io`, `forth-meta`, `forth-strings`, `forth-floating-point` + updates); обновить `docs/SOURCES.md`.
     - [x] **Дистилляция Gforth manual (полный)** — все темы ch.2–§9, §7 → `rules/*.mdc` (+5 новых: numeric, wordlists, debugging, oof, c-bindings); skip: словарь Word Index, assembler per-CPU, engine ch.14, cross ch.15, Emacs ch.12.
     - [x] theForthNet packages vendored: `sources/theforth.net-packages/` (`.4th` / `.fs`).
-    - [ ] **Индексация theForthNet packages** — каталог переиспользуемых идиом/паттернов (по пакетам или темам) → выборочная дистилляция в `rules/` + строки в `docs/SOURCES.md` (аналог pass по Brodie; возможно `docs/BOOK-INDEX.md` или отдельный `sources/theforth.net-packages/INDEX.md`).
+    - [x] **Индексация theForthNet packages** — [`sources/theforth.net-packages/INDEX.md`](sources/theforth.net-packages/INDEX.md): каталог по пакетам и темам frules, distill candidates, challenge hints.
+    - [x] **Выборочная дистилляция theForthNet** — high/medium из INDEX → `rules/{defining,memory,wordlists,meta,stack,strings,numeric}.mdc` + `docs/SOURCES.md`.
 - [ ] **Pre-commit hook** (`.git/hooks/pre-commit` или husky): запускать `./test.sh`, блокировать коммит при FAIL.
 - [ ] **CI.** GitHub Actions: установка `gforth` + `pforth` через apt, запуск `./test.sh` на каждый PR/push.
 - [x] **Lint English-only.** `tests/lint.sh` — grep `[А-Яа-яЁё]` в `rules/*.mdc` и `templates/*.mdc`; вызывается из `./test.sh`.

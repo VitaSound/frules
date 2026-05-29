@@ -75,3 +75,20 @@ Forth has **no compile-time or runtime type checking**. A “type” is a **conv
 3. **Domain** — agreed shapes via factoring: `( c-addr u )` for strings, `create` / `does>` for indexed access — not struct/class types unless the project already uses them.
 
 **Do not import habits from C/TS:** no `int32_t`, no generic “multiply”, no implicit fixed width. For challenges and portable algo code, stack comments + name prefixes are enough; prefer `create`/`does>` over `objects.fs` unless OOP is already in the project.
+
+## Auxiliary cell stacks (not the return stack)
+
+When you need a second LIFO for evaluation but **`>r`/`r>`** would clash with loops, allocate a **separate cell stack** (theForthNet `stack` package pattern):
+
+```forth
+: stack-new ( max -- id )
+  1+ cells here swap allot  0 over ! ;
+
+: stack> ( id -- x )
+  dup @ tuck 1- swap !  cells + @ ;
+
+: >stack ( x id -- )
+  dup @ 1+ tuck rot cells + !  swap ! ;
+```
+
+Prefer factoring with locals or explicit buffers for short challenge code; use this idiom when depth is dynamic and return-stack nesting is already heavy.

@@ -32,6 +32,13 @@ Topic routing (pick the most specific file for the task):
 | variable, create, allot, move/cmove, alignment | `forth-memory.mdc` |
 | `create` name + hyphenated word (Gforth tokenizer) | `forth-naming.mdc` § Hyphens vs create |
 | Indexed `ch@`/`ch!`, parallel array “lists” | `forth-memory.mdc` § Indexed buffers |
+| Singly-linked list nodes, `bounds` | `forth-memory.mdc` § Singly-linked lists |
+| +field struct layout, queue defining word | `forth-defining.mdc` § Field offsets |
+| MODULE/EXPORT modules | `forth-wordlists.mdc` § MODULE |
+| Auxiliary cell stack (not return stack) | `forth-stack.mdc` § Auxiliary cell stacks |
+| String stack (`"push`/`"pop`) | `forth-strings.mdc` § String stack |
+| Fixed-point `places`/`fixed` (one cell) | `forth-numeric.mdc` § Fixed-point |
+| `[IMMEDIATE]` early marker, interpretive wordlist | `forth-meta.mdc` |
 | Challenge solution vs scaffold stubs (`redefined`) | `forth-dialect-gforth.mdc` § Challenge solution copies |
 | Hold pointer across helpers (`variable`) | `forth-factoring.mdc` § variable as handle |
 | open-file, CLI args, search paths | `forth-io.mdc` |

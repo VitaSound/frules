@@ -22,12 +22,19 @@
 | `forth-debugging.mdc` | Gforth manual §5.24.1–§5.24.3, §5.24.5, ch.6, §7.2 | distilled |
 | `forth-oof.mdc` | Gforth manual §5.23.3 (`objects.fs` basics) | distilled |
 | `forth-c-bindings.mdc` | Gforth manual §5.26.1–§5.26.2 (calling/declaring C) | distilled |
+| `forth-defining.mdc` (+field, queue header) | theForthNet `compat/struct.fs`, `priority-queue` | distilled (selective) |
+| `forth-memory.mdc` (linked lists, bounds) | theForthNet `ll`, `bounds` | distilled (selective) |
+| `forth-wordlists.mdc` (MODULE/EXPORT) | theForthNet `modules` | distilled (selective) |
+| `forth-meta.mdc` ([IMMEDIATE], interpretive) | theForthNet `immediate`, `interpretive`, `recognizers` (ref) | distilled (selective) |
+| `forth-stack.mdc` (auxiliary stacks) | theForthNet `stack` | distilled (selective) |
+| `forth-strings.mdc` (string stack) | theForthNet `stringstack` | distilled (selective) |
+| `forth-numeric.mdc` (fixed-point) | theForthNet `fixed` | distilled (selective) |
 | `forth-portability.mdc` | DPANS94; Gforth Tutorial §3.25, §3.27; Gforth manual ch.8–§9, §5.16, §5.18 (legacy note), §7.1 | seed + distilled |
 | `forth-dialect-gforth.mdc` | Gforth manual ch.2, ch.6, §5.8.8, §5.21–§5.22, §5.24.4; Gforth Tutorial §3.1–§3.2, §3.15, §3.30 | seed + distilled |
 | `sources/brodie-thinking-forth/*.md` | Thinking Forth (Leo Brodie, CC BY-NC-SA 2.0), upstream [forthy42/thinking-forth@ans_tf](https://github.com/forthy42/thinking-forth/tree/ans_tf), конвертер `sources/brodie-thinking-forth/extract.sh` (+ `preprocess.pl`). Фигуры в `figures/` — только для глаз человека, см. `docs/DISTILL-PROMPT.md`. | vendored; дистилляция в `rules/forth-{factoring,style,anti-patterns,naming}.mdc` выполнена |
 | `sources/gforth-manual-tutorial/*.md` | Gforth manual ch.3 Tutorial (GNU GPL), https://gforth.org/manual/Tutorial.html, `extract.sh` | vendored; дистилляция в `rules/*.mdc` выполнена (skip: §3.3 crash-course, §3.10 decompilation, §3.35 advanced-macros, §3.36 compilation-tokens) |
 | `sources/gforth-manual/*.md` | Gforth manual полностью (GNU GPL), https://gforth.org/manual/, `extract.sh` | vendored; **полная дистилляция** actionable-идиом в `rules/*.mdc` (skip: Word Index / Concept Index как словарь, per-CPU assembler §5.27, engine internals ch.14, cross-compiler detail ch.15, Emacs ch.12, appendix prose) |
-| `sources/theforth.net-packages/` | [theforth.net-packages](https://github.com/theforth/theforth.net-packages) — библиотеки для портирования идей в решения челленджей | vendored |
+| `sources/theforth.net-packages/` | [theforth.net-packages](https://github.com/theforth/theforth.net-packages); catalog [`INDEX.md`](../sources/theforth.net-packages/INDEX.md). **Selective distillation** (2026-05): `compat/struct.fs` → `forth-defining`; `ll`, `bounds` → `forth-memory`; `priority-queue` → `forth-defining`; `modules` → `forth-wordlists`; `interpretive`, `immediate`, `recognizers` → `forth-meta`; `stack` → `forth-stack`; `stringstack` → `forth-strings`; `fixed` → `forth-numeric`. Skip: crypto, games, embedded drivers, `f` PM, duplicate `ttester`. | vendored + distilled (selective) |
 | `frules-index.mdc` | precedence policy | hand-authored |
 | `forth-portability.mdc` (cell size discipline) | conversation distill + DPANS94 / Gforth manual | hand-authored supplement |
 | `forth-stack.mdc` (typing mental model) | Gforth Tutorial §3.12; conversation distill | hand-authored supplement |

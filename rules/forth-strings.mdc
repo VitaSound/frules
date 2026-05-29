@@ -67,3 +67,15 @@ s" tag" sliteral             \ string literal at compile time
 ```
 
 See `forth-defining.mdc` for `[ … ] literal` and `forth-dialect-gforth.mdc` for Gforth tooling.
+
+## String stack (optional parser aid)
+
+For multi-step parsing without juggling `( c-addr u )` on the data stack, a **string stack** holds counted strings in a dedicated arena (`stringstack` package). Core operations:
+
+| Word | Effect |
+|------|--------|
+| `"push` | `( c-addr u -- )` push string onto string stack |
+| `"pop` | `( -- c-addr u )` pop top string |
+| `"th` | `( +n -- c-addr )` nth string from top (0 = TOS) |
+
+Use `"clear` between test cases. **Challenge default:** prefer inline `( c-addr u )` and one buffer unless the task is explicitly a parser pipeline.

@@ -50,3 +50,18 @@ Gforth nested holds: `<<# … #>>`; reset with `<#` if the hold area is exhauste
 ## Base and conversion
 
 Keep `base` decimal in application code; save/restore around `hex`/`oct` sections. Prefer `base-execute` over manual `base @ >r … r> base !`. Use `$`/`#`/`%` prefixes in source for non-decimal literals when the manual documents them.
+
+## Fixed-point in one cell (not FP stack)
+
+When the task needs decimals but **not** the floating stack (train bank avoids `f+`), use **implied decimal** in a single cell (`fixed` package idiom):
+
+```forth
+variable #places
+: places ( n -- )  0 max #places ! ;
+
+: fixed ( n -- f )
+  dpl @ 1+ 0> if d>s then
+  #places @ dpl @ 0 max -  0 ?do 10 * loop ;
+```
+
+`places` sets digits right of the point; `fixed` scales after `.` / `d.` parsing via **`dpl`** (Gforth — environmental dependency). Use ordinary `+`, `-`, `*`, `/` on scaled values; divide with care (scale product back). For true FP see `forth-floating-point.mdc`.

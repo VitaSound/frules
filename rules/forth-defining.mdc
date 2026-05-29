@@ -46,6 +46,40 @@ Factor repeated `( addr ) offset +` into a defining word:
 
 Access raw body without `does>` behaviour: `' word >body`.
 
+### +field / end-struct (portable ANS)
+
+Pattern from `compat/struct.fs` (theForthNet) — stack `( align offset -- align' offset' )` while declaring:
+
+```forth
+: +field ( size offset "name" -- offset' )
+  create over , +
+  does> ( addr1 -- addr2 )  @ + ;
+
+\ Offsets while declaring (size offset -- offset'):
+1 cells 0 +field l-value
+1 cells 1 cells + +field l-next
+create node1  2 cells allot
+```
+
+`l-next` converts `( node-addr -- next-field-addr )`. Prefer Gforth `begin-structure` when available — see `forth-dialect-gforth.mdc`.
+
+### Header + inline buffer (queue pattern)
+
+Defining word with **fixed header cells** then `allot` for data (priority-queue idiom):
+
+```forth
+: Queue: ( max "name" -- )
+  create  , 0 ,  cells allot ;   \ max, count=0, item slots
+
+: q@count ( q -- u )  cell+ @ ;
+: q@data ( q -- addr )  2 cells + ;
+
+: q! ( n q -- )
+  dup q@count tuck 1+ rot q@data swap cells + !  cell+ 1 swap ! ;
+```
+
+Use named throw constants for underflow/overflow instead of silent failure — see `forth-memory.mdc` for list/queue error handling.
+
 ## value / to
 
 ```forth

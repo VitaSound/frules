@@ -19,6 +19,37 @@ previous                     \ drop search-order entry
 only forth                   \ reset to standard (Gforth)
 ```
 
+## MODULE / EXPORT (VFX-style modules)
+
+Portable module shell from `modules.fs` (theForthNet) — compile into a fresh wordlist, export selected names:
+
+```forth
+: module ( "name" -- old-wid )
+  get-current wordlist create dup >r ,
+  get-order r@ swap 1+ set-order  r> set-current ;
+
+: export ( "name" old-wid -- old-wid )  >r
+  ' swap r@ set-current
+  create , set-current  r>
+  does> ( -- )  @ execute ;
+
+: end-module ( old-wid -- )
+  set-current  get-order nip 1- set-order ;
+```
+
+Usage sketch:
+
+```forth
+get-current module mymod
+  : helper ( -- ) ... ;
+  export helper
+  : public-api ( -- ) helper ... ;
+  export public-api
+end-module
+```
+
+**Environmental dependency:** `export` uses `does>` thunks — document when shipping portable code. For one-off challenge helpers, prefer the private-vocabulary pattern below instead of full modules.
+
 ## Hide implementation words
 
 Pattern from manual §5.15.3 — helpers in a private vocabulary, API in the public list:
