@@ -19,14 +19,12 @@
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
-\ Node index i: value in ch-vals[i], next in ch-nexts[i] (0 = nil)
 12 constant ch-max-nodes
 create ch-vals  ch-max-nodes cells allot
 create ch-nexts ch-max-nodes cells allot
 
 : ch-val@  ( i -- n )  cells ch-vals + @ ;
 : ch-next@ ( i -- n )  cells ch-nexts + @ ;
-: ch-node! ( val next i -- )  >r swap r@ ch-next@!  ch-val@! ;
 : ch-val!  ( n i -- )  swap cells ch-vals + ! ;
 : ch-next! ( n i -- )  swap cells ch-nexts + ! ;
 1 1 1 ch-val! 4 ch-next!
@@ -37,6 +35,41 @@ create ch-nexts ch-max-nodes cells allot
 1 constant ch-head
 
 \ === paste your solution below this line ===
+
+10 constant lo-sent
+11 constant hi-sent
+
+variable part-pivot
+variable part-cur
+variable part-next
+variable lo-tail
+variable hi-tail
+
+: lo-append  ( i -- )
+  dup lo-tail @ swap ch-next!
+  lo-tail ! ;
+
+: hi-append  ( i -- )
+  dup hi-tail @ swap ch-next!
+  hi-tail ! ;
+
+: part-list  ( head pivot -- lo-head )
+  part-pivot !
+  part-cur !
+  lo-sent lo-tail !
+  hi-sent hi-tail !
+  0 lo-sent ch-next!
+  0 hi-sent ch-next!
+  begin  part-cur @ dup  while
+    dup ch-next@ part-next !
+    dup ch-val@ part-pivot @ <
+    if  dup lo-append  else  dup hi-append  then
+    drop
+    part-next @ part-cur !
+  repeat  drop
+  0 hi-tail @ ch-next!
+  hi-sent ch-next@ lo-tail @ swap ch-next!
+  lo-sent ch-next@ ;
 
 \ === paste your solution above this line ===
 
