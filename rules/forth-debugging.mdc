@@ -10,6 +10,8 @@ alwaysApply: false
 
 Insert probes, run, remove. Faster than stepping debuggers for most Forth work.
 
+Challenge `T{ word -> n }T` failures: **`WRONG NUMBER OF RESULTS`** = stack depth mismatch after `word` (often a leftover flag from `1=` / `WHILE`); see `docs/AGENT-SOLVE-CHALLENGES.md` §5b and `forth-control.mdc`.
+
 ```forth
 require debugs.fs
 : foo ( n -- )

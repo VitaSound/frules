@@ -153,6 +153,29 @@ After `TESTS OK` — **stop**. Do not mark `- [x]`, do not commit, do not push.
 
 Optional: `bash scripts/verify_challenges.sh` (after edits under `tests/challenges/`).
 
+### 5b. Gforth challenge debugging (stack and tests)
+
+Rules: `forth-control.mdc` (flags, `if`, `WHILE`/`REPEAT`), `forth-stack.mdc`, `forth-debugging.mdc`.
+
+| Symptom | Likely cause | Action |
+|---------|----------------|--------|
+| `WRONG NUMBER OF RESULTS: T{ … }T` | Stack **depth** after `word` ≠ expected (often **leak**, not wrong arithmetic) | `depth . word . depth .` or `word .s` before fixing the algorithm |
+| `Invalid memory address` / segfault | Bad `cells +` index, `tuck` with **one** stack item, queue off-by-one | Smoke-test `enq`/`deq` in isolation; index buffers like `ch!`: `( n i -- ) swap cells buf + !` |
+| Hang / `timeout` | Infinite loop, wrong exit condition (e.g. queue non-empty while work is done) | Tie loop to **problem invariant** (e.g. fresh count), not auxiliary structure size |
+| Value almost right (e.g. 5 vs 4) | Off-by-one wave/minute or wrong test | Re-read Source; fix spec if obviously wrong |
+
+**Quick probes** (minimal scaffold + paste zone only):
+
+```bash
+cd tests/challenges
+gforth -e 'fpath path+ . include ../../data/challenge-solutions/NNN-slug.fs' \
+  -e 'depth . WORD . depth . cr bye'   # omit if file ends with T{ }T report
+```
+
+Use `timeout 5 gforth …` while debugging loops. Prefer **`gforth`** over `gforth-fast` for backtraces (`forth-debugging.mdc`).
+
+**Indexed buffers** (queues, DP, grids): reuse the repo `ch!` / `ch@` pattern — `( value index -- )` / `( index -- value )` with `swap cells field + !` / `cells field + @`; do not copy `tuck` queue snippets unless three stack items are present before `tuck`.
+
 ### 6. Ask the user to review (English)
 
 Post an **explicit review request** to the user **in English**. Template:
