@@ -1,0 +1,70 @@
+---
+description: When to use FORTH architecture docs vs challenge coding rules (layers, FMAP, niches)
+globs: "**/*.{fth,fs,4th,forth,fb,md}"
+alwaysApply: true
+---
+
+# Forth system context (not challenge coding)
+
+Use this file to **route** questions. It does **not** replace stack/style rules for writing colon definitions.
+
+## Two kinds of tasks
+
+| Kind | User intent (signals) | Use | Do **not** default to |
+|------|----------------------|-----|------------------------|
+| **Code / challenge** | implement word, fix `.fs`, stack effect, refactor, test failure, LeetCode-style task | `forth-stack`, `forth-style`, `forth-control`, `forth-factoring`, `forth-dialect-gforth`, other `forth-*.mdc` | Long FMAP essays unless porting or target is explicit |
+| **System / niche / architecture** | choose Forth for project, embedded vs hosted, ITC vs STC, Harvard, co-design, portability layers, domain dialect (FORTH-X), “why Forth on MCU/FPGA”, training tags for target | Human docs below + `data/forth-*.json` | Inventing platform facts; mixing Gforth desktop idioms into embedded without FMAP tag |
+
+When **both** apply (e.g. port `: sort` to STM8), start from **code rules**, then pull **only** the platform slice from architecture docs (FMAP profile, missing wordsets).
+
+## Layer model (short)
+
+| Layer | What | Doc |
+|-------|------|-----|
+| **0** | Domain dialect **FORTH-X** (syntax facade → dictionary) | `docs/FORTH-DIALECT-LAYERS.md` |
+| **1** | ANS algorithms | `docs/FORTH-ANS-PORTABILITY-LAYER.md`, `forth-portability.mdc` |
+| **2** | Adapters / compat shims | `docs/FORTH-ANS-PORTABILITY-LAYER.md` |
+| **3** | Platform: FMAP, prim, cross, hardware | `docs/FORTH-SYSTEM-ARCHITECTURE.md`, `docs/FORTH-HARDWARE-CODESIGN.md` |
+
+**FORTH-&lt;domain&gt;** (e.g. FORTH-BASIC, FORTH-HDL) is an **idiomatic Forth pattern**: parsing/compile words + spec + environmental dependency — not a separate VM. See layer 0 doc; implementation mechanics — `forth-meta.mdc`, `forth-defining.mdc`.
+
+## Architecture reference map
+
+| Topic | Document |
+|-------|----------|
+| FMAP axes, system classes, catalog | `docs/FORTH-SYSTEM-ARCHITECTURE.md` |
+| Pick system for use case | `docs/FORTH-FMAP-GUIDE.md` |
+| ITC / DTC / STC / EX-C | `docs/FORTH-THREADING.md` |
+| Feature cost, bootstrap, wordsets | `docs/FORTH-FEATURE-COMPLEXITY.md` |
+| Hardware + Forth co-design | `docs/FORTH-HARDWARE-CODESIGN.md` |
+| Superscalar stack CPU research (zzeng, Elbrus) | `docs/FORTH-STACK-CPU-RESEARCH-eng.md` (English) or `docs/FORTH-STACK-CPU-RESEARCH.md` (Russian) |
+| Domain dialects layer 0 | `docs/FORTH-DIALECT-LAYERS.md` |
+| Machine-readable profiles | `data/forth-fmap-profiles.json`, `data/forth-threading-models.json`, `data/forth-use-case-templates.json` |
+
+English twins: `docs/FORTH-*-eng.md`. Index: `rules/frules-index.mdc`.
+
+**Provenance:** FORTH architecture docs and `data/forth-*.json` are **AI-assisted (human-directed)** — not canon; see `docs/DOC-AUTHORSHIP.md`. Prefer `rules/forth-*.mdc` and primary sources for code correctness.
+
+## Variability (stable vocabulary)
+
+When discussing systems, prefer **codes from docs/JSON**, not vague “VM”:
+
+- **MM** — memory model (U unified, D/H Harvard, V virtualized soft-CPU)
+- **EX-C** — execution / colon body (I ITC, D DTC, S STC, N native, X cross-only, …)
+- **RP** — return stack depth class (0–5 in FMAP profiles)
+- **Environmental dependencies** — required wordsets **and** optional FORTH-X dialect id/version
+
+Join threading detail to FMAP via `ex_c` / `fmap_ex_c` in JSON.
+
+## Stack CPU vs Forth runtime (class 0)
+
+- **ISA stack ≠ Forth PSP/RSP implementation** — register MCUs emulate stacks in RAM.
+- **J1:** fixed internal stacks, no auto spill; RP=0; colon→insn on host — not Gforth-like.
+- **Superscalar stack (research):** stack **frontend** + register **backend** (Elbrus, zzeng distill) — **not** J1; see `docs/FORTH-STACK-CPU-RESEARCH-eng.md` or `docs/FORTH-STACK-CPU-RESEARCH.md`.
+- Details: `docs/FORTH-SYSTEM-ARCHITECTURE.md` §9.1, §11.1, §12.
+
+## Agent behavior
+
+- **Challenge solve** (`tests/challenges/`, `data/challenge-solutions/`): postfix Gforth, shallow stack, documented stack effects — **ignore** layer 0 unless the challenge explicitly uses a domain dialect.
+- **Architecture answer**: cite FMAP/profile ids from JSON when recommending a system; distinguish layer 1 portable algo vs layer 3 platform.
+- **Do not** conflate “Forth can embed FORTH-X syntax” with “user code should look like FORTH-X” in algorithm tasks unless asked.

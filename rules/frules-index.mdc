@@ -42,6 +42,7 @@ Topic routing (pick the most specific file for the task):
 | Choosing Forth system for a project / domain | `docs/FORTH-FMAP-GUIDE.md` (human reference) |
 | Threading models (ITC/DTC/STC), colon body format | `docs/FORTH-THREADING.md` (human reference) |
 | Embedded port, system architecture, FMAP/FTAS | `docs/FORTH-SYSTEM-ARCHITECTURE.md` (human reference) |
+| Superscalar stack CPU research (Elbrus, zzeng) | `docs/FORTH-STACK-CPU-RESEARCH-eng.md` / `docs/FORTH-STACK-CPU-RESEARCH.md` (human reference) |
 | Embedded port, missing wordsets, feature cost | `docs/FORTH-FEATURE-COMPLEXITY.md` (human reference) |
 | Domain dialects FORTH-X, layer 0 | `docs/FORTH-DIALECT-LAYERS.md` (human reference) |
 | Route architecture vs coding tasks | `forth-system-context.mdc` |
