@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **86 / 94**
+Progress: **87 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -86,8 +86,8 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 123-quick-exponent.fs  (`power-rec`)
 - [x] 124-pe-even-fib.fs  (`pe-fib-sum`)
 - [x] 125-pe-sum-square.fs  (`pe-sum-square`)
-- [ ] 126-list-partition.fs  (`part-list`)
-- [ ] 127-reorder-list.fs  (`reorder-list`)
+- [x] 126-list-partition.fs  (`part-list`)
+- [x] 127-reorder-list.fs  (`reorder-list`)
 - [ ] 128-bf-steps.fs  (`bf-steps`)
 - [x] 129-count-words.fs  (`word-count`)
 - [x] 130-union-find.fs  (`uf-find`)
