@@ -38,6 +38,38 @@ create ch-tree ch-max-nodes 3 * cells allot
 
 \ === paste your solution below this line ===
 
+: node-val ( i -- n )  3 * ch-t@ ;
+: node-left ( i -- n )  3 * 1 + ch-t@ ;
+: node-right ( i -- n )  3 * 2 + ch-t@ ;
+
+variable ch-need
+variable ch-hit
+
+: ch-walk ( i -- flag )
+  false ch-hit !
+  >r
+  r@ node-val ch-need @ swap - ch-need !
+  r@ node-left r@ node-right or if
+    ch-hit @ 0= if
+      r@ node-left ?dup if
+        ch-need @ >r recurse r> ch-need !
+        if true ch-hit ! then
+      then
+    then
+    ch-hit @ 0= if
+      r@ node-right ?dup if
+        ch-need @ >r recurse r> ch-need !
+        if true ch-hit ! then
+      then
+    then
+    rdrop ch-hit @
+  else
+    ch-need @ 0= rdrop
+  then ;
+
+: path-sum? ( root target -- flag )
+  swap >r ch-need ! r> ch-walk ;
+
 \ === paste your solution above this line ===
 
 T{ ch-root 22 path-sum? -> true }T
