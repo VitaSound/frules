@@ -37,6 +37,22 @@ create ch-tree ch-max-nodes 3 * cells allot
 
 \ === paste your solution below this line ===
 
+: node-left ( i -- n )  3 * 1 + ch-t@ ;
+: node-right ( i -- n )  3 * 2 + ch-t@ ;
+
+: height ( i -- h )
+  >r
+  r@ node-left ?dup if recurse else 0 then
+  dup 0< if drop rdrop -1 exit then
+  r@ node-right ?dup if recurse else 0 then
+  dup 0< if drop rdrop -1 exit then
+  swap
+  2dup - abs 1 > if 2drop rdrop -1 exit then
+  max 1+ rdrop ;
+
+: balanced? ( root -- flag )
+  height dup 0< if drop false else drop true then ;
+
 \ === paste your solution above this line ===
 
 T{ 3 balanced? -> true }T
