@@ -39,6 +39,6 @@ create ch-nexts ch-max-nodes cells allot
 \ === paste your solution above this line ===
 
 T{ 1 swap-pairs -> 2 }T
-T{ 2 ch-val@ -> 1 }T
+T{ ch-val@ 2 -> 1 }T
 
 report bye

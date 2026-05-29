@@ -80,6 +80,37 @@ Defining word with **fixed header cells** then `allot` for data (priority-queue 
 
 Use named throw constants for underflow/overflow instead of silent failure — see `forth-memory.mdc` for list/queue error handling.
 
+## Modulo dispatch table (Rosetta Code — verbatim)
+
+`FizzBuzz/fizzbuzz-1.fth` — **ok** in gforth; `create`/`does>` table of xts:
+
+```forth
+: fizz ( n -- ) drop ." Fizz" ;
+: buzz ( n -- ) drop ." Buzz" ;
+: fb   ( n -- ) drop ." FizzBuzz" ;
+: vector create does> ( n -- )
+  over 15 mod cells + @ execute ;
+vector .fizzbuzz
+  ' fb   , ' . ,    ' . ,
+  ' fizz , ' . ,    ' buzz ,
+  ' fizz , ' . ,    ' . ,
+  ' fizz , ' buzz , ' . ,
+  ' fizz , ' . ,    ' . ,
+```
+
+Challenge bank uses different contracts (e.g. `fizzbuzz-n`) — table is a **pattern**, not a drop-in.
+
+## Instance data (Rosetta Code — gforth substitute)
+
+`gforth/classes-minimal.fth` — minimal `CREATE`/`DOES>` object (upstream `Classes/classes-1.fth` uses non-Gforth `;class`):
+
+```forth
+: object: ( n "name" -- )
+  create , does> ( -- n )  @ ;
+```
+
+For real OOP see Gforth objects — `forth-dialect-gforth.mdc` and manual §9.
+
 ## value / to
 
 ```forth

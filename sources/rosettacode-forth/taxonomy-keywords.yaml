@@ -1,0 +1,184 @@
+# Auto-tag Rosetta task slugs (dirname) for frules taxonomy blocks and rule topics.
+# Used by gen-index.py — keyword match is case-insensitive substring on slug.
+
+taxonomy_blocks:
+  scalar-math:
+    - fibonacci
+    - gcd
+    - lcm
+    - prime
+    - factorial
+    - arithmetic
+    - euclid
+    - perfect-number
+    - amicable
+    - collatz
+    - catalan
+    - bell-number
+    - ackermann
+    - isqrt
+    - square-root
+  strings:
+    - string
+    - palindrome
+    - caesar
+    - roman
+    - anagram
+    - levenshtein
+    - edit-distance
+    - substring
+    - compare-a-list-of-strings
+    - comma-quibbling
+    - pangram
+    - run-length
+  arrays-hash:
+    - array
+    - associative-array
+    - hash
+    - remove-duplicate
+    - sort
+    - merge-sort
+    - quicksort
+  two-pointers:
+    - two-pointer
+    - subsequence
+  stack-queue:
+    - stack
+    - queue
+    - balanced-bracket
+    - parentheses
+    - rpn
+    - reverse-polish
+  binary-search:
+    - binary-search
+    - bisection
+  linked-structure:
+    - linked-list
+    - list-
+  trees-bst:
+    - tree
+    - binary-tree
+    - bst
+    - traversal
+  dynamic-programming:
+    - knapsack
+    - longest-common
+    - edit-distance
+    - levenshtein
+    - coin-change
+    - subsequence
+  graph:
+    - graph
+    - dijkstra
+    - flood-fill
+    - maze
+    - topological
+  greedy:
+    - greedy
+    - activity-selection
+  heap-topk:
+    - heap
+    - priority
+  matrix:
+    - matrix
+    - sudoku
+    - spiral
+  sliding-window:
+    - sliding
+    - window
+  bit-xor:
+    - bitwise
+    - population-count
+    - hamming-weight
+    - gray-code
+    - parity
+  trie-design:
+    - trie
+    - prefix-tree
+  parse-interpreter:
+    - interpreter
+    - parser
+    - fizzbuzz
+    - brainfuck
+    - eval
+    - token
+  recursion:
+    - recursion
+    - hanoi
+    - ackermann
+    - permutations
+    - combinations
+
+frules_topics:
+  forth-stack:
+    - stack
+    - rpn
+    - reverse-polish
+  forth-control:
+    - recursion
+    - loop
+    - hanoi
+    - ackermann
+    - permutations
+  forth-defining:
+    - factory
+    - closure
+    - accumulator
+    - defining
+  forth-memory:
+    - linked-list
+    - array
+    - allocate
+  forth-strings:
+    - string
+    - caesar
+    - roman
+  forth-io:
+    - file
+    - read-a-file
+    - command-line
+    - terminal
+  forth-meta:
+    - interpreter
+    - tokenizer
+    - immediate
+  forth-numeric:
+    - prime
+    - factorial
+    - arithmetic
+    - fixed
+  forth-floating-point:
+    - floating
+    - pi
+    - sqrt
+  forth-wordlists:
+    - vocabulary
+    - module
+  forth-debugging:
+    - assert
+  forth-oof:
+    - class
+    - object
+    - oop
+  forth-c-bindings:
+    - foreign
+    - shared-library
+    - c-function
+  forth-portability:
+    - ans
+    - standard
+
+# Tasks whose slug contains any of these → tag `skip` (index only, not distill/challenge hints)
+skip_patterns:
+  - graphical
+  - bitmap
+  - ppm
+  - beer
+  - game
+  - lcd
+  - i2c
+  - colour-bar
+  - fractal
+  - mandelbrot
+  - sierpinski
+  - nige-zapper

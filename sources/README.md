@@ -35,6 +35,17 @@
   `perl`, `git`). Картинки лежат в `brodie-thinking-forth/figures/` —
   они для чтения человеком; AI игнорирует, см. `docs/DISTILL-PROMPT.md`.
 
+- **Rosetta Code — Forth** — [`rosettacode-forth/`](rosettacode-forth/)
+  (569 задач, 812 `.fth` файлов; upstream
+  [RosettaCodeData/Lang/Forth](https://github.com/acmeism/RosettaCodeData/tree/main/Lang/Forth)).
+  **Каталог:** [`rosettacode-forth/INDEX.md`](rosettacode-forth/INDEX.md) — taxonomy blocks,
+  frules topics, challenge cross-ref (36 curated), полный список задач.
+  **Lookup:** `python3 scripts/rosettacode-hint.py tests/challenges/NNN-slug.fs`.
+  **Данные:** [`challenge-links.yaml`](rosettacode-forth/challenge-links.yaml),
+  [`taxonomy-keywords.yaml`](rosettacode-forth/taxonomy-keywords.yaml),
+  [`gforth-compat.yaml`](rosettacode-forth/gforth-compat.yaml) (ok/broken под Gforth; **не править** vendored `.fth`).
+  Обновление: `bash rosettacode-forth/fetch.sh`, затем `python3 rosettacode-forth/gen-index.py`.
+
 ## Рекомендуемые имена для новых источников
 
 ```

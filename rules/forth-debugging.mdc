@@ -44,3 +44,17 @@ xt-see ' myword
 Assertions — see `forth-dialect-gforth.mdc`. Error message format and backtraces — same file, § ch.6.
 
 Use **`gforth`** while debugging; **`gforth-fast`** gives weaker backtraces on primitive faults.
+
+## Expected-value check (Rosetta Code — gforth fix)
+
+`gforth/assertions.fth` — upstream demo fails under batch include (stores 41, asserts 42). Pattern: hold expected in `variable`, `throw` on mismatch:
+
+```forth
+variable expect
+: assert-fail? ( n -- flag )  expect @ <> ;
+: check ( n -- )  assert-fail? if abort" assert fail" then drop ;
+
+42 expect !  42 check
+```
+
+Prefer Gforth compile-time **`assert( … )`** — see `forth-dialect-gforth.mdc` § assertions.

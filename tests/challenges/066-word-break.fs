@@ -29,8 +29,8 @@ s" leet code apple pen" ch-setup drop
 
 \ === paste your solution above this line ===
 
-T{ s" leetcode" ch-setup word-break? -> true }T
-T{ s" applepen" ch-setup word-break? -> true }T
-T{ s" catsandog" ch-setup word-break? -> false }T
+T{ s"leetcode" ch-setup word-break? -> true }T
+T{ s"applepen" ch-setup word-break? -> true }T
+T{ s"catsandog" ch-setup word-break? -> false }T
 
 report bye

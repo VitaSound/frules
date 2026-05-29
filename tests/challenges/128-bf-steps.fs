@@ -22,12 +22,12 @@ create ch-buf 64 chars allot
 
 : ch-setup  ( c-addr u -- ch-buf u )
   dup >r  ch-buf swap  move  ch-buf r> ;
+s" +." ch-setup bf-steps -> 2
 
 \ === paste your solution below this line ===
 
 \ === paste your solution above this line ===
 
-T{ s" +." ch-setup bf-steps -> 2 }T
 T{ s" +++" ch-setup bf-steps -> 3 }T
 T{ s" [.-]" ch-setup bf-steps -> 0 }T
 

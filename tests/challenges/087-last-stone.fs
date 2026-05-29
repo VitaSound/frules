@@ -24,7 +24,7 @@ create ch-data ch-max cells allot
 
 : ch@  ( i -- n )  cells ch-data + @ ;
 : ch!  ( n i -- )  cells ch-data + ! ;
-2 0 ch!  7 1 ch!  1 2 ch!  4 3 ch!  1 4 ch!  8 5 ch!
+2 0 ch!  7 1 ch!  4 3 ch!  1 4 ch!  8 5 ch!
 6 constant ch-n
 
 \ === paste your solution below this line ===

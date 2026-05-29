@@ -150,6 +150,48 @@ r/o open-file throw
 
 Gforth stores control-flow on the data stack (`orig` / `dest`). Do **not** sprinkle `CS-ROLL` / raw `orig`/`dest` in application code — wrap them in `immediate` words (like `while` / `repeat` themselves), then use those words. See manual §5.8.6.1.
 
+## Rosetta Code snippets (gforth-checked)
+
+Verbatim from `sources/rosettacode-forth/` unless noted; fixes in `gforth/` — `gforth-compat.yaml`.
+
+```forth
+\ Fibonacci-sequence/fibonacci-sequence-1.fth
+: fib ( n -- fib )
+    0 1 rot 0 do
+        over + swap
+    loop drop ;
+```
+
+`Towers-of-Hanoi/towers-of-hanoi-1.fth` — recursive `RECURSE` + locals (Gforth `LOCALS|`):
+
+```forth
+: move-disk ( n from to via -- )
+  locals| via to from n |
+  n 1 =
+  if   cr ." move " from . ." -> " to .
+  else n 1- from via to recurse
+       1    from to via recurse
+       n 1- via to from recurse
+  then ;
+```
+
+`gforth/balanced-brackets.fth` — upstream needs `lib/choose.4th`; bracket depth counter (local `lev#`, not `depth#` — clashes with `depth`):
+
+```forth
+variable sq-lev
+: sq-brackets? ( c-addr u -- flag )
+  0 sq-lev !
+  dup if
+    bounds ?do
+      i c@ case  91 of 1 endof  93 of -1 endof  0 endcase
+      sq-lev @ + sq-lev !
+    loop
+  else  2drop  then
+  sq-lev @ 0= ;
+```
+
+Use Gforth `bounds ?do` / `i c@`; guard `u=0` before `0 do`.
+
 ## State smart words
 
 Words like `if` are immediate — see `forth-meta.mdc`. Do not manually `compile,` control words unless building defining words.

@@ -28,6 +28,6 @@ create ch-buf 64 chars allot
 \ === paste your solution above this line ===
 
 T{ s" ababcbacadefegdehijhklij" ch-setup part-labels-len -> 3 }T
-T{ s" eccbbbbdec" ch-setup part-labels-len -> 1 }T
+T{ s" eccbbbbdec" ch-setup part-labels-len -> 2 }T
 
 report bye

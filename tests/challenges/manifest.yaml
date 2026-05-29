@@ -119,7 +119,7 @@ challenges:
     taxonomy_block: scalar-math
     scaffold: scalar
     title: "Integer Square Root"
-    split: train
+    split: holdout
 
   - id: 5
     file: "005-is-prime.fs"
@@ -1659,7 +1659,7 @@ challenges:
     taxonomy_block: parse-interpreter
     scaffold: string
     title: "Parse Hex"
-    split: train
+    split: holdout
 
   - id: 115
     file: "115-atom-count.fs"
@@ -2009,5 +2009,89 @@ challenges:
     taxonomy_block: binary-search
     scaffold: cell-array
     title: "Median of Sorted Array"
+    split: train
+
+  - id: 140
+    file: "140-dict-list-push.fs"
+    slug: dict-list-push
+    word: dict-push
+    stack: "( n -- )"
+    pattern_key: dictionary-linked-list-push
+    cognitive: 4
+    source: rosetta
+    url: "https://rosettacode.org/wiki/Singly-linked_list/Element_definition"
+    taxonomy_block: linked-structure
+    scaffold: scalar
+    title: "Dictionary Linked Push"
+    split: train
+
+  - id: 141
+    file: "141-find-idx.fs"
+    slug: find-idx
+    word: find-idx
+    stack: "( key -- idx|-1 )"
+    pattern_key: sorted-array-find-index
+    cognitive: 3
+    source: rosetta
+    url: "https://rosettacode.org/wiki/Binary_search"
+    taxonomy_block: binary-search
+    scaffold: cell-array
+    title: "Find Index in Sorted Array"
+    split: train
+
+  - id: 142
+    file: "142-sq-brackets.fs"
+    slug: sq-brackets
+    word: sq-brackets?
+    stack: "( c-addr u -- flag )"
+    pattern_key: square-bracket-balance
+    cognitive: 4
+    source: rosetta
+    url: "https://rosettacode.org/wiki/Balanced_brackets"
+    taxonomy_block: stack-queue
+    scaffold: string
+    title: "Square Bracket Balance"
+    split: train
+
+  - id: 143
+    file: "143-expect-match.fs"
+    slug: expect-match
+    word: matches?
+    stack: "( n -- flag )"
+    pattern_key: expected-value-assert
+    cognitive: 2
+    source: rosetta
+    url: "https://rosettacode.org/wiki/Assertions"
+    taxonomy_block: scalar-math
+    scaffold: scalar
+    title: "Expected Value Match"
+    split: train
+
+  - id: 144
+    file: "144-holder.fs"
+    slug: holder
+    word: holder
+    stack: "( n "name" -- )"
+    pattern_key: create-does-fetch-constant
+    cognitive: 5
+    source: rosetta
+    url: "https://rosettacode.org/wiki/Classes"
+    taxonomy_block: parse-interpreter
+    scaffold: scalar
+    title: "Holder Defining Word"
+    split: train
+
+  - id: 145
+    file: "145-arr-sum.fs"
+    slug: arr-sum
+    word: arr-sum
+    stack: "( u -- sum )"
+    pattern_key: cell-array-prefix-sum
+    cognitive: 3
+    source: rosetta
+    url: "https://rosettacode.org/wiki/Collections"
+    taxonomy_block: arrays-hash
+    scaffold: cell-array
+    title: "Array Prefix Sum"
     split: train
 

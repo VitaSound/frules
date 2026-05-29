@@ -23,16 +23,14 @@ include _tester.fs
 create ch-tree ch-max-nodes 3 * cells allot
 
 : ch-t@  ( off -- n )  cells ch-tree + @ ;
-: ch-t!  ( n off -- )  cells ch-tree + ! ;
-\ balanced?(3): leaf 15; balanced?(1): deep left chain under node 1
-3 0 ch-t!  1 1 ch-t!  2 2 ch-t!
-2 3 ch-t!  4 4 ch-t!  0 5 ch-t!
-20 6 ch-t!  3 7 ch-t!  6 8 ch-t!
-15 9 ch-t!  0 10 ch-t!  0 11 ch-t!
-3 12 ch-t!  5 13 ch-t!  0 14 ch-t!
-4 15 ch-t!  0 16 ch-t!  0 17 ch-t!
-7 18 ch-t!  0 19 ch-t!  0 20 ch-t!
-0 constant ch-root
+: ch-t! ( n off -- )  swap cells ch-tree + ! ;
+3 0 ch-t!  2 1 ch-t!  3 2 ch-t!
+9 3 ch-t!  0 4 ch-t!  0 5 ch-t!
+20 6 ch-t!  4 7 ch-t!  5 8 ch-t!
+1 constant ch-root
+1 9 ch-t!  2 10 ch-t!  2 11 ch-t!
+3 12 ch-t!  0 13 ch-t!  0 14 ch-t!
+3 15 ch-t!  0 16 ch-t!  0 17 ch-t!
 1 constant ch-root-unbal
 
 \ === paste your solution below this line ===

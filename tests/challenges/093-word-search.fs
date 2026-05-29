@@ -16,8 +16,6 @@
 \   - Use ch-setup for word.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: char literals, ch-setup, 4x3 LeetCode grid (SEE needs column 3).
-\
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
@@ -27,16 +25,11 @@ create ch-grid ch-cols ch-rows * cells allot
 
 : ch-grid@  ( col row -- n )  ch-cols * + cells ch-grid + @ ;
 : ch-grid!  ( n col row -- )  ch-cols * + cells ch-grid + ! ;
-char A 0 0 ch-grid!  char B 1 0 ch-grid!  char C 2 0 ch-grid!  char E 3 0 ch-grid!
-char S 0 1 ch-grid!  char F 1 1 ch-grid!  char C 2 1 ch-grid!  char S 3 1 ch-grid!
-char A 0 2 ch-grid!  char D 1 2 ch-grid!  char E 2 2 ch-grid!  char E 3 2 ch-grid!
-4 constant ch-cols-used
+A 0 0 ch-grid!  B 1 0 ch-grid!  C 2 0 ch-grid!
+B 0 1 ch-grid!  E 1 1 ch-grid!  C 2 1 ch-grid!
+A 0 2 ch-grid!  D 1 2 ch-grid!  E 2 2 ch-grid!
+3 constant ch-cols-used
 3 constant ch-rows-used
-
-create ch-buf 64 chars allot
-
-: ch-setup  ( c-addr u -- ch-buf u )
-  dup >r  ch-buf swap  move  ch-buf r> ;
 
 \ === paste your solution below this line ===
 

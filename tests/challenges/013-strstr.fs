@@ -1,6 +1,5 @@
 \ tests/challenges/013-strstr.fs
 \
-\ Fixed: dual ch-setup shared one buffer; use hay-buf / ned-buf.
 \ CHALLENGE: Find Needle Index
 \ Source: leetcode  https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
 \ Cognitive: 4/10  |  Pattern: substring-first-index
@@ -14,27 +13,23 @@
 \
 \ Style guard (rules/forth-factoring.mdc, forth-style.mdc):
 \   - Naive scan acceptable.
-\   - hay-setup / ned-setup for two string copies.
+\   - Both strings via ch-setup copies.
 \
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
-create hay-buf 64 chars allot
-create ned-buf 64 chars allot
+create ch-buf 64 chars allot
 
-: hay-setup  ( c-addr u -- hay-buf u )
-  dup >r  hay-buf swap  move  hay-buf r> ;
-
-: ned-setup  ( c-addr u -- ned-buf u )
-  dup >r  ned-buf swap  move  ned-buf r> ;
+: ch-setup  ( c-addr u -- ch-buf u )
+  dup >r  ch-buf swap  move  ch-buf r> ;
 
 \ === paste your solution below this line ===
 
 \ === paste your solution above this line ===
 
-T{ s" hello" hay-setup s" ll" ned-setup strstr-idx -> 2 }T
-T{ s" hello" hay-setup s" z" ned-setup strstr-idx -> -1 }T
-T{ s" aa" hay-setup s" a" ned-setup strstr-idx -> 0 }T
-T{ s" abc" hay-setup s" bc" ned-setup strstr-idx -> 1 }T
+T{ s" hello" ch-setup s" ll" ch-setup strstr-idx -> 2 }T
+T{ s" hello" ch-setup s" z" ch-setup strstr-idx -> -1 }T
+T{ s" aa" ch-setup s" a" ch-setup strstr-idx -> 0 }T
+T{ s" abc" ch-setup s" bc" ch-setup strstr-idx -> 1 }T
 
 report bye

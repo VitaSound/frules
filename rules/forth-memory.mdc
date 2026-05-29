@@ -78,6 +78,41 @@ When parallel arrays are not enough, use **nodes linked by address**. Keep the h
 
 `list-walk` calls `( node head-var -- flag )`; **true** stops. Guard nil before `@` when the caller might dereference an empty list.
 
+### Dictionary-linked push (Rosetta Code — verbatim)
+
+`Singly-linked-list-Element-definition/singly-linked-list-element-definition-1.fth` — **ok** in gforth; nodes live in the dictionary (not `free`able):
+
+```forth
+0 value numbers
+: push ( n -- )
+  here swap numbers , , to numbers ;
+```
+
+For challenge linked lists prefer parallel arrays or theForthNet `ll` — see § above.
+
+### Sorted lookup (Rosetta Code — gforth fix)
+
+`gforth/binary-search.fth` — upstream uses `-cell` (broken). Linear `find-idx`; with locals use `addr# i cells + @`, not `i addr# cells + @`:
+
+```forth
+: find-idx ( key addr u -- idx|-1 )
+  { key# addr# u# }  -1 { idx# }
+  u# 0 do
+    addr# i cells + @ key# = if i to idx# then
+  loop
+  idx# ;
+```
+
+### Fixed cell array (Rosetta Code — gforth substitute)
+
+`gforth/collections-minimal.fth` — upstream needs `ffl/car.fs`. Dictionary-backed array:
+
+```forth
+create arr  10 cells allot
+: arr@ ( i -- n )  cells arr + @ ;
+: arr! ( n i -- )  cells arr + ! ;
+```
+
 `bounds` for `( c-addr u -- end start )` — use with `?do`/`+loop` over a cell region:
 
 ```forth

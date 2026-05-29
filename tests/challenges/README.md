@@ -24,6 +24,8 @@ Sources: mostly [LeetCode Top 100 Liked](https://leetcode.com/studyplan/top-100-
 
 Each bank file header includes **Cognitive: N/10** and **Pattern:** `pattern_key`.
 
+Rosetta Code hints (optional, not gold): `python3 scripts/rosettacode-hint.py tests/challenges/NNN-slug.fs` — see [`sources/rosettacode-forth/INDEX.md`](../../sources/rosettacode-forth/INDEX.md).
+
 ## How to use
 
 1. Open the challenge file in your editor.

@@ -45,6 +45,7 @@ For a **foreign** Forth project, run `install.sh` there so `.cursor/rules/` cont
 - `sources/gforth-manual/` — full Gforth manual
 - `sources/gforth-manual-tutorial/` — Gforth manual tutorial (ch.3)
 - `sources/theforth.net-packages/` — vendored library source
+- `sources/rosettacode-forth/` — Rosetta Code algorithm snippets (569 tasks)
 - Any file you already solved in an earlier chat for the same challenge
 
 If the model searches the repo on its own, say explicitly: *solve only from the attached challenge + rules; do not open `tests/ans`, `examples`, or `sources/`.*

@@ -30,10 +30,10 @@ create ch-nexts ch-max-nodes cells allot
 : ch-val!  ( n i -- )  swap cells ch-vals + ! ;
 : ch-next! ( n i -- )  swap cells ch-nexts + ! ;
 1 1 1 ch-val! 4 ch-next!
-4 4 4 ch-val! 3 ch-next!
-3 3 3 ch-val! 2 ch-next!
-2 2 2 ch-val! 5 ch-next!
-5 5 5 ch-val! 0 ch-next!
+4 3 4 ch-val! 3 ch-next!
+3 2 3 ch-val! 2 ch-next!
+2 5 2 ch-val! 5 ch-next!
+5 0 5 ch-val! 0 ch-next!
 1 constant ch-head
 
 \ === paste your solution below this line ===
@@ -41,6 +41,6 @@ create ch-nexts ch-max-nodes cells allot
 \ === paste your solution above this line ===
 
 T{ 1 3 part-list -> 1 }T
-T{ 1 ch-next@ -> 2 }T
+T{ ch-val@ 1 -> 2 }T
 
 report bye

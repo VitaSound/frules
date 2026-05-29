@@ -79,3 +79,28 @@ For multi-step parsing without juggling `( c-addr u )` on the data stack, a **st
 | `"th` | `( +n -- c-addr )` nth string from top (0 = TOS) |
 
 Use `"clear` between test cases. **Challenge default:** prefer inline `( c-addr u )` and one buffer unless the task is explicitly a parser pipeline.
+
+## Edit distance (Rosetta Code — verbatim)
+
+`Levenshtein-distance/levenshtein-distance.fth` — **ok** in gforth. Core recursive form (demo on include omitted):
+
+```forth
+: levenshtein ( a1 n1 a2 n2 -- n )
+  dup
+  if
+    2>r dup
+    if
+      2dup 1- chars + c@ 2r@ 1- chars + c@ =
+      if  1- 2r> 1- recurse exit
+      else
+        2dup 1- 2r@ 1- recurse -rot
+        2dup    2r@ 1- recurse -rot
+        1- 2r> recurse min min 1+
+      then
+    else  2drop 2r> nip
+    then
+  else  2drop nip
+  then ;
+```
+
+Challenge `134-edit-distance.fs` may need iterative DP — do not paste wholesale into paste zones.

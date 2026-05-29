@@ -1,0 +1,106 @@
+# Gforth 0.7.9 smoke on Rosetta distill candidates.
+# Originals: ../<Task>/  |  Gforth fixes: gforth/  (vendored upstream untouched)
+# Smoke: bash gforth/smoke-all.sh
+
+distill_candidates:
+  - task: Greatest-common-divisor
+    file: greatest-common-divisor.fth
+    path: ../Greatest-common-divisor/greatest-common-divisor.fth
+    target_rules: [forth-numeric]
+    status: ok
+
+  - task: Least-common-multiple
+    file: least-common-multiple.fth
+    path: ../Least-common-multiple/least-common-multiple.fth
+    target_rules: [forth-numeric]
+    status: ok
+
+  - task: Population-count
+    file: population-count.fth
+    path: ../Population-count/population-count.fth
+    target_rules: [forth-numeric]
+    status: ok
+
+  - task: Fibonacci-sequence
+    file: fibonacci-sequence-1.fth
+    path: ../Fibonacci-sequence/fibonacci-sequence-1.fth
+    target_rules: [forth-control]
+    status: ok
+
+  - task: FizzBuzz
+    file: fizzbuzz-1.fth
+    path: ../FizzBuzz/fizzbuzz-1.fth
+    target_rules: [forth-defining]
+    status: ok
+
+  - task: Parsing-RPN-calculator-algorithm
+    file: parsing-rpn-calculator-algorithm-1.fth
+    path: ../Parsing-RPN-calculator-algorithm/parsing-rpn-calculator-algorithm-1.fth
+    target_rules: [forth-meta]
+    status: ok
+
+  - task: Parsing-RPN-calculator-algorithm
+    file: parsing-rpn-calculator-algorithm-2.fth
+    path: gforth/parsing-rpn-calculator-algorithm-2.fth
+    upstream: ../Parsing-RPN-calculator-algorithm/parsing-rpn-calculator-algorithm-2.fth
+    target_rules: [forth-meta]
+    status: fixed
+    note: "non-interactive demo; original hangs on bl word"
+
+  - task: Singly-linked-list-Element-definition
+    file: singly-linked-list-element-definition-1.fth
+    path: ../Singly-linked-list-Element-definition/singly-linked-list-element-definition-1.fth
+    target_rules: [forth-memory]
+    status: ok
+
+  - task: Levenshtein-distance
+    file: levenshtein-distance.fth
+    path: ../Levenshtein-distance/levenshtein-distance.fth
+    target_rules: [forth-strings]
+    status: ok
+
+  - task: Towers-of-Hanoi
+    file: towers-of-hanoi-1.fth
+    path: ../Towers-of-Hanoi/towers-of-hanoi-1.fth
+    target_rules: [forth-control]
+    status: ok
+
+  - task: Binary-search
+    file: binary-search.fth
+    path: gforth/binary-search.fth
+    upstream: ../Binary-search/binary-search.fth
+    target_rules: [forth-memory]
+    status: fixed
+    note: "original uses -cell; gforth/ uses find-idx linear search"
+
+  - task: Balanced-brackets
+    file: balanced-brackets.fth
+    path: gforth/balanced-brackets.fth
+    upstream: ../Balanced-brackets/balanced-brackets.fth
+    target_rules: [forth-control]
+    status: fixed
+    note: "no lib/choose; [char] \\ line trap removed"
+
+  - task: Assertions
+    file: assertions.fth
+    path: gforth/assertions.fth
+    upstream: ../Assertions/assertions.fth
+    target_rules: [forth-debugging]
+    status: fixed
+    note: "demo uses 42 so assert passes"
+
+  - task: Classes
+    file: classes-minimal.fth
+    path: gforth/classes-minimal.fth
+    upstream: ../Classes/classes-1.fth
+    target_rules: [forth-defining]
+    status: substitute
+    note: "CREATE/DOES> stub; original uses ;class OOP"
+
+  - task: Collections
+    file: collections-minimal.fth
+    path: gforth/collections-minimal.fth
+    upstream: ../Collections/collections-1.fth
+    target_rules: [forth-memory]
+    status: substitute
+    note: "fixed array demo; original needs ffl/car.fs"

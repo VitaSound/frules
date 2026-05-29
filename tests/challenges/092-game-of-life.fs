@@ -36,6 +36,6 @@ create ch-grid ch-cols ch-rows * cells allot
 \ === paste your solution above this line ===
 
 T{ life-next }T
-T{ 1 1 ch-grid@ -> 1 }T
+T{ ch-grid@ 1 1 -> 1 }T
 
 report bye

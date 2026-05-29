@@ -124,7 +124,7 @@ python3 scripts/build-dataset.py --sandbox --validate
 
 1. Клон Gforth upstream, нарезка `: … ;` + комментарии → `build-dataset.py` (расширить скрипт или второй pass).
 2. Синтетика (Cursor/Composer): spec + frules → код → **только** если `gforth` PASS.
-3. Опционально: chunk из `sources/brodie-thinking-forth/*.md`, `sources/gforth-manual-tutorial/*.md`, `sources/gforth-manual/*.md`, или фрагмент из `sources/theforth.net-packages/` + промпт «напиши Gforth-пример к идиоме».
+3. Опционально: chunk из `sources/brodie-thinking-forth/*.md`, `sources/gforth-manual-tutorial/*.md`, `sources/gforth-manual/*.md`, фрагмент из `sources/theforth.net-packages/`, или адаптированный сниппет из `sources/rosettacode-forth/` + промпт «напиши Gforth-пример к идиоме».
 4. Цель: **≥ 500** строк в `data/train.jsonl`.
 
 Приоритет: **код с gforth** > rules в system > prose (Brodie, Gforth tutorial).

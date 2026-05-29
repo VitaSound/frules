@@ -1,20 +1,20 @@
 # eval-slices.yaml — train vs eval splits (see docs/CHALLENGE-TO-TRAIN.md)
 
-bank_size: 139
-train_for_sft_count: 94
-eval_holdout_count: 51
+bank_size: 145
+train_for_sft_count: 98
+eval_holdout_count: 53
 
 slices:
   train_for_sft:
     description: Large model solves these -> data/challenge-solutions/ -> challenge-train.jsonl
     files:
-      - 004-sqrt-int.fs
       - 005-is-prime.fs
       - 006-fib-nth.fs
       - 007-gcd.fs
       - 008-lcm.fs
       - 124-pe-even-fib.fs
       - 125-pe-sum-square.fs
+      - 143-expect-match.fs
       - 012-count-and-say.fs
       - 013-strstr.fs
       - 014-multiply-strings.fs
@@ -27,6 +27,7 @@ slices:
       - 022-sort-colors.fs
       - 023-contains-dup.fs
       - 024-majority-element.fs
+      - 145-arr-sum.fs
       - 027-three-sum-closest.fs
       - 028-trap-rain.fs
       - 029-merge-sorted.fs
@@ -36,17 +37,20 @@ slices:
       - 035-daily-temp.fs
       - 036-decode-string-len.fs
       - 037-asteroid-collision.fs
+      - 142-sq-brackets.fs
       - 041-search-range.fs
       - 042-search-matrix.fs
       - 043-sqrt-binary.fs
       - 044-peak-index.fs
       - 139-sorted-median.fs
+      - 141-find-idx.fs
       - 048-middle-node.fs
       - 049-remove-nth-end.fs
       - 050-swap-pairs.fs
       - 051-add-two-numbers.fs
       - 126-list-partition.fs
       - 127-reorder-list.fs
+      - 140-dict-list-push.fs
       - 055-invert-tree.fs
       - 056-valid-bst.fs
       - 057-kth-smallest.fs
@@ -92,11 +96,11 @@ slices:
       - 110-prefix-suffix.fs
       - 111-longest-dict-word.fs
       - 135-lru-get.fs
-      - 114-parse-int-hex.fs
       - 115-atom-count.fs
       - 116-fizzbuzz-count.fs
       - 128-bf-steps.fs
       - 129-count-words.fs
+      - 144-holder.fs
       - 120-permute-count.fs
       - 121-subsets-count.fs
       - 122-hanoi-moves.fs
@@ -115,6 +119,7 @@ slices:
       - 001-reverse-int.fs
       - 002-palindrome-num.fs
       - 003-pow-x-n.fs
+      - 004-sqrt-int.fs
       - 009-longest-common-prefix.fs
       - 010-string-to-int.fs
       - 011-last-word-len.fs
@@ -154,6 +159,7 @@ slices:
       - 108-trie-starts.fs
       - 112-calc-basic.fs
       - 113-score-parens.fs
+      - 114-parse-int-hex.fs
       - 117-gen-parens-count.fs
       - 118-phone-combos.fs
       - 119-combo-sum.fs
@@ -170,9 +176,9 @@ slices:
       - 001-reverse-int.fs
       - 002-palindrome-num.fs
       - 003-pow-x-n.fs
+      - 004-sqrt-int.fs
       - 009-longest-common-prefix.fs
       - 010-string-to-int.fs
-      - 011-last-word-len.fs
 
   standard:
     description: Post-train eval (~1h)
@@ -214,12 +220,13 @@ slices:
         - 019-remove-element.fs
       medium_4_6:
         - 003-pow-x-n.fs
+        - 004-sqrt-int.fs
         - 009-longest-common-prefix.fs
         - 010-string-to-int.fs
       hard_7_10:
 
   full:
-    description: All 145 files (reference)
+    description: All 151 files (reference)
     files:
       - 01-clamp.fs
       - 02-min-max.fs
@@ -366,3 +373,9 @@ slices:
       - 137-morse-len.fs
       - 138-collatz-steps.fs
       - 139-sorted-median.fs
+      - 140-dict-list-push.fs
+      - 141-find-idx.fs
+      - 142-sq-brackets.fs
+      - 143-expect-match.fs
+      - 144-holder.fs
+      - 145-arr-sum.fs

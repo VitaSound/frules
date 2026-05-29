@@ -89,6 +89,7 @@ Open:
 - [`sources/brodie-thinking-forth/`](../sources/brodie-thinking-forth/) — idioms and style (prose; do not paste verbatim into `.fs`)
 - [`sources/gforth-manual-tutorial/`](../sources/gforth-manual-tutorial/) — Gforth manual ch.3 Tutorial (stack, loops, locals, defining words; prose + code examples)
 - [`sources/gforth-manual/`](../sources/gforth-manual/) — full Gforth manual (word reference ch.5, environment, conformance, tools; prose + code)
+- [`sources/rosettacode-forth/`](../sources/rosettacode-forth/) — Rosetta Code Forth snippets (569 tasks); catalog [`INDEX.md`](../sources/rosettacode-forth/INDEX.md); lookup `python3 scripts/rosettacode-hint.py tests/challenges/NNN-slug.fs`
 - rest of [`sources/`](../sources/) — see [`sources/README.md`](../sources/README.md)
 - plus [`data/challenge-solutions/`](../data/challenge-solutions/), [`tests/ans/`](../tests/ans/), [`tests/gforth/`](../tests/gforth/), [`examples/`](../examples/), seeds `01-clamp.fs` … `06-roman.fs`, web via Source
 
@@ -99,6 +100,8 @@ Open:
 **gforth-manual:** start from [`index.md`](../sources/gforth-manual/index.md); search with `rg -l 'wordname' sources/gforth-manual/` or open topic files (`words.md`, `memory.md`, `assertions.md`, `standard-conformance.md`, …). Use for exact word semantics, stack effects, and Gforth-specific behaviour — adapt to `WORD`; do not paste prose into `.fs`. Prefer tutorial sections for pedagogy; prefer full manual for glossary-level detail.
 
 **brodie-thinking-forth:** style and factoring guidance; same as above — ideas only, no verbatim prose in solution files.
+
+**rosettacode-forth:** start from [`INDEX.md`](../sources/rosettacode-forth/INDEX.md) or `python3 scripts/rosettacode-hint.py tests/challenges/NNN-slug.fs`. Wiki snippets are **hints** (`exact` / `related` / `ref` in [`challenge-links.yaml`](../sources/rosettacode-forth/challenge-links.yaml)) — contracts differ from bank `T{ }T`; adapt to `WORD` and Style guard; prefer theForthNet libraries for reusable words. **Do not edit** vendored `.fth` to “fix” Gforth — if a snippet is broken, see [`gforth-compat.yaml`](../sources/rosettacode-forth/gforth-compat.yaml) and ignore; TODO rewrite separately.
 
 Adapt borrowed code to **`WORD`**, stack effect, and Style guard; the result must pass all `T{ }T`.
 

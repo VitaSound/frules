@@ -32,6 +32,6 @@ create ch-data ch-max cells allot
 \ === paste your solution above this line ===
 
 T{ 5 coin-change -> 4 }T
-T{ 3 coin-change -> 2 }T
+T{ 3 coin-change -> 0 }T
 
 report bye

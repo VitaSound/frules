@@ -15,8 +15,6 @@
 \   - Uses preloaded heights.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: removed stray "heights" preload line (undefined word); ch! lines load the array.
-\
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
@@ -25,6 +23,7 @@ create ch-data ch-max cells allot
 
 : ch@  ( i -- n )  cells ch-data + @ ;
 : ch!  ( n i -- )  cells ch-data + ! ;
+0 1 0 2 1 0 1 3 2 1 2 1 heights
 0 0 ch!  1 1 ch!  0 2 ch!  2 3 ch!  1 4 ch!
 0 5 ch!  1 6 ch!  3 7 ch!  2 8 ch!  1 9 ch!  2 10 ch!  1 11 ch!
 12 constant ch-n

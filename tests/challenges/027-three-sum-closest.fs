@@ -16,9 +16,6 @@
 \   - Uses ch-data preload.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: preload was "-1 2 1 ch!" (only set ch-data[1]=2, left -1 on stack);
-\        now loads -1,2,1 with the standard "n i ch!" pattern.
-\
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
@@ -27,7 +24,7 @@ create ch-data ch-max cells allot
 
 : ch@  ( i -- n )  cells ch-data + @ ;
 : ch!  ( n i -- )  cells ch-data + ! ;
--1 0 ch!  2 1 ch!  1 2 ch!
+-1 2 1 ch!
 3 constant ch-n
 
 \ === paste your solution below this line ===

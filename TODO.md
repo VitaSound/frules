@@ -20,6 +20,11 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
     - [x] theForthNet packages vendored: `sources/theforth.net-packages/` (`.4th` / `.fs`).
     - [x] **Индексация theForthNet packages** — [`sources/theforth.net-packages/INDEX.md`](sources/theforth.net-packages/INDEX.md): каталог по пакетам и темам frules, distill candidates, challenge hints.
     - [x] **Выборочная дистилляция theForthNet** — high/medium из INDEX → `rules/{defining,memory,wordlists,meta,stack,strings,numeric}.mdc` + `docs/SOURCES.md`.
+    - [x] **Rosetta Code vendored** — `sources/rosettacode-forth/` (569 задач, `fetch.sh`).
+    - [x] **Индексация Rosetta** — [`INDEX.md`](sources/rosettacode-forth/INDEX.md) (taxonomy, frules topics, challenge cross-ref), [`challenge-links.yaml`](sources/rosettacode-forth/challenge-links.yaml), [`taxonomy-keywords.yaml`](sources/rosettacode-forth/taxonomy-keywords.yaml), `scripts/rosettacode-hint.py`; подключено в `AGENTS.md`, `frules-index.mdc`, `AGENT-SOLVE`, `CHALLENGE-TO-TRAIN`, `CHALLENGE-RUNS`, `SOURCES.md`.
+    - [ ] **Расширить challenge-links** — добавлять пары bank↔Rosetta по мере ревью gold solutions (сейчас 36 curated).
+    - [x] **Выборочная дистилляция Rosetta** — **15/15** distill candidates → `rules/` (verbatim ok + `gforth/` fixes); smoke `bash sources/rosettacode-forth/gforth/smoke-all.sh`.
+    - [x] **Челленджи из Rosetta (15 distill)** — 9 уже были в bank; добавлены `140`–`145` (6 новых). Карта: [`ROSETTA-DISTILL-15.md`](tests/challenges/ROSETTA-DISTILL-15.md). Решения: `data/challenge-solutions/140`–`145`.
 - [ ] **Pre-commit hook** (`.git/hooks/pre-commit` или husky): запускать `./test.sh`, блокировать коммит при FAIL.
 - [ ] **CI.** GitHub Actions: установка `gforth` + `pforth` через apt, запуск `./test.sh` на каждый PR/push.
 - [x] **Lint English-only.** `tests/lint.sh` — grep `[А-Яа-яЁё]` в `rules/*.mdc` и `templates/*.mdc`; вызывается из `./test.sh`.

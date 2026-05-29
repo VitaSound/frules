@@ -65,3 +65,23 @@ variable #places
 ```
 
 `places` sets digits right of the point; `fixed` scales after `.` / `d.` parsing via **`dpl`** (Gforth — environmental dependency). Use ordinary `+`, `-`, `*`, `/` on scaled values; divide with care (scale product back). For true FP see `forth-floating-point.mdc`.
+
+## Integer idioms (Rosetta Code — verbatim)
+
+From `sources/rosettacode-forth/`; **do not “fix”** for Gforth — copy or adapt to challenge contract only.
+
+```forth
+\ Greatest-common-divisor/greatest-common-divisor.fth — ok in gforth
+: gcd ( a b -- n )
+  begin dup while tuck mod repeat drop ;
+
+\ Least-common-multiple/least-common-multiple.fth — ok in gforth
+: lcm ( a b -- n )
+  over 0= over 0= or if 2drop 0 exit then
+  2dup gcd abs */ ;
+
+\ Population-count/population-count.fth — ok in gforth (demo tasks omitted)
+: popcnt ( n -- u )  0 swap
+  begin dup while tuck 1 and + swap 1 rshift repeat drop ;
+```
+Gforth fixes for upstream-broken tasks: `sources/rosettacode-forth/gforth/` — see `gforth-compat.yaml`.

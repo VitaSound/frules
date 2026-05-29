@@ -80,6 +80,29 @@ Words like `create`, `'`, `[']` read from the **input stream**, not the stack �
 
 Do not build new parsing words unless necessary; prefer `( c-addr u )` or stack arguments.
 
+## RPN / line evaluate (Rosetta Code — verbatim)
+
+`Parsing-RPN-calculator-algorithm/parsing-rpn-calculator-algorithm-1.fth` — **ok** in gforth:
+
+```forth
+s" 3 4 2 * 1 5 - 2 3 ^ ^ / +" evaluate .
+```
+
+Token loop from `gforth/parsing-rpn-calculator-algorithm-2.fth` (upstream demo hangs on interactive `bl word`; fixed batch demo):
+
+```forth
+: ^ ( x n -- x^n )  over swap 1 ?do over * loop nip ;
+
+: detail ( c-addr u -- )
+  cr ." stack: " .s
+  evaluate
+  cr ." stack: " .s ;
+
+s" 3 4 2 * 1 5 - 2 3 ^ ^ / +" detail
+```
+
+For calc challenges: adapt to spec/`WORD`; do not paste demo I/O into paste zones.
+
 ## Interpret-only wordlist (advanced)
 
 `interpretive.fs` (theForthNet) puts helpers in a wordlist searched **first in interpret state only** — same notation at compile vs interpret time without state-smart `'`. Example: interpret-time `' name` vs compile-time `['] name` wrapped as one immediate word.

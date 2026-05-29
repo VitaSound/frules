@@ -1,0 +1,140 @@
+# Curated Rosetta hints for tests/challenges/ bank files.
+# kind: exact (same wiki task) | related (same algorithm family) | ref (loose inspiration)
+#
+# Regenerate INDEX cross-ref table: python3 gen-index.py
+# Lookup: python3 ../../scripts/rosettacode-hint.py <challenge-file>
+
+links:
+  # --- bank tasks sourced from Rosetta (exact) ---
+  006-fib-nth.fs:
+    kind: exact
+    rosetta: [Fibonacci-sequence]
+  007-gcd.fs:
+    kind: exact
+    rosetta: [Greatest-common-divisor]
+  008-lcm.fs:
+    kind: exact
+    rosetta: [Least-common-multiple]
+  106-hamming-weight.fs:
+    kind: exact
+    rosetta: [Population-count]
+  116-fizzbuzz-count.fs:
+    kind: exact
+    rosetta: [FizzBuzz, General-FizzBuzz]
+  122-hanoi-moves.fs:
+    kind: exact
+    rosetta: [Towers-of-Hanoi]
+
+  # --- seeds ---
+  03-reverse-string.fs:
+    kind: related
+    rosetta: [Reverse-a-string]
+  04-caesar-shift.fs:
+    kind: related
+    rosetta: [Caesar-cipher]
+  05-balanced-parens.fs:
+    kind: related
+    rosetta: [Balanced-brackets]
+  06-roman.fs:
+    kind: related
+    rosetta: [Roman-numerals-Encode, Roman-numerals-Decode]
+
+  # --- scalar / math ---
+  001-reverse-int.fs:
+    kind: ref
+    rosetta: [Reverse-a-string]
+  003-palindrome-num.fs:
+    kind: related
+    rosetta: [Palindrome-detection]
+  004-sqrt-int.fs:
+    kind: related
+    rosetta: [Isqrt-integer-square-root-of-X]
+  005-is-prime.fs:
+    kind: related
+    rosetta: [Primality-by-trial-division]
+
+  # --- strings ---
+  009-longest-common-prefix.fs:
+    kind: ref
+    rosetta: [Substring]
+  010-string-to-int.fs:
+    kind: ref
+    rosetta: [Arithmetic-Integer]
+  012-count-and-say.fs:
+    kind: ref
+    rosetta: [Look-and-say-sequence]
+
+  # --- arrays / hash ---
+  017-two-sum-pair.fs:
+    kind: ref
+    rosetta: [Array-concatenation]
+  018-remove-dup-sorted.fs:
+    kind: related
+    rosetta: [Remove-duplicate-elements]
+  019-remove-element.fs:
+    kind: related
+    rosetta: [Remove-duplicate-elements]
+
+  # --- binary search ---
+  038-search-insert.fs:
+    kind: related
+    rosetta: [Binary-search]
+  039-search-rotated.fs:
+    kind: ref
+    rosetta: [Binary-search]
+
+  # --- linked structure ---
+  045-merge-two-lists.fs:
+    kind: ref
+    rosetta: [Sorting-algorithms-Merge-sort]
+  047-reverse-list.fs:
+    kind: ref
+    rosetta: [Reverse-a-string]
+
+  # --- trees ---
+  052-max-depth.fs:
+    kind: related
+    rosetta: [Tree-traversal]
+  054-same-tree.fs:
+    kind: ref
+    rosetta: [Tree-traversal]
+
+  # --- dynamic programming ---
+  060-max-subarray.fs:
+    kind: related
+    rosetta: [Greatest-subsequential-sum]
+  134-edit-distance.fs:
+    kind: related
+    rosetta: [Levenshtein-distance]
+
+  # --- graph ---
+  068-num-islands.fs:
+    kind: related
+    rosetta: [Bitmap-Flood-fill]
+  070-shortest-path.fs:
+    kind: ref
+    rosetta: [Dijkstras-algorithm]
+
+  # --- bit ---
+  101-single-number.fs:
+    kind: related
+    rosetta: [Population-count, Bitwise-operations]
+  103-count-bits.fs:
+    kind: related
+    rosetta: [Population-count]
+
+  # --- parse / interpreter ---
+  112-calc-basic.fs:
+    kind: ref
+    rosetta: [Parsing-RPN-calculator-algorithm]
+  114-parse-int-hex.fs:
+    kind: ref
+    rosetta: [Non-decimal-radices-Convert, Binary-digits]
+
+  # --- recursion ---
+  117-gen-parens-count.fs:
+    kind: related
+    rosetta: [Balanced-brackets]
+  118-phone-combos.fs:
+    kind: related
+    rosetta: [Permutations-by-swapping]

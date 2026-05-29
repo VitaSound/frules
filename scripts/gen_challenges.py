@@ -231,7 +231,7 @@ def write_index(challenges: list[dict]) -> None:
             f"| `{s['file']}` | `{s['word']}` | `{s['pattern_key']}` | {s['cognitive']} | {s['taxonomy_block']} |"
         )
     rows.append("")
-    rows.append("## Bank (`001`–`125`)")
+    rows.append("## Bank (`001`–`{:03d}`)".format(len(challenges)))
     rows.append("")
     rows.append("| ID | File | Word | Pattern | Cog | Source | Block |")
     rows.append("|----|------|------|---------|-----|--------|-------|")
@@ -304,7 +304,7 @@ def write_eval_slices(challenges: list[dict]) -> None:
         *[f"        - {f}" for f in tier_c[:8] if f in eval_holdout],
         "",
         "  full:",
-        "    description: All 145 files (reference)",
+        "    description: All {} files (reference)".format(len(SEEDS) + len(challenges)),
         "    files:",
         *[f"      - {f}" for f in seed_files],
         *[f"      - {c['id']:03d}-{c['slug']}.fs" for c in challenges],

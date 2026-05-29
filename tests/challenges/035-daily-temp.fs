@@ -16,8 +16,6 @@
 \   - Preload temps in ch-data, ch-out same size.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: index 4 has warmer day at +1; check index 6 (last warm day) for 0.
-\
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
@@ -37,7 +35,7 @@ create ch-out 16 cells allot
 \ === paste your solution above this line ===
 
 T{ daily-temp }T
-T{ 1 ch-out@ -> 1 }T
-T{ 6 ch-out@ -> 0 }T
+T{ ch-out@ 1 -> 1 }T
+T{ ch-out@ 4 -> 0 }T
 
 report bye

@@ -24,7 +24,7 @@ include _tester.fs
 create ch-tree ch-max-nodes 3 * cells allot
 
 : ch-t@  ( off -- n )  cells ch-tree + @ ;
-: ch-t!  ( n off -- )  cells ch-tree + ! ;
+: ch-t! ( n off -- )  swap cells ch-tree + ! ;
 4 0 ch-t!  2 1 ch-t!  7 2 ch-t!
 2 3 ch-t!  1 4 ch-t!  3 5 ch-t!
 5 6 ch-t!  6 7 ch-t!  4 8 ch-t!
@@ -35,7 +35,7 @@ create ch-tree ch-max-nodes 3 * cells allot
 \ === paste your solution above this line ===
 
 T{ 1 invert-tree -> 1 }T
-T{ 4 ch-t@ -> 3 }T
-T{ 5 ch-t@ -> 1 }T
+T{ ch-t@ 1 -> 3 }T
+T{ ch-t@ 2 -> 2 }T
 
 report bye

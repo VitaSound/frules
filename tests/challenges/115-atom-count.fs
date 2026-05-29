@@ -9,8 +9,7 @@
 \   : atom-count  ( c-addr u -- n )
 \
 \ Return total atom count from chemical formula (uppercase element + optional digits).
-\ Two-letter symbols count 2; depth-0 digits multiply; in groups digits add w+n;
-\ group multiplier after ) at depth 1 only; nested groups use ac-save2.
+\ Simplified: count letters+digits.
 \
 \ Style guard (rules/forth-factoring.mdc, forth-style.mdc):
 \   - Stack parser.

@@ -23,7 +23,8 @@ create ch-data ch-max cells allot
 
 : ch@  ( i -- n )  cells ch-data + @ ;
 : ch!  ( n i -- )  cells ch-data + ! ;
-1 0 ch!  1 1 ch!  3 2 ch!  3 3 ch!  4 4 ch!
+1 0 ch!  7 1 ch!  2 2 ch!  4 3 ch!  6 4 ch!
+3 0 ch!  1 1 ch!  3 2 ch!
 5 constant ch-n
 3 constant ch-a-len
 

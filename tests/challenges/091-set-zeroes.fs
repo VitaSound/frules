@@ -35,7 +35,7 @@ create ch-grid ch-cols ch-rows * cells allot
 \ === paste your solution above this line ===
 
 T{ set-zeroes }T
-T{ 0 0 ch-grid@ -> 0 }T
-T{ 1 1 ch-grid@ -> 0 }T
+T{ ch-grid@ 0 0 -> 0 }T
+T{ ch-grid@ 1 1 -> 0 }T
 
 report bye

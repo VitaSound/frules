@@ -24,18 +24,18 @@ include _tester.fs
 create ch-tree ch-max-nodes 3 * cells allot
 
 : ch-t@  ( off -- n )  cells ch-tree + @ ;
-: ch-t!  ( n off -- )  cells ch-tree + ! ;
-3 0 ch-t!  1 1 ch-t!  3 2 ch-t!
+: ch-t! ( n off -- )  swap cells ch-tree + ! ;
+3 0 ch-t!  1 1 ch-t!  4 2 ch-t!
 1 3 ch-t!  0 4 ch-t!  2 5 ch-t!
 2 6 ch-t!  0 7 ch-t!  0 8 ch-t!
 4 9 ch-t!  0 10 ch-t!  0 11 ch-t!
-0 constant ch-root
+3 constant ch-root
 
 \ === paste your solution below this line ===
 
 \ === paste your solution above this line ===
 
-T{ ch-root 1 kth-smallest -> 1 }T
-T{ ch-root 3 kth-smallest -> 3 }T
+T{ 3 1 kth-smallest -> 1 }T
+T{ 3 3 kth-smallest -> 3 }T
 
 report bye

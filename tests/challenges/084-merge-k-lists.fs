@@ -22,19 +22,16 @@ include _tester.fs
 12 constant ch-max-nodes
 create ch-vals  ch-max-nodes cells allot
 create ch-nexts ch-max-nodes cells allot
-create ch-data  ch-max-nodes cells allot
-
-: ch@  ( i -- n )  cells ch-data + @ ;
-: ch!  ( n i -- )  cells ch-data + ! ;
 
 : ch-val@  ( i -- n )  cells ch-vals + @ ;
 : ch-next@ ( i -- n )  cells ch-nexts + @ ;
+: ch-node! ( val next i -- )  >r swap r@ ch-next@!  ch-val@! ;
 : ch-val!  ( n i -- )  swap cells ch-vals + ! ;
 : ch-next! ( n i -- )  swap cells ch-nexts + ! ;
-1 1 ch-val!  2 1 ch-next!
-3 2 ch-val!  0 2 ch-next!
-2 3 ch-val!  4 3 ch-next!
-4 4 ch-val!  0 4 ch-next!
+1 2 1 ch-val! 1 ch-next!
+3 0 2 ch-val! 0 ch-next!
+2 4 3 ch-val! 3 ch-next!
+4 0 4 ch-val! 0 ch-next!
 1 0 ch!  3 1 ch!
 2 constant ch-k
 2 constant ch-n

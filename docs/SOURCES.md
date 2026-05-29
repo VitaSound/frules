@@ -35,6 +35,14 @@
 | `sources/gforth-manual-tutorial/*.md` | Gforth manual ch.3 Tutorial (GNU GPL), https://gforth.org/manual/Tutorial.html, `extract.sh` | vendored; дистилляция в `rules/*.mdc` выполнена (skip: §3.3 crash-course, §3.10 decompilation, §3.35 advanced-macros, §3.36 compilation-tokens) |
 | `sources/gforth-manual/*.md` | Gforth manual полностью (GNU GPL), https://gforth.org/manual/, `extract.sh` | vendored; **полная дистилляция** actionable-идиом в `rules/*.mdc` (skip: Word Index / Concept Index как словарь, per-CPU assembler §5.27, engine internals ch.14, cross-compiler detail ch.15, Emacs ch.12, appendix prose) |
 | `sources/theforth.net-packages/` | [theforth.net-packages](https://github.com/theforth/theforth.net-packages); catalog [`INDEX.md`](../sources/theforth.net-packages/INDEX.md). **Selective distillation** (2026-05): `compat/struct.fs` → `forth-defining`; `ll`, `bounds` → `forth-memory`; `priority-queue` → `forth-defining`; `modules` → `forth-wordlists`; `interpretive`, `immediate`, `recognizers` → `forth-meta`; `stack` → `forth-stack`; `stringstack` → `forth-strings`; `fixed` → `forth-numeric`. Skip: crypto, games, embedded drivers, `f` PM, duplicate `ttester`. | vendored + distilled (selective) |
+| `sources/rosettacode-forth/` | [Rosetta Code Category:Forth](https://rosettacode.org/wiki/Category:Forth) via [RosettaCodeData](https://github.com/acmeism/RosettaCodeData/tree/main/Lang/Forth); catalog [`INDEX.md`](../sources/rosettacode-forth/INDEX.md), [`gforth-compat.yaml`](../sources/rosettacode-forth/gforth-compat.yaml), Gforth fixes [`gforth/`](../sources/rosettacode-forth/gforth/). **Distill (2026-05):** all **15** smoke-tested candidates → `rules/`; upstream vendored `.fth` untouched. | vendored + distilled (15/15) |
+| `forth-numeric.mdc` (+ Rosetta) | `Greatest-common-divisor`, `Least-common-multiple`, `Population-count` | distilled (verbatim ok) |
+| `forth-meta.mdc` (+ Rosetta) | `Parsing-RPN-calculator-algorithm` (1 ok, 2 → `gforth/`) | distilled |
+| `forth-defining.mdc` (+ Rosetta) | `FizzBuzz-1` (ok), `Classes` → `gforth/classes-minimal.fth` | distilled |
+| `forth-memory.mdc` (+ Rosetta) | `Singly-linked-list-push` (ok), `Binary-search` + `Collections` → `gforth/` | distilled |
+| `forth-control.mdc` (+ Rosetta) | `Fibonacci-sequence-1`, `Towers-of-Hanoi-1`, `Balanced-brackets` → `gforth/` | distilled |
+| `forth-strings.mdc` (+ Rosetta) | `Levenshtein-distance` (recursive core) | distilled |
+| `forth-debugging.mdc` (+ Rosetta) | `Assertions` → `gforth/assertions.fth` | distilled |
 | `frules-index.mdc` | precedence policy | hand-authored |
 | `forth-portability.mdc` (cell size discipline) | conversation distill + DPANS94 / Gforth manual | hand-authored supplement |
 | `forth-stack.mdc` (typing mental model) | Gforth Tutorial §3.12; conversation distill | hand-authored supplement |

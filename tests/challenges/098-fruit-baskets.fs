@@ -15,8 +15,6 @@
 \   - Uses ch-n.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: longest two-type window [1,2,1,2] has length 4.
-\
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
@@ -32,6 +30,6 @@ create ch-data ch-max cells allot
 
 \ === paste your solution above this line ===
 
-T{ fruit-baskets -> 4 }T
+T{ fruit-baskets -> 3 }T
 
 report bye

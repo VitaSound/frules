@@ -16,8 +16,6 @@
 \   - In-place.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: tests used "ch@ i" (underflow); index must precede ch@.
-\
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
@@ -34,7 +32,7 @@ create ch-data ch-max cells allot
 \ === paste your solution above this line ===
 
 T{ sort-parity }T
-T{ 0 ch@ -> 2 }T
-T{ 3 ch@ -> 3 }T
+T{ ch@ 0 -> 2 }T
+T{ ch@ 3 -> 3 }T
 
 report bye

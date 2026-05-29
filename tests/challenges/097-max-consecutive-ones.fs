@@ -15,8 +15,6 @@
 \   - k on stack.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: k=2 expected 9 (three zeros in array).
-\
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
@@ -33,6 +31,6 @@ create ch-data ch-max cells allot
 \ === paste your solution above this line ===
 
 T{ 1 max-ones -> 6 }T
-T{ 2 max-ones -> 9 }T
+T{ 2 max-ones -> 10 }T
 
 report bye

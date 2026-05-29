@@ -51,7 +51,8 @@ Build a verified Gforth solution for tests/challenges/NNN-slug.fs (training data
 - Paste the definition(s) BETWEEN the two "=== paste your solution ===" lines.
 - Stack-effect comment on every colon definition.
 - Follow Style guard in the file header.
-- You MAY read and reuse tests/ans/, tests/gforth/, examples/, data/challenge-solutions/, sources/theforth.net-packages/, sources/brodie-thinking-forth/, sources/gforth-manual-tutorial/, sources/gforth-manual/, similar .fs files.
+- You MAY read and reuse tests/ans/, tests/gforth/, examples/, data/challenge-solutions/, sources/theforth.net-packages/, sources/rosettacode-forth/, sources/brodie-thinking-forth/, sources/gforth-manual-tutorial/, sources/gforth-manual/, similar .fs files.
+- Optional Rosetta hint: `python3 scripts/rosettacode-hint.py tests/challenges/NNN-slug.fs`
 - Verify spec and T{ }T; fix obvious errors in tests/challenges/ if needed (see AGENT-SOLVE-CHALLENGES.md).
 ```
 

@@ -4,7 +4,7 @@
 
 **Статус:** фаза solve **завершена** (все train). Дальше: SFT (`build-challenge-dataset.py`) и **валидация моделей** только на `eval_holdout`.
 
-Progress: **94 / 94**
+Progress: **98 / 98**
 
 Historical checklist. Agent protocol (archived when complete): [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -104,3 +104,9 @@ Do **not** put solutions in files listed only under `eval_holdout` in `eval-slic
 - [x] 137-morse-len.fs  (`morse-len`)
 - [x] 138-collatz-steps.fs  (`collatz`)
 - [x] 139-sorted-median.fs  (`sorted-median`)
+- [x] 140-dict-list-push.fs  (`dict-push`, `list-sum`)
+- [x] 141-find-idx.fs  (`find-idx`)
+- [x] 142-sq-brackets.fs  (`sq-brackets?`)
+- [x] 143-expect-match.fs  (`matches?`)
+- [x] 144-holder.fs  (`holder`)
+- [x] 145-arr-sum.fs  (`arr-sum`)

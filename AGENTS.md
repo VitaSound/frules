@@ -13,7 +13,7 @@ Core habits:
 - Prefer ANS words and portable sizing (`CELL`, `CHARS`, `ALIGNED`) over machine-specific assumptions.
 - Name words for **what** they do (English), max 31 characters, functional not implementation detail.
 
-Full detail: see `rules/` in the frules package. Reference prose and word glossary: `sources/gforth-manual/`, `sources/gforth-manual-tutorial/`.
+Full detail: see `rules/` in the frules package. Reference prose and word glossary: `sources/gforth-manual/`, `sources/gforth-manual-tutorial/`. Algorithm snippets (hints only): `sources/rosettacode-forth/INDEX.md`.
 
 **System / architecture questions** (choosing a Forth, FMAP, embedded vs hosted, layers, domain dialects FORTH-X, co-design) — use `rules/forth-system-context.mdc` and `docs/FORTH-*.md`, not challenge coding rules. Treat FORTH docs as **AI-assisted (human-directed)** — see [`docs/DOC-AUTHORSHIP.md`](docs/DOC-AUTHORSHIP.md); not exhaustively proofread by the human maintainer.
 

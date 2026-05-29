@@ -19,17 +19,15 @@
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
-char X constant ch-X
-char O constant ch-O
 8 constant ch-cols
 8 constant ch-rows
 create ch-grid ch-cols ch-rows * cells allot
 
 : ch-grid@  ( col row -- n )  ch-cols * + cells ch-grid + @ ;
 : ch-grid!  ( n col row -- )  ch-cols * + cells ch-grid + ! ;
-ch-X 0 0 ch-grid!  ch-X 1 0 ch-grid!  ch-X 2 0 ch-grid!
-ch-X 0 1 ch-grid!  ch-O 1 1 ch-grid!  ch-X 2 1 ch-grid!
-ch-X 0 2 ch-grid!  ch-X 1 2 ch-grid!  ch-X 2 2 ch-grid!
+X 0 0 ch-grid!  X 1 0 ch-grid!  X 2 0 ch-grid!
+X 0 1 ch-grid!  O 1 1 ch-grid!  X 2 1 ch-grid!
+X 0 2 ch-grid!  X 1 2 ch-grid!  X 2 2 ch-grid!
 3 constant ch-cols-used
 3 constant ch-rows-used
 

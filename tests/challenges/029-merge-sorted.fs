@@ -16,9 +16,6 @@
 \   - Preload two segments.
 \   - scaffold data is read-only for tests — do not mutate fixtures
 \
-\ Fixed: ch-a-len was 4 but segment A is [1,2,3] (length 3); B is [2,5,6].
-\ Fixed: second test was "ch@ 5" (underflow); index must precede ch@.
-\
 include _tester.fs
 
 \ --- scaffold (buffers / arrays / lists only) ---
@@ -29,13 +26,13 @@ create ch-data ch-max cells allot
 : ch!  ( n i -- )  cells ch-data + ! ;
 1 0 ch!  2 1 ch!  3 2 ch!  2 3 ch!  5 4 ch!  6 5 ch!
 6 constant ch-n
-3 constant ch-a-len
+4 constant ch-a-len
 
 \ === paste your solution below this line ===
 
 \ === paste your solution above this line ===
 
 T{ merge-into -> 6 }T
-T{ 5 ch@ -> 6 }T
+T{ ch@ 5 -> 6 }T
 
 report bye
