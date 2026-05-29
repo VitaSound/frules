@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **57 / 94**
+Progress: **62 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -70,17 +70,17 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 098-fruit-baskets.fs  (`fruit-baskets`)
 - [x] 099-subarray-product.fs  (`subarray-prod`)
 - [x] 100-max-vowels.fs  (`max-vowels`)
-- [ ] 103-count-bits.fs  (`count-bits`)
-- [ ] 104-reverse-bits.fs  (`reverse-bits`)
-- [ ] 105-divide-int.fs  (`divide-int`)
-- [ ] 106-hamming-weight.fs  (`hamming`)
+- [x] 103-count-bits.fs  (`count-bits`)
+- [x] 104-reverse-bits.fs  (`reverse-bits`)
+- [-] 105-divide-int.fs  (`divide-int`)
+- [x] 106-hamming-weight.fs  (`hamming`)
 - [ ] 109-word-dict.fs  (`word-dict?`)
 - [ ] 110-prefix-suffix.fs  (`prefix-suffix?`)
 - [ ] 111-longest-dict-word.fs  (`longest-dict`)
 - [ ] 114-parse-int-hex.fs  (`parse-hex`)
 - [ ] 115-atom-count.fs  (`atom-count`)
-- [ ] 116-fizzbuzz-count.fs  (`fizzbuzz-n`)
-- [ ] 120-permute-count.fs  (`permute-n`)
+- [x] 116-fizzbuzz-count.fs  (`fizzbuzz-n`)
+- [x] 120-permute-count.fs  (`permute-n`)
 - [ ] 121-subsets-count.fs  (`subsets-n`)
 - [ ] 122-hanoi-moves.fs  (`hanoi`)
 - [ ] 123-quick-exponent.fs  (`power-rec`)
