@@ -33,6 +33,29 @@ create ch-tree ch-max-nodes 3 * cells allot
 
 \ === paste your solution below this line ===
 
+: node-val ( i -- n )  3 * ch-t@ ;
+: node-left ( i -- n )  3 * 1 + ch-t@ ;
+: node-right ( i -- n )  3 * 2 + ch-t@ ;
+
+variable ch-k-rem
+variable ch-k-val
+
+: go ( i -- )
+  >r
+  r@ node-left ?dup if recurse then
+  ch-k-rem @ if
+    ch-k-rem @ 1-
+    dup if ch-k-rem !
+    else drop r@ node-val ch-k-val ! 0 ch-k-rem ! then
+    ch-k-rem @ if
+      r@ node-right ?dup if recurse then
+    then
+  then
+  r> drop ;
+
+: kth-smallest ( root k -- n )
+  swap over ch-k-rem !  nip  0 ch-k-val !  go  ch-k-val @ ;
+
 \ === paste your solution above this line ===
 
 T{ ch-root 1 kth-smallest -> 1 }T
