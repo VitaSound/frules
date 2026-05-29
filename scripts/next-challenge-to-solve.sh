@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Print first unchecked challenge from data/challenge-solutions/SOLVE-QUEUE.md
+# Print first unchecked challenge from SOLVE-QUEUE.md (solve phase complete → QUEUE_EMPTY)
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 QUEUE="$ROOT/data/challenge-solutions/SOLVE-QUEUE.md"
@@ -12,6 +12,8 @@ fi
 line="$(grep -m1 '^- \[ \]' "$QUEUE" || true)"
 if [[ -z "$line" ]]; then
   echo "QUEUE_EMPTY"
+  echo "STATUS=SOLVE_PHASE_COMPLETE"
+  echo "NOTE=train_for_sft queue done; use eval_holdout for model validation (docs/CHALLENGE-TO-TRAIN.md)"
   exit 0
 fi
 

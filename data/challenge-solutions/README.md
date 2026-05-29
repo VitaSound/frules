@@ -1,9 +1,9 @@
 # data/challenge-solutions/
 
-## Task checklist (mark done here)
+## Task checklist (solve phase complete)
 
-**[`SOLVE-QUEUE.md`](SOLVE-QUEUE.md)** — 94 `train_for_sft` challenges with `- [ ]` / `- [x]`.  
-Agent: first unchecked line → solve → user review → then check off and commit.
+**[`SOLVE-QUEUE.md`](SOLVE-QUEUE.md)** — **94 / 94** `train_for_sft` challenges, all `- [x]`.  
+Фаза batch-solve **завершена**. Дальше: экспорт в JSONL и **валидация моделей** на `eval_holdout` (не на этом срезе).
 
 Regenerate from `eval-slices.yaml`:
 
@@ -30,4 +30,4 @@ python3 scripts/build-challenge-dataset.py --validate
 
 See [`docs/CHALLENGE-TO-TRAIN.md`](../docs/CHALLENGE-TO-TRAIN.md).
 
-**Agent workflow (English):** [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md), [`SOLVE-QUEUE.md`](SOLVE-QUEUE.md). After `TESTS OK` → user review; `- [x]` and commit only after explicit OK.
+**Agent workflow (archived):** [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md) — отладка и редкие правки; очередь solve закрыта. См. [`docs/CHALLENGE-TO-TRAIN.md`](../docs/CHALLENGE-TO-TRAIN.md) для eval.

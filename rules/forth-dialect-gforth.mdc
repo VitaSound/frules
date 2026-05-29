@@ -140,6 +140,10 @@ list% %allot constant node    \ prefer when struct has floats
 
 Name fields `struct-field`, structures `struct%`. Nested struct: `foo% field …`. For floats inside a struct, use `%allot constant` rather than `create … %allot drop` — body alignment may be insufficient for `f@`/`f!`.
 
+## Challenge solution copies (scaffold stubs)
+
+Hold-out `tests/challenges/*.fs` may define empty companion words (`: lru-init ( -- ) ;`) so early scaffold lines compile. In **`data/challenge-solutions/`** copies, **omit** those stubs when the real `: lru-init` / `: lru-put` appear in the paste zone — otherwise Gforth warns `redefined …` (harmless but noisy). Keep scaffold init/test lines **after** real definitions, or drop no-op scaffold calls that only targeted stubs.
+
 ## What not to do
 
 - No C `printf` or `"string\0"` unless binding C.

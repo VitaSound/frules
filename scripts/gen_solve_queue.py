@@ -42,14 +42,33 @@ def main() -> None:
     old_text = OUT.read_text() if OUT.exists() else ""
     done = len(re.findall(r"^- \[x\] \S+\.fs", old_text, re.M))
 
+    complete = done >= len(files) and len(files) > 0
+    if complete:
+        status_en = (
+            "**Status:** solve phase **complete** (all train items verified). "
+            "Do not reopen for batch solving; use for SFT export and as reference. "
+            "Model **validation** → `eval_holdout` only — see `docs/CHALLENGE-TO-TRAIN.md`."
+        )
+        status_ru = (
+            "**Статус:** фаза solve **завершена** (все train). "
+            "Дальше: SFT (`build-challenge-dataset.py`) и **валидация моделей** только на `eval_holdout`."
+        )
+    else:
+        status_en = f"**Status:** solve phase **in progress** ({done} / {len(files)})."
+        status_ru = f"**Статус:** в работе ({done} / {len(files)})."
     lines = [
         "# Solve queue (`train_for_sft`)",
         "",
+        status_en,
+        "",
+        status_ru,
+        "",
         f"Progress: **{done} / {len(files)}**",
         "",
-        "Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).",
+        "Historical checklist. Agent protocol (archived when complete): "
+        "[`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).",
         "",
-        "Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.",
+        "Do **not** put solutions in files listed only under `eval_holdout` in `eval-slices.yaml`.",
         "",
     ]
     for f in files:

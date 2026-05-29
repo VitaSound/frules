@@ -117,8 +117,8 @@ python3 scripts/build-dataset.py --sandbox --validate
 
 - **Не** включайте `tests/challenges/` в train.
 - В `01-clamp.fs` и `04-caesar-shift.fs` между маркерами могут быть черновики — **очистите** перед честным бенчмарком или не используйте эти файлы как эталон в train.
-- Решения для **обучения**: только срез `train_for_sft` (~100 bank) → [`data/challenge-solutions/`](../data/challenge-solutions/) → [`CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md). **Не** в `tests/challenges/*.fs`.
-- **Eval:** только `eval_holdout` (6 seeds + ~39 bank) — не попадают в `challenge-train.jsonl`.
+- Решения для **обучения**: срез `train_for_sft` (**94/94 готово**) → [`data/challenge-solutions/`](../data/challenge-solutions/) → [`CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md). **Не** в `tests/challenges/*.fs`. Фаза batch-solve закрыта — см. [`SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md).
+- **Eval / валидация моделей:** только `eval_holdout` (6 seeds + ~39 bank) — не попадают в `challenge-train.jsonl`, не подглядывать в gold solutions hold-out slug.
 
 ### Расширение датасета (Track B)
 

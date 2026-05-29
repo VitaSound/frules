@@ -1,15 +1,25 @@
-# Agent instructions: solve challenges one at a time
+# Agent instructions: challenge solutions (archived solve phase)
 
-Protocol for an AI agent (Cursor, Composer, API). **One queue item per run:** implement → `TESTS OK` → **ask the user to review** → only after explicit approval: mark done, commit, and push.
+> **Status (May 2026):** The **`train_for_sft` solve queue is complete** — **94 / 94** in [`SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md), all `- [x]`. **`bash scripts/next-challenge-to-solve.sh`** prints `QUEUE_EMPTY`. Do **not** start new batch solve runs on the train list.
+>
+> **Next use of this corpus:** build SFT data (`python3 scripts/build-challenge-dataset.py`) and **validate models on `eval_holdout` only** (empty paste zones in `tests/challenges/`). See [`CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md), [`MODEL-TRAINING.md`](MODEL-TRAINING.md).
+>
+> Sections below are the **reference** for debugging `T{ }T`, spec fixes, and rare one-off edits — not for chewing through the train queue.
 
-**Goal:** build a **verified solution set** for training (`challenge-train.jsonl`), not a blind problem-solving benchmark. **Reading and reusing code is encouraged** — all of [`sources/`](../sources/), `tests/ans/`, `examples/`, existing files in `data/challenge-solutions/`, similar challenges, external references.
+---
+
+## Archived protocol (train queue — finished)
+
+Protocol for an AI agent (Cursor, Composer, API). **Was:** one queue item per run: implement → `TESTS OK` → user review → mark `- [x]`, commit.
+
+**Goal (achieved):** a **verified solution set** for training (`challenge-train.jsonl`), not a blind benchmark. **Reading and reusing code is encouraged** — all of [`sources/`](../sources/), `tests/ans/`, `examples/`, `data/challenge-solutions/`, similar challenges, external references.
 
 **Language:** All **problem statements** live in English: the `CHALLENGE` block in each `tests/challenges/*.fs` file (title, description, Style guard). Keep challenge fixes, solution comments, commit messages, and agent↔user messages about the task in **English** unless the user explicitly asks otherwise.
 
 **Style and idioms:** Follow this repo’s **Forth programming rules** — [`AGENTS.md`](../AGENTS.md), [`rules/`](../rules/) (`forth-style`, `forth-stack`, `forth-factoring`, `forth-dialect-gforth`, …), `.cursor/rules/*.mdc` after `./install.sh` if present; topic index: [`rules/frules-index.mdc`](../rules/frules-index.mdc). The Style guard in each challenge header points at the same rules.
 
-**Checklist file (check off here):** [`data/challenge-solutions/SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md)  
-If missing: `python3 scripts/gen_solve_queue.py` from repo root.
+**Checklist file (historical, all done):** [`data/challenge-solutions/SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md)  
+Regenerate list (preserves `[x]`): `python3 scripts/gen_solve_queue.py` from repo root.
 
 Dialect: **Gforth**.
 
@@ -28,7 +38,7 @@ Dialect: **Gforth**.
 | Commit solution, queue, and challenge (if fixed) — **after user OK** | Batch-close multiple tasks without per-task review |
 | One challenge per run (until review request or final push) | |
 
-Train list: only `- [ ]` / `- [x]` lines in `SOLVE-QUEUE.md` (~94 files). Do **not** take tasks from `eval_holdout` in [`eval-slices.yaml`](../tests/challenges/eval-slices.yaml).
+Train list (`SOLVE-QUEUE.md`, ~94 files): **complete** — do not reopen for batch solving. Do **not** put solutions in `eval_holdout` files in [`eval-slices.yaml`](../tests/challenges/eval-slices.yaml); those are for **model validation** later.
 
 ---
 
@@ -48,9 +58,9 @@ python3 scripts/gen_solve_queue.py
 bash scripts/next-challenge-to-solve.sh
 ```
 
-If output is `QUEUE_EMPTY`, all train tasks are done — **stop**.
+If output is `QUEUE_EMPTY` (expected since May 2026), the train solve phase is **finished** — **stop** batch solving; use [`CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md) for eval on `eval_holdout`.
 
-Otherwise note:
+Otherwise (only if the queue is reopened) note:
 
 - `FILE` — e.g. `004-sqrt-int.fs`
 - `WORD` — word name from the CHALLENGE header (e.g. `isqrt`)
@@ -235,51 +245,13 @@ Mention challenge/test fixes in the commit message when applicable.
 
 ---
 
-## Copy-paste prompt for a new chat
+## Copy-paste prompt (archived — queue empty)
 
-Replace `NNN-slug.fs` and `WORD` from step 1.
+The train solve queue is **94 / 94 complete**. Do **not** paste the old “pick next `- [ ]`” prompt for batch work.
 
-```
-You are building ONE verified solution for the frules training dataset (not a blind solve test).
+**For model validation** (new chats): point the agent at a single file from **`eval_holdout`** in [`eval-slices.yaml`](../tests/challenges/eval-slices.yaml), empty paste zone in `tests/challenges/`, no peeking at `data/challenge-solutions/` for that slug. See [`CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md) § Eval.
 
-All problem statements are in English (CHALLENGE block in tests/challenges/*.fs). Use English for fixes, comments, and user messages about this task.
-
-Queue: data/challenge-solutions/SOLVE-QUEUE.md — FIRST line with "- [ ]" only.
-Task: tests/challenges/NNN-slug.fs → word WORD → data/challenge-solutions/NNN-slug.fs
-
-Environment: gforth and python3 are already installed.
-
-You MAY read and reuse examples from anywhere in the repo: sources/ (theforth.net-packages, brodie-thinking-forth, gforth-manual-tutorial, gforth-manual, …), data/challenge-solutions/, tests/ans/, tests/gforth/, examples/, similar challenges, Source URL. Prefer inlining adapted idioms in the paste zone over fragile includes.
-
-Follow this project's Forth rules: AGENTS.md, rules/*.mdc, .cursor/rules/ if present, frules-index.mdc. Match Style guard in the challenge header.
-
-Before coding — VERIFY the English problem statement:
-- CHALLENGE text, stack effect, Style guard, every T{ }T expected value
-- Compare with Source URL if anything looks wrong
-- If spec or tests are obviously wrong, FIX tests/challenges/NNN-slug.fs (English header and/or T{ }T / scaffold; paste zone EMPTY)
-- Then cp the fixed scaffold to data/challenge-solutions/ and implement there
-- Do not force a wrong solution to pass bad tests
-
-Rules:
-- Gforth; AGENTS.md + rules/ + .cursor/rules/
-- Implement ONLY : WORD
-- Solution code ONLY between "=== paste your solution ===" in data/challenge-solutions/
-- Stack-effect on every colon definition
-
-When TESTS OK — STOP and ask the USER to review in English (do NOT commit or mark [x] yet):
-- paths to challenge and solution
-- gforth command and result
-- what to check; ask for explicit OK before commit
-
-ONLY after user confirms (ok / accepted / lgtm):
-1. Mark - [x] in SOLVE-QUEUE.md, update Progress
-2. git add solution + SOLVE-QUEUE.md (+ tests/challenges/NNN-slug.fs if fixed)
-3. git commit -m "Add challenge solution: NNN-slug.fs (WORD)"
-4. git push
-
-If user requests changes: fix, re-run gforth, ask for review again.
-ONE challenge per run until user OK; then commit and stop.
-```
+**For debugging / reference:** keep using §5b in this file, `forth-control.mdc`, `forth-debugging.mdc`, and existing `data/challenge-solutions/*.fs` as gold examples for the **train** split only.
 
 ---
 
@@ -295,20 +267,23 @@ Eval only on `eval_holdout`, not `train_for_sft`.
 
 ## Agent checklist
 
-**Before user review**
+**Train solve phase (historical — all done)**
 
-- [ ] First `- [ ]` from `SOLVE-QUEUE.md`
-- [ ] English spec and `T{ }T` verified; obvious errors fixed in `tests/challenges/` (paste empty)
-- [ ] Used `sources/` (theforth.net-packages, brodie-thinking-forth, gforth-manual-tutorial, gforth-manual, …) and `rules/` / `AGENTS.md`
-- [ ] Solution in `data/challenge-solutions/`
-- [ ] `gforth` → `TESTS OK`
-- [ ] **Review request** sent to user (step 6 template, English)
+- [x] All `train_for_sft` items `- [x]` in `SOLVE-QUEUE.md` (94 / 94)
+- [x] Verified solutions in `data/challenge-solutions/`
+- [x] `tests/challenges/` paste zones empty on train files
 
-**Only after user OK**
+**Ongoing (dataset + validation)**
 
-- [ ] `- [x]` and Progress in `SOLVE-QUEUE.md`
-- [ ] Commit: solution + queue (+ challenge if changed)
-- [ ] Push (or report if push is blocked)
+- [ ] `python3 scripts/build-challenge-dataset.py --validate` → `data/challenge-train.jsonl`
+- [ ] Train / fine-tune without `eval_holdout` leakage
+- [ ] Eval models on **`eval_holdout`** only (blind solves or automated runs)
+
+**If fixing one train solution later**
+
+- [ ] English spec and `T{ }T` verified
+- [ ] `gforth` → `TESTS OK` on `data/challenge-solutions/NNN-slug.fs`
+- [ ] User OK before commit (do not reopen the whole queue)
 
 ---
 

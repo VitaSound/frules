@@ -15,13 +15,15 @@
 
 | Срез | ~Файлов | Назначение |
 |------|--------|------------|
-| `train_for_sft` | **~100** | Большая модель решает → `challenge-train.jsonl` |
+| `train_for_sft` | **94** | **Готово:** решения в `data/challenge-solutions/` → `challenge-train.jsonl` (не для слепого eval) |
 | `eval_holdout` | **~45** | Только оценка после обучения |
 | `full` | 145 | Справочно |
 
 Перегенерация срезов: `python3 scripts/gen_challenges.py` (поле `split` в `manifest.yaml`).
 
-## Пошагово (новый чат, большая модель)
+## Пошагово (solve train — **завершено**)
+
+Все **94** файла `train_for_sft` решены и отмечены в [`SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md). Ниже — **архив** процесса; для новых чатов используйте **eval_holdout** (валидация моделей), не train.
 
 ### 1. Установить frules
 
@@ -113,22 +115,19 @@ wc -l data/train.jsonl   # цель >= 500
 
 100 challenge-пар + 400 из upstream/синтетики ≈ цель Track B.
 
-## Автоматизация агента (по одной задаче)
+## Автоматизация агента (архив solve)
 
-Полный протокол (очередь → решение → тест → галочка → commit → push):
+Фаза solve **закончена** (`next-challenge-to-solve.sh` → `QUEUE_EMPTY`).
 
-**[`docs/AGENT-SOLVE-CHALLENGES.md`](AGENT-SOLVE-CHALLENGES.md)** (English — full agent protocol)
+**Архив протокола:** [`docs/AGENT-SOLVE-CHALLENGES.md`](AGENT-SOLVE-CHALLENGES.md) (English — отладка `T{ }T`, редкие правки train).
 
-Очередь: [`data/challenge-solutions/SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md)  
-Следующий файл: `bash scripts/next-challenge-to-solve.sh`
-
-Пакетный прогон через Ollama/API — отдельный скрипт (см. `TODO` в MODEL-TRAINING «run-challenge»). Для качества: **новый чат на файл** и правила выше.
+**Дальше:** валидация обученных моделей на **`eval_holdout`** (слепые `tests/challenges/`, без подглядывания в `data/challenge-solutions/` для hold-out slug). Пакетный прогон через Ollama/API — см. `TODO` в MODEL-TRAINING («run-challenge»).
 
 ## Чеклист
 
-- [ ] Решены только файлы из `train_for_sft`
-- [ ] Каждый файл: `TESTS OK` в `data/challenge-solutions/`
-- [ ] `tests/challenges/*.fs` между маркерами **пустые**
+- [x] Решены только файлы из `train_for_sft` (94/94, [`SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md))
+- [x] Каждый train-файл: `TESTS OK` в `data/challenge-solutions/`
+- [x] `tests/challenges/*.fs` на train: между маркерами **пустые**
 - [ ] `build-challenge-dataset.py --validate` без warn
 - [ ] `train.jsonl` ≥ 500 строк перед QLoRA
-- [ ] Eval только на `eval_holdout`
+- [ ] Eval только на `eval_holdout` (валидация моделей)

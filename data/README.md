@@ -2,7 +2,7 @@
 
 | Path | Purpose |
 |------|---------|
-| [`challenge-solutions/SOLVE-QUEUE.md`](challenge-solutions/SOLVE-QUEUE.md) | **Checklist** of ~94 train challenges (`- [ ]` / `- [x]`) for the solve agent |
+| [`challenge-solutions/SOLVE-QUEUE.md`](challenge-solutions/SOLVE-QUEUE.md) | **Solve queue complete** (94/94); corpus for SFT + reference; model validation on `eval_holdout` |
 | `challenge-solutions/*.fs` | Verified solutions (not in `tests/challenges/`) |
 | `sandbox.jsonl` | Track A (~30+ pairs): learn train → infer pipeline |
 | `train.jsonl` | Track B seed from frules only (~40 pairs); extend to 500+ |

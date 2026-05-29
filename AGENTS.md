@@ -17,4 +17,4 @@ Full detail: see `rules/` in the frules package. Reference prose and word glossa
 
 **System / architecture questions** (choosing a Forth, FMAP, embedded vs hosted, layers, domain dialects FORTH-X, co-design) — use `rules/forth-system-context.mdc` and `docs/FORTH-*.md`, not challenge coding rules. Treat FORTH docs as **AI-assisted (human-directed)** — see [`docs/DOC-AUTHORSHIP.md`](docs/DOC-AUTHORSHIP.md); not exhaustively proofread by the human maintainer.
 
-**Code / challenges** — stack, style, control, factoring (`forth-*.mdc`); ignore architecture docs unless the task is porting or target-specific. If `T{ }T` reports `WRONG NUMBER OF RESULTS`, check stack depth after the word (`docs/AGENT-SOLVE-CHALLENGES.md` §5b, `forth-control.mdc`).
+**Code / challenges** — stack, style, control, factoring (`forth-*.mdc`); ignore architecture docs unless the task is porting or target-specific. Train solve queue **complete** (94/94); use `eval_holdout` for model validation (`docs/CHALLENGE-TO-TRAIN.md`). If `T{ }T` reports `WRONG NUMBER OF RESULTS`, check stack depth after the word (`docs/AGENT-SOLVE-CHALLENGES.md` §5b, `forth-control.mdc`).

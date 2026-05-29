@@ -7,7 +7,7 @@
 - **theForthNet packages** — [`theforth.net-packages/`](theforth.net-packages/)
   (vendored-копия репозитория [theforth.net-packages](https://github.com/theforth/theforth.net-packages)
   или аналог с [theforth.net/packages](https://theforth.net/packages)).
-  Лицензии — в `package.4th` каждого пакета. Для челленджей — см.
+  Лицензии — в `package.4th` каждого пакета. Для челленджей (train solve **завершён**; отладка / валидация на hold-out) — см.
   [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
   Если каталог склонирован как отдельный репозиторий (`git clone …` внутрь frules),

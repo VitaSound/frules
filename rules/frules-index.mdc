@@ -26,10 +26,14 @@ Topic routing (pick the most specific file for the task):
 | Cell size, portable numeric range, multi-target deps | `forth-portability.mdc` |
 | Double/mixed precision, pictured numeric output | `forth-numeric.mdc` |
 | if/loop/exit/recursion/flags, extended case | `forth-control.mdc` |
-| Challenge solve/debug (`T{ }T`, stack leaks, Gforth flags) | `docs/AGENT-SOLVE-CHALLENGES.md` §5b + `forth-control.mdc` |
+| Challenge debug / `T{ }T` (train solve done; validate on `eval_holdout`) | `docs/AGENT-SOLVE-CHALLENGES.md` §5b + `forth-control.mdc` |
 | CREATE/DOES>, defer, quotations, forward, alias | `forth-defining.mdc` |
 | immediate, postpone, `[`/`]`, parsing/recognizers | `forth-meta.mdc` |
 | variable, create, allot, move/cmove, alignment | `forth-memory.mdc` |
+| `create` name + hyphenated word (Gforth tokenizer) | `forth-naming.mdc` § Hyphens vs create |
+| Indexed `ch@`/`ch!`, parallel array “lists” | `forth-memory.mdc` § Indexed buffers |
+| Challenge solution vs scaffold stubs (`redefined`) | `forth-dialect-gforth.mdc` § Challenge solution copies |
+| Hold pointer across helpers (`variable`) | `forth-factoring.mdc` § variable as handle |
 | open-file, CLI args, search paths | `forth-io.mdc` |
 | s", c-addr u, xchars | `forth-strings.mdc` |
 | FP stack, 1e, f~abs | `forth-floating-point.mdc` |

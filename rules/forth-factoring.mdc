@@ -58,6 +58,30 @@ function -- the Forth dictionary is itself a case statement.
 Do not factor for its own sake: clichés like `over + swap` (turn `c-addr u`
 into `do`'s `( limit start )`) read better inline than behind a name.
 
+## `variable` as a handle between words
+
+When several helpers must share one node index or pointer and the **public** word has a fixed stack effect, a `variable` beats `pick` / deep `>r`:
+
+```forth
+variable cur-node
+
+: touch-node ( node -- )
+  dup cur-node !
+  ... unlink/link using cur-node @ ... ;
+
+: get-key ( key -- val true | false )
+  find-key if
+    dup cur-node !
+    cur-node @ item@
+    cur-node @ touch-node
+    drop true
+  else
+    false
+  then ;
+```
+
+Name it for the role (`cur-node`, `ed-pair`), not `tmp`. Drop leftovers before the final flag/result so `T{ }T` depth matches.
+
 ## Calculation > data structure > logic
 
 Pick the simplest adequate form: closed-form calculation, then a table

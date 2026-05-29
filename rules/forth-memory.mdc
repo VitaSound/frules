@@ -29,6 +29,33 @@ create vals  5 , 4 , 3 , 2 , 1 ,
 vals @ .  vals cell+ @ .
 ```
 
+### Indexed buffers (challenge / fixed-size data)
+
+Reuse one base and index with `cells` / `chars` — stack contract **`( value index -- )` for store**, **`( index -- value )` for fetch**:
+
+```forth
+create ch-data  ch-max cells allot
+
+: ch@  ( i -- n )       cells ch-data + @ ;
+: ch!  ( n i -- )       swap cells ch-data + ! ;
+```
+
+Do not use `tuck` on `ch!` unless **three** stack items are present (`value`, `index`, and any extra the word documents). Wrong order → segfault or garbage.
+
+### Parallel arrays (fake linked lists / graphs)
+
+When the scaffold gives `ch-vals` + `ch-nexts` (or `x`/`y` pairs), **index = node id**; `-1` (or `0` per spec) = no link. No heap nodes — walk with `next @` on the index field only:
+
+```forth
+\ val@ / next@ — your ch@ on parallel tables ch-vals and ch-nexts
+: walk ( head -- )
+  begin  dup -1 <> while
+    dup val@ .   next@
+  repeat  drop ;
+```
+
+Same idea for BFS/DP grids: separate `create` tables per dimension, not one overloaded name per cell.
+
 ## Dictionary memory (here / allot)
 
 ```forth

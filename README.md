@@ -57,7 +57,7 @@ dialect=gforth
 | `docs/RULES-ARCHITECTURE.md` | Как работает подгрузка с ИИ |
 | `docs/DISTILL-PROMPT.md` | Промпт для перегонки книги в правила |
 | `data/` | JSONL для SFT (`sandbox.jsonl`, `train.jsonl`) |
-| `data/challenge-solutions/SOLVE-QUEUE.md` | Чеклист ~94 train-челленджей (`- [ ]` / `- [x]`) для агента |
+| `data/challenge-solutions/SOLVE-QUEUE.md` | Train solve **завершён** (94/94); дальше SFT + валидация на `eval_holdout` |
 | `scripts/build-dataset.py` | Сборка датасета из tests/examples |
 | `training/` | Конфиги LoRA, Modelfile |
 | `AGENTS.md` | Краткая сводка для любого агента |

@@ -46,6 +46,17 @@ enable-left-solenoid   disable-left-solenoid   ...
 \ usage:  left motor on
 ```
 
+## Hyphens vs `create` names (Gforth tokenizer)
+
+Gforth splits **hyphenated tokens** into separate words. If you already defined `create ed-a` or `constant lru-cap`, a new name like `ed-a-len` or `lru-node@` is **not** one identifier — the parser sees `ed-a` (or `lru`) and a tail (`-len`, `-node@`, …). Symptom: mysterious `undefined` / wrong word executed after edits that “looked” like one name.
+
+**Prefer:**
+
+- Short accessors without repeating the full `create` prefix: `ea-len`, `lrunk@`, `ed@` / `ed!` on `create edtbl`.
+- `create` names that are **one** token and not reused as a prefix in longer hyphenated names (`edtbl`, `lrunk`, not `ed-a` then `ed-a-len`).
+
+**Still apply** “hyphenation is a smell” for factoring — this section is the **parser** pitfall when a prefix is already a defined word.
+
 ## Numbers in names
 
 Do not bundle a digit into a name. `1channel 2channel … 7channel` becomes

@@ -4,10 +4,10 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
 
 ## Near term (next 1–2 sessions)
 
-- [ ] **`013-strstr.fs` stack variant** — `strstr-idx-stack` без locals (как `fib-stack` в 006); pick/return-stack вместо `{ z0 … }`.
+- [x] **`train_for_sft` solve queue** — 94/94 в [`data/challenge-solutions/SOLVE-QUEUE.md`](data/challenge-solutions/SOLVE-QUEUE.md); дальше `build-challenge-dataset.py`, **валидация моделей** на `eval_holdout` (не train).
 - [x] **`tests/challenges/`** — 6 seeds + 125 bank (`001`–`125`), 131 total; `manifest.yaml`, `INDEX.md`, `taxonomy-coverage.md`; генераторы `scripts/_build_catalog.py`, `gen_challenges.py`, `verify_challenges.sh`. Hold-out, без решений между маркерами.
     - [x] Seed: `01`–`06` + `_tester.fs`. Bank: LeetCode Top 100 + Codewars/kata/PE/Rosetta, unique `pattern_key`, cognitive 0–10.
-    - [ ] Добить набор: `07-parse-decimal`, `08-anagram?`, `09-rle-encode`, `10-binary-search` — по одному на оставшиеся непокрытые правила (`forth-defining-words.mdc`, `forth-stack.mdc`, FP/double если появятся).
+    - [x] Добить набор seed `07`–`10` — **заменено банком `001`–`139`** (parse/anagram/RLE/binary-search в банке; taxonomy OK). Defining words / FP / double — см. «Среднесрочно» ниже.
     - [~] Бенчмарковый прогон: `docs/CHALLENGE-RUNS.md` (Cursor) + `docs/LOCAL-GEMMA-BENCHMARK.md` (Gemma 4 / Ollama, rules on/off). Первая строка в CHALLENGE-RUNS — Composer 2.5 / Agent на `01-clamp`.
 - [~] **Дистилляция источников в `rules/`.** Vendored-текст в `sources/` → `docs/DISTILL-PROMPT.md` → обновить `rules/*.mdc` и `docs/SOURCES.md` (как для Brodie).
     - [x] Thinking Forth: исходники в `sources/brodie-thinking-forth/chapter*.md` + `appendix*.md` + `epilog.md` (`extract.sh`). Картинки в `figures/` — только для человека.
@@ -21,14 +21,16 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
     - [ ] **Индексация theForthNet packages** — каталог переиспользуемых идиом/паттернов (по пакетам или темам) → выборочная дистилляция в `rules/` + строки в `docs/SOURCES.md` (аналог pass по Brodie; возможно `docs/BOOK-INDEX.md` или отдельный `sources/theforth.net-packages/INDEX.md`).
 - [ ] **Pre-commit hook** (`.git/hooks/pre-commit` или husky): запускать `./test.sh`, блокировать коммит при FAIL.
 - [ ] **CI.** GitHub Actions: установка `gforth` + `pforth` через apt, запуск `./test.sh` на каждый PR/push.
-- [ ] **Lint English-only.** Скрипт в `tests/lint.sh`: грепает `[А-Яа-яЁё]` в `rules/*.mdc` и `templates/*.mdc`, фейлит при попадании.
+- [x] **Lint English-only.** `tests/lint.sh` — grep `[А-Яа-яЁё]` в `rules/*.mdc` и `templates/*.mdc`; вызывается из `./test.sh`.
 
 ## Среднесрочно (правила и покрытие)
 
-- [ ] **Покрытие defining words** — отдельный тест на `: word create … does> …` с проверкой compile-time vs run-time контракта.
+**Пробелы после train `001`–`139`:** банк челленджей **намеренно** integer/scalar-heavy; почти нет `does>`, FP и double (см. Style guard «No floating point»). В `rules/*.mdc` добавлены идиомы из gold solutions (naming/create+`-`, `ch!`, stubs/redefined, `variable`-handle); **покрытие тем** — отдельными задачами ниже, не доработкой train-банка.
+
+- [ ] **Defining words (`does>`)** — `tests/ans/` или eval-challenge на `create … does>` (compile-time vs run-time); сейчас `forth-defining.mdc` почти не иллюстрируется челленджами.
+- [ ] **FP стек (Gforth)** — отдельный `tests/` или challenge с `f+` / `fdup` / `f~`; train-банк FP не требует → `forth-floating-point.mdc` без практики в бенчмарке.
+- [ ] **Double (`d+`, `m*/`, …)** — отдельный `tests/` или challenge; проверить двухячейечный стек без утечек; train-банк double избегает.
 - [ ] **Тесты на ошибки compile state** — антипаттерн «забыли `]` после `[`», ловить `compile-only` слова на интерпретаторе.
-- [ ] **Тесты на FP стек** — Gforth-only, `f+ fdup` и т.п., чтобы прибить раздел "Floating point" в `forth-dialect-gforth.mdc`.
-- [ ] **Тесты на double** — `d+ d* m*/`, проверить, что нет утечек одной ячейки.
 - [ ] **Examples cross-reference.** Под каждое правило `rules/forth-X.mdc` иметь хотя бы один пример в `examples/` или `tests/`, который его реально иллюстрирует.
 
 ## Долгосрочно (расширение системы)

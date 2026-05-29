@@ -1,10 +1,14 @@
 # Solve queue (`train_for_sft`)
 
+**Status:** solve phase **complete** (all train items verified). Do not reopen for batch solving; use for SFT export and as reference. Model **validation** → `eval_holdout` only — see `docs/CHALLENGE-TO-TRAIN.md`.
+
+**Статус:** фаза solve **завершена** (все train). Дальше: SFT (`build-challenge-dataset.py`) и **валидация моделей** только на `eval_holdout`.
+
 Progress: **94 / 94**
 
-Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
+Historical checklist. Agent protocol (archived when complete): [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
-Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
+Do **not** put solutions in files listed only under `eval_holdout` in `eval-slices.yaml`.
 
 - [x] 004-sqrt-int.fs  (`isqrt`)
 - [x] 005-is-prime.fs  (`prime?`)

@@ -1,33 +1,33 @@
 #!/usr/bin/env bash
-# English-only lint: rules/*.mdc and templates/*.mdc must not contain Cyrillic.
+# English-only lint for agent rule files (Cyrillic must not appear in rules/templates).
 set -euo pipefail
 
-cd "$(dirname "$0")/.."
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
-# Cyrillic letters (Russian block + Ё/ё). grep -E '[А-Я…]' needs a Cyrillic locale;
-# \p{Cyrillic} works with GNU grep -P under C.UTF-8.
-pattern='\p{Cyrillic}'
-fail=0
+exec python3 - "$ROOT" <<'PY'
+import re
+import sys
+from pathlib import Path
 
-check_dir() {
-  local dir="$1" f hits
-  for f in "$dir"/*.mdc; do
-    [ -f "$f" ] || continue
-    hits=$(grep -nP "$pattern" "$f" 2>/dev/null || true)
-    if [[ -n "$hits" ]]; then
-      echo "FAIL: non-English text in $f"
-      sed 's/^/    /' <<<"$hits"
-      fail=1
-    fi
-  done
-}
+root = Path(sys.argv[1])
+pat = re.compile(r"[А-Яа-яЁё]")
+fail = False
 
-check_dir rules
-check_dir templates
+for sub in ("rules", "templates"):
+    d = root / sub
+    if not d.is_dir():
+        continue
+    for path in sorted(d.glob("*.mdc")):
+        text = path.read_text(encoding="utf-8")
+        for lineno, line in enumerate(text.splitlines(), 1):
+            if pat.search(line):
+                rel = path.relative_to(root)
+                print(f"FAIL: Cyrillic in {rel}:{lineno}: {line.strip()[:100]}")
+                fail = True
 
-if (( fail )); then
-  echo "lint: English-only check FAILED" >&2
-  exit 1
-fi
+if fail:
+    print("lint: English-only check failed (rules/*.mdc, templates/*.mdc)", file=sys.stderr)
+    sys.exit(1)
 
-echo "lint: English-only ok"
+print("ok   lint English-only (rules, templates)")
+PY

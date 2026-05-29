@@ -65,6 +65,6 @@ Join threading detail to FMAP via `ex_c` / `fmap_ex_c` in JSON.
 
 ## Agent behavior
 
-- **Challenge solve** (`tests/challenges/`, `data/challenge-solutions/`): postfix Gforth, shallow stack, documented stack effects — **ignore** layer 0 unless the challenge explicitly uses a domain dialect.
+- **Challenges** (`tests/challenges/`, `data/challenge-solutions/`): postfix Gforth, shallow stack, documented stack effects — **ignore** layer 0 unless the challenge explicitly uses a domain dialect. Train solve phase **complete**; gold solutions are reference/SFT only — **validate models** on blind `eval_holdout` in `tests/challenges/`.
 - **Architecture answer**: cite FMAP/profile ids from JSON when recommending a system; distinguish layer 1 portable algo vs layer 3 platform.
 - **Do not** conflate “Forth can embed FORTH-X syntax” with “user code should look like FORTH-X” in algorithm tasks unless asked.

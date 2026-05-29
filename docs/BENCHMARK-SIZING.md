@@ -45,7 +45,7 @@ Aim **6–10 tasks** per block for blocks that matter for Forth:
 | `data/train.jsonl` | **≥ 500** | Real Forth with tests |
 | `tests/challenges/` | **145 fixed** | Blind eval only |
 
-**Challenge solutions for SFT:** large model solves **`train_for_sft`** only (~100) → [`docs/CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md). Never put solutions in `tests/challenges/`; never train on `eval_holdout` (~45).
+**Challenge solutions for SFT:** **`train_for_sft` solve complete** (94 verified in `data/challenge-solutions/`) → [`docs/CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md). Never put solutions in `tests/challenges/`; never train on `eval_holdout` (~45) — use hold-out for **model validation** after training.
 
 ## Regenerating after catalog edits
 

@@ -78,6 +78,10 @@ run_dir() {
   done
 }
 
+if [[ -f tests/lint.sh ]]; then
+  bash tests/lint.sh || fail=1
+fi
+
 run_dir load  examples/gforth gforth
 run_dir load  examples/ans    gforth pforth
 run_dir tests tests/ans       gforth pforth
