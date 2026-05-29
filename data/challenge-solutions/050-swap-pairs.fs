@@ -25,9 +25,9 @@ create ch-nexts ch-max-nodes cells allot
 
 : ch-val@  ( i -- n )  cells ch-vals + @ ;
 : ch-next@ ( i -- n )  cells ch-nexts + @ ;
-: ch-node! ( val next i -- )  >r swap r@ ch-next@!  ch-val@! ;
 : ch-val!  ( n i -- )  swap cells ch-vals + ! ;
 : ch-next! ( n i -- )  swap cells ch-nexts + ! ;
+: ch-node! ( val next i -- )  tuck ch-next!  ch-val! ;
 1 2 1 ch-val! 2 ch-next!
 2 3 2 ch-val! 3 ch-next!
 3 4 3 ch-val! 4 ch-next!
@@ -35,6 +35,28 @@ create ch-nexts ch-max-nodes cells allot
 1 constant ch-head
 
 \ === paste your solution below this line ===
+
+variable ch-first
+variable ch-second
+variable ch-third
+variable ch-tail
+
+: swap-pairs ( head -- new-head )
+  recursive
+  dup 0= if exit then
+  dup ch-next@ dup 0= if 2drop exit then
+  swap ch-first ! ch-second !
+  ch-second @ ch-next@ ch-third !
+  ch-third @ if
+    ch-second @ >r ch-first @ >r
+    ch-third @ swap-pairs ch-tail !
+    r> ch-first !  r> ch-second !
+    ch-first @ ch-second @ ch-next!
+    ch-tail @ ch-first @ ch-next!
+  else
+    ch-first @ ch-second @ ch-next!
+  then
+  ch-second @ ;
 
 \ === paste your solution above this line ===
 
