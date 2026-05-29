@@ -38,13 +38,13 @@ variable ch-wordlist-u
 start-buf constant ch-start
 end-buf constant ch-end
 
-: save-start-u  ( start-buf u -- )  tuck ch-start-u !  drop ;
-: save-end-u  ( end-buf u -- )  tuck ch-end-u !  drop ;
-: save-wordlist-u  ( ch-wordlist u -- )  tuck ch-wordlist-u !  drop ;
+: save-start-u  ( start-buf u -- )  nip ch-start-u ! ;
+: save-end-u  ( end-buf u -- )  nip ch-end-u ! ;
+: save-wordlist-u  ( ch-wordlist u -- )  nip ch-wordlist-u ! ;
 
-s" hit" start-setup save-start-u drop
-s" cog" end-setup save-end-u drop
-s" hot dot dog lot log cog" wordlist-setup save-wordlist-u drop
+s" hit" start-setup save-start-u
+s" cog" end-setup save-end-u
+s" hot dot dog lot log cog" wordlist-setup save-wordlist-u
 
 \ === paste your solution below this line ===
 
@@ -70,7 +70,7 @@ create wl-vis  wl-max-words cells allot
   dup wl-off@ ch-wordlist +  swap wl-len@ ;
 
 : wl-vis@  ( idx -- f )  cells wl-vis + @ ;
-: wl-vis!  ( f idx -- )  swap cells wl-vis + ! ;
+: wl-vis!  ( f idx -- )  cells wl-vis + ! ;
 
 : wl-q-clear  ( -- )  0 wl-q-in !  0 wl-q-out ! ;
 
@@ -80,8 +80,8 @@ create wl-vis  wl-max-words cells allot
   else  2dup > if  -  else  wl-q-max swap - wl-q-in @ +  then
   then ;
 
-: wl-q-idx!  ( slot idx -- )  tuck cells wl-q-idx + ! ;
-: wl-q-dep!  ( slot dep -- )  tuck cells wl-q-dep + ! ;
+: wl-q-idx!  ( idx slot -- )  cells wl-q-idx + ! ;
+: wl-q-dep!  ( dep slot -- )  cells wl-q-dep + ! ;
 : wl-q-idx@  ( slot -- idx )  cells wl-q-idx + @ ;
 : wl-q-dep@  ( slot -- dep )  cells wl-q-dep + @ ;
 
@@ -89,10 +89,10 @@ variable wl-slot
 
 \ ( idx dep -- )  Gforth { dep word-idx }: top=dep, next=word-idx
 : wl-q-enq  ( idx dep -- )
-  { dep word-idx }
+  { word-idx dep }
   wl-q-in @ wl-slot !
-  word-idx wl-slot @ tuck wl-q-idx!
-  dep wl-slot @ tuck wl-q-dep!
+  word-idx wl-slot @ wl-q-idx!
+  dep wl-slot @ wl-q-dep!
   wl-slot @ 1+ dup wl-q-max = if drop 0 then wl-q-in ! ;
 
 : wl-q-deq  ( -- idx dep )
@@ -102,28 +102,35 @@ variable wl-slot
   r> 1+ dup wl-q-max = if drop 0 then wl-q-out ! ;
 
 : wl-add-word  ( c-addr u -- )
-  wl-nw @ tuck wl-max-words >= if  2drop drop exit  then
-  dup ch-wordlist - tuck wl-len! wl-off!
-  1+ wl-nw ! ;
+  wl-nw @ >r
+  r@ wl-max-words >= if  r> 2drop exit  then
+  tuck r@ wl-len!
+  nip ch-wordlist - r@ wl-off!
+  r> 1+ wl-nw ! ;
 
 variable wl-pos
 variable wl-beg
 
 : wl-init-words  ( -- )
   0 wl-nw !  0 wl-pos !
-  begin  wl-pos @ dup ch-wordlist-u @ <
-  while
-    wl-pos @ ch-wordlist + c@ bl =
-    if  wl-pos @ 1+ wl-pos !
-    else
-      wl-pos @ wl-beg !
+  begin
+    wl-pos @  ch-wordlist-u @ >=  if  exit  then
+    wl-pos @  ch-wordlist +  c@  bl <>
+    if
+      wl-pos @  wl-beg !
+      wl-pos @  1+  wl-pos !
       begin
-        wl-pos @ 1+ dup wl-pos !
-        dup ch-wordlist-u @ <  wl-pos @ ch-wordlist + c@ bl <>  and
-      while  repeat
-      wl-pos @ wl-beg @ -  wl-beg @ ch-wordlist + swap  wl-add-word
+        wl-pos @  ch-wordlist-u @ <
+        wl-pos @  ch-wordlist +  c@  bl <>  and
+      while
+        wl-pos @  1+  wl-pos !
+      repeat
+      wl-pos @  wl-beg @  -
+      wl-beg @  ch-wordlist +  swap  wl-add-word
+    else
+      wl-pos @  1+  wl-pos !
     then
-  repeat ;
+  again ;
 
 : wl-one-diff  ( a1 u a2 -- flag )
   { a2 u a1 | n }
@@ -134,7 +141,7 @@ variable wl-beg
   n 1 = ;
 
 : wl-matches-end  ( c-addr u -- flag )
-  dup ch-end-u @ = if  swap ch-end compare 0=  else  2drop 0  then ;
+  2dup ch-end ch-end-u @ compare 0=  >r  2drop  r> ;
 
 variable wl-cur
 variable wl-cu
@@ -144,15 +151,17 @@ variable wl-found
 : wl-vis-clear  ( -- )
   wl-nw @ 0  ?do  0  i  wl-vis!  loop ;
 
+variable wl-dep
+
 : wl-try-idx  ( idx -- )
   >r
   r@ wl-vis@ 0= if
-    wl-cur @ wl-cu @  r@ wl-word nip  wl-one-diff if
-      wl-wave @ 1+  { dep }
+    wl-cur @ wl-cu @  r@ wl-word drop  wl-one-diff if
+      wl-wave @ 1+ wl-dep !
       r@ wl-word wl-matches-end if
-        dep wl-found !
+        wl-dep @ wl-found !
       else
-        2drop  r@ 1 swap wl-vis!  r@ dep wl-q-enq
+        r@ 1 wl-vis!  r@ wl-dep @ wl-q-enq
       then
     then
   then  r> drop ;
@@ -161,7 +170,7 @@ variable wl-found
   wl-nw @ 0  ?do  i wl-try-idx  loop ;
 
 : wl-deq-step  ( -- )
-  wl-q-deq  swap  wl-wave !  wl-word  swap  wl-cu !  wl-cur ! ;
+  wl-q-deq  swap >r wl-wave !  r> wl-word  tuck wl-cu !  nip wl-cur ! ;
 
 : wl-process-queue  ( -- )
   wl-q-count 0  ?do
