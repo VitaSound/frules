@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **42 / 94**
+Progress: **45 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -54,9 +54,9 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 074-pe-multiples.fs  (`pe-mult3-5`)
 - [x] 077-max-profit.fs  (`max-profit`)
 - [x] 078-gas-station.fs  (`gas-start`)
-- [ ] 079-candy.fs  (`candy-min`)
-- [ ] 080-assign-cookies.fs  (`assign-cookies`)
-- [ ] 081-partition-labels.fs  (`part-labels-len`)
+- [x] 079-candy.fs  (`candy-min`)
+- [x] 080-assign-cookies.fs  (`assign-cookies`)
+- [x] 081-partition-labels.fs  (`part-labels-len`)
 - [ ] 084-merge-k-lists.fs  (`merge-k`)
 - [ ] 085-k-closest.fs  (`k-closest`)
 - [ ] 086-find-k-pairs.fs  (`k-pairs-sum`)

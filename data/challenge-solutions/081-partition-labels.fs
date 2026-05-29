@@ -25,6 +25,41 @@ create ch-buf 64 chars allot
 
 \ === paste your solution below this line ===
 
+128 constant ch-alpha
+create ch-last  ch-alpha cells allot
+
+variable part-c
+variable part-u
+variable part-pos
+variable part-end
+variable part-n
+
+: last! ( char idx -- )  swap  cells ch-last + ! ;
+: last@ ( char -- idx )  cells ch-last + @ ;
+
+: clear-last ( -- )
+  ch-alpha 0 ?do  i -1 last!  loop ;
+
+: part-labels-len ( c-addr u -- count )
+  dup part-u !  swap part-c !
+  clear-last
+  0 part-pos !
+  begin  part-pos @  part-u @  <
+  while
+    part-c @ part-pos @ + c@  part-pos @ last!
+    part-pos @ 1+ part-pos !
+  repeat
+  0 part-pos !  0 part-end !  0 part-n !
+  begin  part-pos @  part-u @  <
+  while
+    part-c @ part-pos @ + c@  last@
+    part-end @ max  part-end !
+    part-pos @ part-end @ = if  part-n @ 1+ part-n !  then
+    part-pos @ 1+ part-pos !
+  repeat
+  begin  depth  while  drop  repeat
+  part-n @ ;
+
 \ === paste your solution above this line ===
 
 T{ s" ababcbacadefegdehijhklij" ch-setup part-labels-len -> 3 }T
