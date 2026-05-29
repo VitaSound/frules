@@ -1,6 +1,6 @@
 # Solve queue (`train_for_sft`)
 
-Progress: **37 / 94**
+Progress: **42 / 94**
 
 Checklist: mark `- [x]` after user OK. Agent: [`docs/AGENT-SOLVE-CHALLENGES.md`](../docs/AGENT-SOLVE-CHALLENGES.md).
 
@@ -46,14 +46,14 @@ Do **not** solve files listed only under `eval_holdout` in `eval-slices.yaml`.
 - [x] 063-min-path-sum.fs  (`min-path-sum`)
 - [x] 064-max-prod-sub.fs  (`max-prod-sub`)
 - [x] 065-coin-change.fs  (`coin-change`)
-- [ ] 066-word-break.fs  (`word-break?`)
-- [ ] 067-lis-length.fs  (`lis-len`)
-- [ ] 071-rotting-oranges.fs  (`rotten-days`)
+- [-] 066-word-break.fs  (`word-break?`)
+- [x] 067-lis-length.fs  (`lis-len`)
+- [-] 071-rotting-oranges.fs  (`rotten-days`)
 - [ ] 072-word-ladder-len.fs  (`ladder-len`)
-- [ ] 073-surrounded-regions.fs  (`capture-count`)
-- [ ] 074-pe-multiples.fs  (`pe-mult3-5`)
-- [ ] 077-max-profit.fs  (`max-profit`)
-- [ ] 078-gas-station.fs  (`gas-start`)
+- [x] 073-surrounded-regions.fs  (`capture-count`)
+- [x] 074-pe-multiples.fs  (`pe-mult3-5`)
+- [x] 077-max-profit.fs  (`max-profit`)
+- [x] 078-gas-station.fs  (`gas-start`)
 - [ ] 079-candy.fs  (`candy-min`)
 - [ ] 080-assign-cookies.fs  (`assign-cookies`)
 - [ ] 081-partition-labels.fs  (`part-labels-len`)

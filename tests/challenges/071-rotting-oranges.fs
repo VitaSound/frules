@@ -26,8 +26,8 @@ create ch-grid ch-cols ch-rows * cells allot
 : ch-grid@  ( col row -- n )  ch-cols * + cells ch-grid + @ ;
 : ch-grid!  ( n col row -- )  ch-cols * + cells ch-grid + ! ;
 2 0 0 ch-grid!  1 1 0 ch-grid!  1 2 0 ch-grid!
-1 0 1 ch-grid!  0 1 1 ch-grid!  2 2 1 ch-grid!
-2 0 2 ch-grid!  1 1 2 ch-grid!  1 2 2 ch-grid!
+1 0 1 ch-grid!  1 1 1 ch-grid!  0 2 1 ch-grid!
+0 0 2 ch-grid!  1 1 2 ch-grid!  1 2 2 ch-grid!
 3 constant ch-cols-used
 3 constant ch-rows-used
 

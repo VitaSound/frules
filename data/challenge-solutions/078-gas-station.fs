@@ -30,6 +30,26 @@ create ch-data ch-max cells allot
 
 \ === paste your solution below this line ===
 
+: gas@ ( i -- n )  2* ch@ ;
+: cost@ ( i -- n )  2* 1+ ch@ ;
+
+variable ch-gas-tank
+variable ch-gas-idx
+
+: gas-sum ( -- n )
+  0  5 0 ?do  i gas@ i cost@ - +  loop ;
+
+: gas-start ( -- idx )
+  gas-sum dup 0< if  drop -1 exit  then  drop
+  0 ch-gas-tank !  0 ch-gas-idx !
+  5 0 ?do
+    ch-gas-tank @  i gas@ i cost@ - +  dup 0<
+    if  drop  i 1+ ch-gas-idx !  0 ch-gas-tank !
+    else  ch-gas-tank !
+    then
+  loop
+  ch-gas-idx @ ;
+
 \ === paste your solution above this line ===
 
 T{ gas-start -> 3 }T
