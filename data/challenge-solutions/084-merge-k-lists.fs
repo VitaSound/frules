@@ -26,7 +26,6 @@ create ch-data  ch-max-nodes cells allot
 
 : ch@  ( i -- n )  cells ch-data + @ ;
 : ch!  ( n i -- )  cells ch-data + ! ;
-
 : ch-val@  ( i -- n )  cells ch-vals + @ ;
 : ch-next@ ( i -- n )  cells ch-nexts + @ ;
 : ch-val!  ( n i -- )  swap cells ch-vals + ! ;
@@ -40,6 +39,21 @@ create ch-data  ch-max-nodes cells allot
 2 constant ch-n
 
 \ === paste your solution below this line ===
+
+: merge-two ( ha hb -- head )
+  recursive { hb ha }
+  ha 0= if hb exit then
+  hb 0= if ha exit then
+  ha ch-val@ hb ch-val@ <= if
+    ha ch-next@ hb merge-two  ha swap ch-next!
+    ha
+  else
+    hb ch-next@ ha swap merge-two  hb swap ch-next!
+    hb
+  then ;
+
+: merge-k ( -- head )
+  0 ch@  ch-k 1 ?do  i ch@ merge-two  loop ;
 
 \ === paste your solution above this line ===
 
