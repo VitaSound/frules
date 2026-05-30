@@ -12,6 +12,8 @@
 | [`LOCAL-GEMMA-BENCHMARK.md`](LOCAL-GEMMA-BENCHMARK.md) | baseline Gemma 4 без train |
 | [`CHALLENGE-RUNS.md`](CHALLENGE-RUNS.md) | ручной прогон челленджей |
 | [`TRAINING-RUNS.md`](TRAINING-RUNS.md) | журнал ваших прогонов |
+| [`TRAINING-NEXT-STEPS.md`](TRAINING-NEXT-STEPS.md) | после Track A / merged / long: infer, eval, дальше |
+| [`OLLAMA-FRULES.md`](OLLAMA-FRULES.md) | Ollama + frules rules (full/core SYSTEM, Qwen 0.5B, LoRA+GGUF) |
 
 ---
 
@@ -209,8 +211,10 @@ Merge → Ollama для 0.5B **опционально**.
 ### 4.1 Merge и Ollama
 
 1. Остановить train.
-2. Merge adapter → `output/merged-7b/` (или inference только с adapter при нехватке RAM).
-3. Конвертация в GGUF `q4_K_M` (llama.cpp / Unsloth export).
+2. Merge adapter → полные веса (или сразу GGUF):
+   - **0.5B:** [`training/merge-sandbox.py`](../training/merge-sandbox.py) / `bash training/run-sandbox-merge.sh` — см. [`README.md`](../README.md) раздел **«Merge LoRA»**.
+   - **7B:** тот же Unsloth API (`save_pretrained_merged`, `save_pretrained_gguf`) → `output/merged-7b/`; при нехватке RAM — только infer с adapter, без merge.
+3. GGUF по умолчанию `q4_k_m`: `--gguf output/forth-gforth-q4_K_M.gguf`.
 4. `ollama create forth-gforth -f training/Modelfile.example` (путь `FROM` → ваш `.gguf`).
 
 ### 4.2 frules в inference
@@ -219,7 +223,11 @@ Merge → Ollama для 0.5B **опционально**.
 ./install.sh . gforth   # Cursor rules
 ```
 
-В Modelfile / API — system из `rules/` (см. [`LOCAL-GEMMA-BENCHMARK.md`](LOCAL-GEMMA-BENCHMARK.md) §5, сборка system prompt).
+В Modelfile / API — system из `rules/`:
+
+- **Полный гайд:** [`OLLAMA-FRULES.md`](OLLAMA-FRULES.md) — `build-ollama-system.sh`, `write-modelfile-with-rules.sh`, full/core, `num_ctx`.
+- **Кратко (curl):** [`LOCAL-GEMMA-BENCHMARK.md`](LOCAL-GEMMA-BENCHMARK.md) §5.
+- **Cursor:** `./install.sh . gforth` (rules в `.cursor/rules/`, LoRA отдельно через Ollama).
 
 ---
 
@@ -281,6 +289,7 @@ Hold-out: **145** файла (6 seeds + 139 bank). Полный прогон н�
 | Модель пишет Python | усилить system; больше Forth в train |
 | `good.fs` нет в `--validate` | норма — в файле нет `T{ }T`; без `--validate` в sandbox |
 | NTFS медленно | `HF_HOME` на ext4 |
+| Unsloth `No config file found` | HF не скачал модель: пустой `output/hf-cache`. Часто **ALL_PROXY=socks5** без `socksio` — `unset ALL_PROXY` (оставить `HTTP_PROXY`) или `pip install 'httpx[socks]'`; перезапустить `bash training/run-sandbox.sh` |
 | Перегрев ноутбука | `nvidia-smi -l 1`, паузы, power limit |
 
 ---

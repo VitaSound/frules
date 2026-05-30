@@ -207,13 +207,16 @@ def validate_source_file(path: Path) -> bool:
 
 
 def validate_records(records: list[dict]) -> list[dict]:
-    ok = []
+    ok: list[dict] = []
+    cache: dict[Path, bool] = {}
     for rec in records:
-        src = ROOT / rec["source"]
-        if src.is_file() and validate_source_file(src):
+        src = (ROOT / rec["source"]).resolve()
+        if src not in cache:
+            cache[src] = src.is_file() and validate_source_file(src)
+            if not cache[src]:
+                print(f"warn: validate skip {rec['source']}", file=sys.stderr)
+        if cache[src]:
             ok.append(rec)
-        else:
-            print(f"warn: validate skip {rec['source']}", file=sys.stderr)
     return ok
 
 

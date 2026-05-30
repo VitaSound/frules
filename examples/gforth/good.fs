@@ -34,3 +34,17 @@
 
 \ Address/length pair, NOT counted string
 : greet  ( -- )  s" hello, forth" type cr ;
+
+include ../../tests/ans/_tester.fs
+
+T{ -3 clamp-positive -> 0 }T
+T{  5 clamp-positive -> 5 }T
+T{  5 0 10 clamp -> 5 }T
+T{ 15 0 10 clamp -> 10 }T
+T{ -5 0 10 clamp -> 0 }T
+T{  3 spaces-on-line -> }T
+T{ 42 0 store-reading -> }T
+T{  0 fetch-reading -> 42 }T
+T{ greet -> }T
+
+report bye

@@ -10,8 +10,11 @@ After each train or benchmark, add one row. Do not commit multi-GB weights — o
 
 | Date | Track | Base model | Dataset | Train notes | Challenges N/6 | Notes |
 |------|-------|------------|---------|-------------|----------------|-------|
-| | A sandbox | Qwen2.5-Coder-0.5B | `data/sandbox.jsonl` | | n/a (smoke gcd) | |
-| | B prod | Qwen2.5-Coder-7B | `data/train.jsonl` | | | |
+| 2026-05-30 | A sandbox | Qwen2.5-Coder-0.5B | `sandbox.jsonl` (~24 val) | 3 steps, ~45 s, loss ~4.04 | n/a | `output/sandbox-adapter/` — pipeline OK |
+| 2026-05-30 | A+ merged | Qwen2.5-Coder-0.5B | `train-merged.jsonl` (122) | 32 steps, 2 ep, ~144 s, train_loss 2.61 | TBD holdout | `output/sandbox-adapter-merged/` |
+| 2026-05-30 | A simple | Qwen2.5-Coder-0.5B | `train-simple.jsonl` (~24) | 18 steps, 3 ep, ~78 s, train_loss 3.26 | gcd fail infer | `output/sandbox-adapter-simple/` |
+| 2026-05-30 | A long | Qwen2.5-Coder-0.5B | `train-simple`×5 → `train-repeated.jsonl` (205) | 260 steps, 10 ep, ~19 min; step loss ~1.7e-4; `train_loss` 0.344 | gcd/factorial infer **fail** | `output/sandbox-adapter-long/` — low loss, invalid Forth; **Track A 0.5B closed** |
+| | B prod | Qwen2.5-Coder-7B | `data/train.jsonl` ≥500 | | | |
 | | baseline | gemma4:e4b Ollama | n/a | | | frules on/off — see LOCAL-GEMMA-BENCHMARK |
 
 ## Eval matrix (Track B, when ready)
@@ -27,5 +30,7 @@ Protocol: [`CHALLENGE-RUNS.md`](CHALLENGE-RUNS.md) — one fresh chat per challe
 
 ## See also
 
+- [`TRAINING-NEXT-STEPS.md`](TRAINING-NEXT-STEPS.md) — **после Track A / A+ / long:** infer, eval, Ollama+rules
+- [`OLLAMA-FRULES.md`](OLLAMA-FRULES.md) — Ollama + frules SYSTEM (full/core, Qwen 0.5B, LoRA+GGUF)
 - [`MODEL-TRAINING.md`](MODEL-TRAINING.md) — full instructions
 - [`LOCAL-GEMMA-BENCHMARK.md`](LOCAL-GEMMA-BENCHMARK.md) — Gemma baseline without training

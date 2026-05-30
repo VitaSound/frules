@@ -60,8 +60,9 @@ Join threading detail to FMAP via `ex_c` / `fmap_ex_c` in JSON.
 
 - **ISA stack ≠ Forth PSP/RSP implementation** — register MCUs emulate stacks in RAM.
 - **J1:** fixed internal stacks, no auto spill; RP=0; colon→insn on host — not Gforth-like.
+- **WebAssembly (WAForth):** hosted VM, MM=U, EX-C=S (function table, not ITC); browser/Node/Wasmtime; not a Gforth port — see `docs/FORTH-SYSTEM-ARCHITECTURE.md` §11.2, profile `waforth`.
 - **Superscalar stack (research):** stack **frontend** + register **backend** (Elbrus, zzeng distill) — **not** J1; see `docs/FORTH-STACK-CPU-RESEARCH-eng.md` or `docs/FORTH-STACK-CPU-RESEARCH.md`.
-- Details: `docs/FORTH-SYSTEM-ARCHITECTURE.md` §9.1, §11.1, §12.
+- Details: `docs/FORTH-SYSTEM-ARCHITECTURE.md` §9.1, §11.1, §11.2, §12.
 
 ## Agent behavior
 

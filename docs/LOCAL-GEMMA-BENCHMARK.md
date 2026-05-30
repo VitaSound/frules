@@ -204,19 +204,13 @@ gforth 01-clamp.fs
 
 ## 5. Без Cursor: только Ollama API (опционально)
 
-Если Cursor не видит локальную модель, можно собрать system prompt из правил
-и слать `curl` (менее удобно, но воспроизводимо).
+Полная инструкция (full/core rules, `ollama create`, Qwen 0.5B, LoRA): **[`OLLAMA-FRULES.md`](OLLAMA-FRULES.md)**.
 
-Сборка system prompt (frules on):
+Кратко — сборка system prompt:
 
 ```bash
 cd /path/to/frules
-{
-  echo "You are a Forth expert. Follow these rules:"
-  for f in rules/frules-index.mdc rules/forth-*.mdc templates/frules-dialect-gforth.mdc; do
-    [ -f "$f" ] && sed '1,/^---$/d;/^---$/d' "$f"
-  done
-} > /tmp/frules-system.txt
+bash scripts/build-ollama-system.sh gforth full -o output/frules-ollama-system.txt
 ```
 
 Запрос (подставьте тело челленджа без решения):

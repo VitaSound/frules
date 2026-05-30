@@ -9,7 +9,21 @@ if [[ ! -f data/sandbox.jsonl ]]; then
   python3 scripts/build-dataset.py --sandbox
 fi
 
-echo "=== Next: activate venv and run Unsloth train (see MODEL-TRAINING.md §3) ==="
-echo "  python3 -m venv .venv-train && source .venv-train/bin/activate"
-echo "  pip install -r training/requirements-train.txt"
-echo "  # Then use Unsloth notebook or script with Qwen2.5-Coder-0.5B-Instruct + data/sandbox.jsonl"
+if [[ -z "${VIRTUAL_ENV:-}" ]]; then
+  echo "error: activate venv first:  source .venv-train/bin/activate" >&2
+  exit 1
+fi
+export HF_HOME="${HF_HOME:-$ROOT/output/hf-cache}"
+mkdir -p "$HF_HOME" "$ROOT/output/sandbox-adapter"
+echo "HF_HOME=$HF_HOME"
+
+# WSL/Cursor VPN: ALL_PROXY=socks5 without socksio breaks Hugging Face (empty cache → Unsloth "No config file").
+if [[ "${ALL_PROXY:-}${all_proxy:-}" == *socks* ]]; then
+  if ! python3 -c "import socksio" 2>/dev/null; then
+    echo "warn: unsetting ALL_PROXY/all_proxy (SOCKS needs: pip install 'httpx[socks]')" >&2
+    echo "      keep HTTP_PROXY/HTTPS_PROXY if you need a proxy" >&2
+    unset ALL_PROXY all_proxy
+  fi
+fi
+echo "=== Track A train (downloads ~0.5B on first run) ==="
+exec python3 "$ROOT/training/train-sandbox.py"

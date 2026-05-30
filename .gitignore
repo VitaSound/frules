@@ -21,6 +21,8 @@ sources/*.mobi
 # ML training artifacts
 output/
 .venv-train/
+unsloth_compiled_cache/
+training/Modelfile.forth-qwen-*
 scripts/__pycache__/
 data/raw.jsonl
 data/augmented.jsonl

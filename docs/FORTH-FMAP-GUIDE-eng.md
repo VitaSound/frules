@@ -38,6 +38,7 @@ Practical guide: **from domain → system profile → existing Forth or port req
 | AVR sensor | FlashForth, RP=4 | REPL over UART, little RAM |
 | Firmware without REPL | AOT blob, RP=0 | minimal runtime |
 | FPGA datapath | J1, RP=0 | Forth only on host |
+| Browser / WASM REPL | WAForth, RP≈3 | sandbox, ~15 KB module; not Gforth |
 | Custom ECU / NN control FPGA | co-design, RP=0 | see [HARDWARE-CODESIGN](FORTH-HARDWARE-CODESIGN-eng.md) |
 
 **FMAP** encodes *which* Forth you need: memory (MM), execution (EX), runtime capabilities (RP), build (CG/BM), etc.
@@ -173,6 +174,7 @@ Templates in [`forth-use-case-templates.json`](../data/forth-use-case-templates.
 | **ECU / actuator** | Cortex-M, RH850 | 0–1 ship, 4 lab | S | N or S | Mecrisp, custom cross | +C +F |
 | **Industrial HMI panel** | ARM Linux | 5 or 2 | U | I/N | Gforth, SwiftForth | +L FILE |
 | **Smartphone / desktop tool** | ARM64/x64 + OS | 5 | U | I/N | Gforth | +L FILE |
+| **Browser / WebAssembly** | WASM + host shim | 3 | U | S | WAForth | — |
 | **Retro / hobby** | 6502, Z80 | 4 | U/S | S | TaliForth2, Cerberus | — |
 | **FPGA accelerator** | ICE40, Xilinx | 0 | V | V | J1, Mecrisp-Ice | — |
 | **Custom silicon / co-design** | FPGA ASIC, TTL lab | 0–2 | V | V | J1 + custom Verilog | see [HARDWARE-CODESIGN](FORTH-HARDWARE-CODESIGN-eng.md) |

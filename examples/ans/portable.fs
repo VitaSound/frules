@@ -28,3 +28,16 @@
 
 \ Counted string via C" + COUNT
 : tag    ( -- c-addr u )  c" v1" count ;
+
+include ../../tests/ans/_tester.fs
+
+T{ -3 clamp-positive -> 0 }T
+T{  5 clamp-positive -> 5 }T
+T{  7 clamp-line -> 7 }T
+T{  4 square -> 16 }T
+T{ 99 0 store-reading -> }T
+T{  0 fetch-reading -> 99 }T
+T{ greet -> }T
+T{ tag nip -> 2 }T
+
+report bye

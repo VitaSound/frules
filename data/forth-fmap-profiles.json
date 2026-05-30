@@ -137,6 +137,26 @@
       "notes": "Stack CPU fixed internal stacks (~33 data, ~32 return); no spill; Forth cross on host (EX-C=V, colon expand); basewords.fs opcodes; RP=0 no field REPL/DEPTH; not full Gforth runtime — see FORTH-SYSTEM-ARCHITECTURE §11.1."
     },
     {
+      "id": "waforth",
+      "name": "WAForth",
+      "fmap": "U-M-S-A-3-I",
+      "mm": "U",
+      "ex_o": "M",
+      "ex_c": "S",
+      "ex_p": "A",
+      "rp": 3,
+      "cg": "I",
+      "bm": "H",
+      "kp": "M",
+      "nc": 1,
+      "class": 4,
+      "status": "active",
+      "cpu": ["wasm", "browser", "nodejs"],
+      "url": "https://github.com/remko/waforth",
+      "tags": [],
+      "notes": "Forth interpreter/compiler in raw WebAssembly (.wat); colon words emit WASM functions; STC via function table (no ITC — WASM forbids arbitrary jumps); host shim for I/O and dynamic module load; standalone via Wasmtime; waforthc AOT to native. Not Gforth. See FORTH-SYSTEM-ARCHITECTURE §11.2."
+    },
+    {
       "id": "cerberus-z80",
       "name": "Cerberus Z80 Forth",
       "fmap": "S-S-A-M-4-F",

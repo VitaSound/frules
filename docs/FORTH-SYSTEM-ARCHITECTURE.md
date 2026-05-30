@@ -21,7 +21,7 @@
 | [`FORTH-DIALECT-LAYERS.md`](FORTH-DIALECT-LAYERS.md) | **Слой 0**: доменные диалекты **FORTH-X** |
 | [`FORTH-STACK-CPU-RESEARCH.md`](FORTH-STACK-CPU-RESEARCH.md) | **Исследовательские тезисы**: суперскалярный стековый фронтенд, Эльбрус, loop fracking |
 
-**Источники (внешние):** [ForthHub/ForthCPUs](https://github.com/ForthHub/ForthFreak/blob/master/ForthCPUs), [forth-standard.org/systems](https://forth-standard.org/systems), [Koopman stack computers](https://users.ece.cmu.edu/~koopman/stack_computers/sections.html).
+**Источники (внешние):** [ForthHub/ForthCPUs](https://github.com/ForthHub/ForthFreak/blob/master/ForthCPUs), [forth-standard.org/systems](https://forth-standard.org/systems), [Koopman stack computers](https://users.ece.cmu.edu/~koopman/stack_computers/sections.html), [WebAssembly](https://webassembly.org/), [WAForth](https://github.com/remko/waforth).
 
 ---
 
@@ -40,6 +40,7 @@
 10. [Каталог CPU и систем](#10-каталог-cpu-и-систем)
 11. [Разбор: stm8ef](#11-разбор-stm8ef)
     - [11.1 Разбор: J1](#111-разбор-j1)
+    - [11.2 Разбор: WebAssembly / WAForth](#112-разбор-webassembly--waforth)
 12. [Заблуждения](#12-заблуждения)
 13. [Для авторов датасета и модели](#13-для-авторов-датасета-и-модели)
 
@@ -138,7 +139,7 @@ FMAP/stm8ef: D-S-A-M-4-E  NC=0  +C+F+B
 
 | MM | CPU | Code | Data | Runtime dict extend |
 |----|-----|------|------|---------------------|
-| **U** | x86, Linux ARM | RAM (W^X varies) | same | `HERE ,` |
+| **U** | x86, Linux ARM, **WebAssembly** | RAM / linear memory (W^X varies) | same | `HERE ,` |
 | **S** | AVR, PIC, MSP430 | Flash exec | RAM | RAM dict; Flash via NVM |
 | **D** | **STM8** | Flash kernel + NVM dict | RAM dict + stacks | **два CP**: CTOP + NVMCP |
 | **F** | product firmware | frozen Flash | RAM | нет в поле |
@@ -186,6 +187,8 @@ Execute:
 | **B** | bytecode VM | свой dispatch |
 
 **stm8ef — EX-C/S**, не bytecode VM. Colon word = **нативные вызовы**, не интерпретация opcodes из RAM/Flash.
+
+**WebAssembly-хосты** (напр. [WAForth](https://github.com/remko/waforth)) — тоже **EX-C/S**, не ITC: в WASM **нет произвольных прыжков** по linear memory, поэтому dispatch colon-слов — **таблица функций + `call_indirect`** (subroutine threading). Forth PSP/RSP живут в **linear memory**, не на WASM operand stack. Динамическая компиляция может требовать **host shim** (JS в браузере, loader в Wasmtime), т.к. in-module JIT ограничен. См. §11.2.
 
 ---
 
@@ -374,6 +377,7 @@ Co-design новой платформы под задачу (ECU, FPGA, custom p
 |-----|------|---------|
 | **x86/x64** | U/5/N/M | Gforth, SwiftForth, VFX ● |
 | **ARM64 Linux** | U/5/N | Gforth, VFX |
+| **WebAssembly** | U/S/3/I | [WAForth](https://github.com/remko/waforth) ● | browser, Node, Wasmtime; не полный Gforth |
 
 **Статус:** ● active · ◐ legacy/niche · ○ defunct/archive
 
@@ -432,6 +436,33 @@ FMAP/j1: V-V-A-0-I  EX-O=C  EX-C=V  EX-P=A  NC=0
 
 Co-design entry: [`FORTH-HARDWARE-CODESIGN.md`](FORTH-HARDWARE-CODESIGN.md) §4 L2.
 
+### 11.2 Разбор: WebAssembly / WAForth
+
+Репозиторий: [remko/waforth](https://github.com/remko/waforth) · спецификация: [webassembly.org](https://webassembly.org/)
+
+```
+FMAP/waforth: U-M-S-A-3-I  EX-O=M  EX-C=S  EX-P=A  NC=1  BM=H
+Class: 4 (hosted virtual target — browser / Node / Wasmtime)
+Host: тонкий JS или C shim для KEY/EMIT и динамической загрузки модулей
+```
+
+| Вопрос | Ответ |
+|--------|--------|
+| Целевая архитектура? | **да** — Forth компилируется в `.wasm`; тот же модуль в браузере, Node, standalone-движках |
+| MM? | **U** — единая linear memory; PSP/RSP как указатели в памяти |
+| ITC / `NEXT`? | **нет** — **STC** через таблицу функций WASM + indirect calls |
+| Исходник kernel? | raw WebAssembly (`.wat`); colon-слова генерируют WASM-функции при компиляции |
+| REPL? | **да** в браузере / standalone shell (RP≈3) |
+| Полный порт Gforth? | **нет** — минимальный ANS Core; идиомы Gforth из frules не переносятся 1:1 |
+| Писать WASM из Forth? | экспериментальный **`CODE`** / emit байтов (`$U,`, `$S,`) в модуль |
+| Писать Forth-runtime на WASM? | **да** — kernel WAForth написан в `.wat` |
+| AOT без WASM-runtime? | **waforthc** — Forth → объединённый WASM-модуль → wasm2c → native exe |
+| vs J1 (§11.1)? | J1 = **MM=V** Forth-ISA silicon/soft-CPU, RP=0; WASM = **hosted VM**, REPL, STC в linear memory |
+
+**Когда выбирать WASM Forth:** интерактивные демо, учебный REPL в браузере, портативный sandboxed tool, малый footprint (~15 KB модуля) без порта Gforth. **Когда нет:** нужны FILE, threads, полный ANS или Gforth `{ locals }` — hosted Gforth (class 4 native).
+
+Profile id: `waforth` в [`data/forth-fmap-profiles.json`](../data/forth-fmap-profiles.json).
+
 ---
 
 ## 12. Заблуждения
@@ -453,6 +484,9 @@ Co-design entry: [`FORTH-HARDWARE-CODESIGN.md`](FORTH-HARDWARE-CODESIGN.md) §4 
 | Register CPU «хуже» для Forth | **нет** — доминирует STC + стеки в RAM |
 | Суперскалярный «стек zzeng» = любой stack CPU | **нет** — см. [`FORTH-STACK-CPU-RESEARCH.md`](FORTH-STACK-CPU-RESEARCH.md) §7 |
 | Эльбрус доказывает, что OoO + стековый фронтенд невозможны | **нет** — было в silicon; не прижилось commercially |
+| WebAssembly Forth использует ITC / `NEXT` | **нет** — STC + function table (§11.2) |
+| WASM = Forth-native stack CPU (как J1) | **нет** — hosted VM, MM=U, class 4 |
+| Gforth-алгоритмы переносятся в WAForth без изменений | **нет** — минимальный wordset, другой host I/O |
 
 ### Спектр «Forth → прошивка»
 
@@ -509,11 +543,13 @@ Dialect: eForth STC subset; no Gforth { locals } unless shim documented.
 - Confuse text `INTERPRET` с inner `NEXT`.
 - Портировать Gforth-алгоритмы на J1 без shallow stack и RAM state (см. §11.1).
 - Считать J1 «полным Forth» с `-3 throw` и неограниченным стеком.
+- Assumировать ITC на WebAssembly или считать WAForth подмножеством Gforth (см. §11.2).
 
 ---
 
 ## Ссылки
 
+- [WAForth](https://github.com/remko/waforth) — Forth in/for WebAssembly; [WebAssembly spec](https://webassembly.org/)
 - [Gforth: elements of a Forth system](../sources/gforth-manual/review--002d-elements-of-a-forth-system.md)
 - [Gforth: assembler and code words](../sources/gforth-manual/assembler-and-code-words.md)
 - [eForth index (forth.org)](https://www.forth.org/library/index.htm)

@@ -21,7 +21,7 @@ Reference for **people** (porting, choosing a system, understanding embedded For
 | [`FORTH-DIALECT-LAYERS-eng.md`](FORTH-DIALECT-LAYERS-eng.md) | **Layer 0**: domain dialects **FORTH-X** |
 | [`FORTH-STACK-CPU-RESEARCH-eng.md`](FORTH-STACK-CPU-RESEARCH-eng.md) | **Research theses**: superscalar stack frontend (zzeng distill) |
 
-**External sources:** [ForthHub/ForthCPUs](https://github.com/ForthHub/ForthFreak/blob/master/ForthCPUs), [forth-standard.org/systems](https://forth-standard.org/systems), [Koopman stack computers](https://users.ece.cmu.edu/~koopman/stack_computers/sections.html).
+**External sources:** [ForthHub/ForthCPUs](https://github.com/ForthHub/ForthFreak/blob/master/ForthCPUs), [forth-standard.org/systems](https://forth-standard.org/systems), [Koopman stack computers](https://users.ece.cmu.edu/~koopman/stack_computers/sections.html), [WebAssembly](https://webassembly.org/), [WAForth](https://github.com/remko/waforth).
 
 ---
 
@@ -40,6 +40,7 @@ Reference for **people** (porting, choosing a system, understanding embedded For
 10. [CPU and system catalog](#10-cpu-and-system-catalog)
 11. [Case study: stm8ef](#11-case-study-stm8ef)
     - [11.1 Case study: J1](#111-case-study-j1)
+    - [11.2 Case study: WebAssembly / WAForth](#112-case-study-webassembly--waforth)
 12. [Misconceptions](#12-misconceptions)
 13. [For dataset authors and models](#13-for-dataset-authors-and-models)
 
@@ -138,7 +139,7 @@ Full profile catalog: [`data/forth-fmap-profiles.json`](../data/forth-fmap-profi
 
 | MM | CPU | Code | Data | Runtime dict extend |
 |----|-----|------|------|---------------------|
-| **U** | x86, Linux ARM | RAM (W^X varies) | same | `HERE ,` |
+| **U** | x86, Linux ARM, **WebAssembly** | RAM / linear memory (W^X varies) | same | `HERE ,` |
 | **S** | AVR, PIC, MSP430 | Flash exec | RAM | RAM dict; Flash via NVM |
 | **D** | **STM8** | Flash kernel + NVM dict | RAM dict + stacks | **two CP**: CTOP + NVMCP |
 | **F** | product firmware | frozen Flash | RAM | none in the field |
@@ -186,6 +187,8 @@ Detailed ITC, DTC, STC, native, bytecode and system table — **[`FORTH-THREADIN
 | **B** | bytecode VM | own dispatch |
 
 **stm8ef — EX-C/S**, not a bytecode VM. A colon word = **native calls**, not interpretation of opcodes from RAM/Flash.
+
+**WebAssembly hosts** (e.g. [WAForth](https://github.com/remko/waforth)) — also **EX-C/S**, not ITC: WASM has **no arbitrary jumps** in linear memory, so colon dispatch uses **function tables + `call_indirect`** (subroutine threading). Forth PSP/RSP live in **linear memory**, not in the WASM operand stack. Dynamic compile may require a **host shim** (browser JS, Wasmtime loader) because in-module JIT is limited. See §11.2.
 
 ---
 
@@ -370,6 +373,7 @@ Forks (forthytwo, H2) move back to RAM+pointers when the internal stack is insuf
 |-----|------|---------|
 | **x86/x64** | U/5/N/M | Gforth, SwiftForth, VFX ● |
 | **ARM64 Linux** | U/5/N | Gforth, VFX |
+| **WebAssembly** | U/S/3/I | [WAForth](https://github.com/remko/waforth) ● | browser, Node, Wasmtime; not full Gforth |
 
 **Status:** ● active · ◐ legacy/niche · ○ defunct/archive
 
@@ -428,6 +432,33 @@ Stacks: fixed internal (~33 data, ~32 return)
 
 Co-design entry: [`FORTH-HARDWARE-CODESIGN-eng.md`](FORTH-HARDWARE-CODESIGN-eng.md) §4 L2.
 
+### 11.2 Case study: WebAssembly / WAForth
+
+Repository: [remko/waforth](https://github.com/remko/waforth) · spec: [webassembly.org](https://webassembly.org/)
+
+```
+FMAP/waforth: U-M-S-A-3-I  EX-O=M  EX-C=S  EX-P=A  NC=1  BM=H
+Class: 4 (hosted virtual target — browser / Node / Wasmtime)
+Host: thin JS or C shim for KEY/EMIT and dynamic module load
+```
+
+| Question | Answer |
+|----------|--------|
+| Target architecture? | **yes** — Forth compiles to `.wasm`; same module runs in browser, Node, standalone engines |
+| MM? | **U** — single linear memory; PSP/RSP as pointers in memory |
+| ITC / `NEXT`? | **no** — **STC** via WASM function table + indirect calls |
+| Kernel source? | raw WebAssembly (`.wat`); colon words emit WASM functions at compile time |
+| REPL? | **yes** in browser / standalone shell (RP≈3) |
+| Full Gforth port? | **no** — minimal ANS Core system; frules Gforth idioms do not transfer 1:1 |
+| Write WASM from Forth? | experimental **`CODE`** / byte emit (`$U,`, `$S,`) into module |
+| Write Forth runtime in WASM? | **yes** — WAForth kernel is hand-written `.wat` |
+| AOT without WASM runtime? | **waforthc** — Forth → combined WASM module → wasm2c → native exe |
+| vs J1 (§11.1)? | J1 = **MM=V** Forth-ISA silicon/soft-CPU, RP=0; WASM = **hosted VM**, REPL, STC in linear memory |
+
+**When to choose WASM Forth:** interactive demos, teaching REPL in browser, portable sandboxed tool, small footprint (~15 KB module) without porting Gforth. **When not to:** need FILE, threads, full ANS, or Gforth `{ locals }` — use hosted Gforth (class 4 native) instead.
+
+Profile id: `waforth` in [`data/forth-fmap-profiles.json`](../data/forth-fmap-profiles.json).
+
 ---
 
 ## 12. Misconceptions
@@ -447,6 +478,9 @@ Co-design entry: [`FORTH-HARDWARE-CODESIGN-eng.md`](FORTH-HARDWARE-CODESIGN-eng.
 | Forth word on J1 = one opcode | **no** — colon expand on host |
 | Any stack CPU auto-spills stack to RAM | **no** — only RAM-backed PSP/RSP |
 | Register CPU “worse” for Forth | **no** — STC + stacks in RAM dominates |
+| WebAssembly Forth uses ITC / `NEXT` | **no** — STC + function table (§11.2) |
+| WASM = Forth-native stack CPU (like J1) | **no** — hosted VM, MM=U, class 4 |
+| Gforth algorithms port to WAForth unchanged | **no** — minimal wordset, different host I/O |
 
 ### Spectrum “Forth → firmware”
 
@@ -503,11 +537,13 @@ Dialect: eForth STC subset; no Gforth { locals } unless shim documented.
 - Confuse text `INTERPRET` with inner `NEXT`.
 - Port Gforth algorithms to J1 without shallow stack and RAM state (see §11.1).
 - Treat J1 as “full Forth” with `-3 throw` and unlimited stack.
+- Assume ITC on WebAssembly or treat WAForth as a Gforth subset (see §11.2).
 
 ---
 
 ## References
 
+- [WAForth](https://github.com/remko/waforth) — Forth in/for WebAssembly; [WebAssembly spec](https://webassembly.org/)
 - [Gforth: elements of a Forth system](../sources/gforth-manual/review--002d-elements-of-a-forth-system.md)
 - [Gforth: assembler and code words](../sources/gforth-manual/assembler-and-code-words.md)
 - [eForth index (forth.org)](https://www.forth.org/library/index.htm)

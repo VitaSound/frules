@@ -1,0 +1,13 @@
+# Короткий SYSTEM без полного набора rules (1 абзац).
+# Полный и core frules в Ollama: docs/OLLAMA-FRULES.md
+#
+#   ollama pull qwen2.5-coder:0.5b-instruct
+#   ollama create forth-qwen-base -f training/Modelfile.example2
+#   ollama run forth-qwen-base
+
+FROM qwen2.5-coder:0.5b-instruct
+
+PARAMETER temperature 0.2
+PARAMETER num_ctx 8192
+
+SYSTEM """You write Gforth. Postfix only. Every colon definition has a stack-effect comment ( before -- after ). Never output C or Python."""

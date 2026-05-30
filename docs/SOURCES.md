@@ -54,6 +54,7 @@
 | `docs/FORTH-FMAP-GUIDE-eng.md` | English translation | AI-assisted (human-directed) |
 | `docs/FORTH-SYSTEM-ARCHITECTURE.md` | Forth system architecture, FMAP (RU) | AI-assisted (human-directed) |
 | `docs/FORTH-SYSTEM-ARCHITECTURE.md` §9.1, §11.1, §12 (stack CPU axes, J1) | conversation distill + J1 paper/repo | AI-assisted supplement |
+| `docs/FORTH-SYSTEM-ARCHITECTURE.md` §11.2 (WebAssembly / WAForth) | [remko/waforth](https://github.com/remko/waforth), [webassembly.org](https://webassembly.org/) | AI-assisted supplement |
 | `docs/FORTH-STACK-CPU-RESEARCH.md` | zzeng Habr series (267771, 271905, 278575–281352, 313376); distill for frules KB | AI-assisted (human-directed) |
 | `docs/FORTH-STACK-CPU-RESEARCH-eng.md` | English translation | AI-assisted (human-directed) |
 | `docs/FORTH-SYSTEM-ARCHITECTURE-eng.md` | English translation | AI-assisted (human-directed) |

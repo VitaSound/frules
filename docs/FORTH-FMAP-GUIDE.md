@@ -38,6 +38,7 @@
 | Датчик на AVR | FlashForth, RP=4 | REPL по UART, мало RAM |
 | Прошивка без REPL | AOT blob, RP=0 | минимальный runtime |
 | FPGA datapath | J1, RP=0 | Forth только на host |
+| Браузер / WASM REPL | WAForth, RP≈3 | sandbox, ~15 KB модуль; не Gforth |
 | Custom ECU / NN control FPGA | co-design, RP=0 | см. [HARDWARE-CODESIGN](FORTH-HARDWARE-CODESIGN.md) |
 
 **FMAP** кодирует *какой именно* Forth нужен: память (MM), исполнение (EX), возможности runtime (RP), сборка (CG/BM) и т.д.
@@ -173,6 +174,7 @@ flowchart LR
 | **ECU / actuator** | Cortex-M, RH850 | 0–1 ship, 4 lab | S | N или S | Mecrisp, custom cross | +C +F |
 | **Industrial HMI panel** | ARM Linux | 5 или 2 | U | I/N | Gforth, SwiftForth | +L FILE |
 | **Смартфон / desktop tool** | ARM64/x64 + OS | 5 | U | I/N | Gforth | +L FILE |
+| **Браузер / WebAssembly** | WASM + host shim | 3 | U | S | WAForth | — |
 | **Retro / hobby** | 6502, Z80 | 4 | U/S | S | TaliForth2, Cerberus | — |
 | **FPGA accelerator** | ICE40, Xilinx | 0 | V | V | J1, Mecrisp-Ice | — |
 | **Custom silicon / co-design** | FPGA ASIC, TTL lab | 0–2 | V | V | J1 + custom Verilog | см. [HARDWARE-CODESIGN](FORTH-HARDWARE-CODESIGN.md) |

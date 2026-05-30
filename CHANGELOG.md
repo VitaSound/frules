@@ -8,6 +8,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ### Added
 
+- **Track A 0.5B training pipeline (complete, май 2026)** — `training/train-sandbox.py`, `infer-sandbox.py`, `merge-sandbox.py`; wrappers `run-sandbox.sh`, `run-sandbox-merged.sh`, `run-sandbox-long.sh`, `run-sandbox-merge.sh`; configs `sandbox-long.yaml`, `sandbox-merged.yaml`.
+- **SFT datasets** — `data/train-simple.jsonl` (~41), `train-core-validated.jsonl` (~24), `train-merged.jsonl` (122), `train-repeated.jsonl` (205); `scripts/build-train-merged.sh`, `scripts/repeat-jsonl.py`.
+- **Ollama + frules rules** — [`docs/OLLAMA-FRULES.md`](docs/OLLAMA-FRULES.md), `scripts/build-ollama-system.sh`, `training/write-modelfile-with-rules.sh`, `training/Modelfile.example2` (short SYSTEM).
+- **Training docs** — [`docs/TRAINING-NEXT-STEPS.md`](docs/TRAINING-NEXT-STEPS.md); expanded [`README.md`](README.md) (Track A status, long-run conclusions, merge LoRA, loss glossary); expanded [`training/README.md`](training/README.md) (train log fields, CLI args, infer vs train format).
+- **Examples with `T{ }T`** — `examples/gforth/good.fs`, `examples/ans/portable.fs` (validated pairs for SFT).
+- **WebAssembly / WAForth in architecture docs** — §11.2 case study in `FORTH-SYSTEM-ARCHITECTURE` (RU+EN), FMAP profile `waforth`, FMAP guide rows, `forth-system-context.mdc` routing.
 - **Five Gforth manual topic rules** — `forth-numeric.mdc`, `forth-wordlists.mdc`, `forth-debugging.mdc`, `forth-oof.mdc`, `forth-c-bindings.mdc`.
 - **Gforth Tutorial distillation** (`sources/gforth-manual-tutorial/` → `rules/`):
   - **`forth-memory.mdc`** — `variable`, `create`, `allot`, `here`, `aligned`, `allocate`.
@@ -23,10 +29,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ### Changed
 
+- **[`docs/TRAINING-RUNS.md`](docs/TRAINING-RUNS.md)** — logged Track A sandbox, merged, simple, **long** (260 steps, train_loss 0.344; infer gcd/factorial fail).
+- **[`docs/LOCAL-GEMMA-BENCHMARK.md`](docs/LOCAL-GEMMA-BENCHMARK.md)** — cross-link to `OLLAMA-FRULES.md`.
+- **[`docs/MODEL-TRAINING.md`](docs/MODEL-TRAINING.md)** — merge 0.5B via `merge-sandbox.py`; Ollama rules → `OLLAMA-FRULES.md`.
+- **[`data/README.md`](data/README.md)** — document merged/simple/repeated JSONL paths.
 - **Gforth manual — full distillation** (`sources/gforth-manual/` → `rules/`) — five new topics plus expanded stack/control/defining/meta/memory/io/strings/portability/dialect; covers ch.2–§9 actionable idioms (errors, exceptions, structs, assertions, numeric, wordlists, debugging, OOP/C basics); skip Word Index and engine/assembler internals; `install.sh` FULL_TOPICS, `frules-index.mdc` routing, `docs/SOURCES.md` provenance.
 - **Gforth Tutorial distillation (updated rules)** — `forth-stack` (manipulation, designing stack effects), `forth-control` (exit/leave, recursion, flags), `forth-defining` (simple-field, defer/is), `forth-dialect-gforth` (locals, try/endtry; strings/FP moved to dedicated topics), `forth-style`, `forth-portability`, `forth-anti-patterns`, `forth-naming` (type prefixes).
 - **`docs/SOURCES.md`** — per-file provenance from Gforth Tutorial §3.x and Gforth manual ch.5–9; skip lists documented.
 - **`TODO.md`** — full manual vendored, distilled, and documented; open: index theForthNet packages.
+
+### Fixed
+
+- **`training/merge-sandbox.py`** — `NotImplementedError` on transformers 5.5: call `unsloth_generic_save` / `unsloth_save_pretrained_gguf` on **PeftModel** explicitly (not 4-bit base).
 
 ## [0.1.2] — 2026-05-27
 
