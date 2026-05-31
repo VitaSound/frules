@@ -6,41 +6,88 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+Work since **0.1.2** (mostly **2026-05-28 … 2026-05-31**): ~85 commits, one author — challenge bank + **98 verified train solutions**, source distillation, Track A ML pipeline (closed), and AI-platform knowledge base. See [`docs/AI-KNOWLEDGE-INDEX.md`](docs/AI-KNOWLEDGE-INDEX.md).
+
 ### Added
 
-- **Track A 0.5B training pipeline (complete, май 2026)** — `training/train-sandbox.py`, `infer-sandbox.py`, `merge-sandbox.py`; wrappers `run-sandbox.sh`, `run-sandbox-merged.sh`, `run-sandbox-long.sh`, `run-sandbox-merge.sh`; configs `sandbox-long.yaml`, `sandbox-merged.yaml`.
-- **SFT datasets** — `data/train-simple.jsonl` (~41), `train-core-validated.jsonl` (~24), `train-merged.jsonl` (122), `train-repeated.jsonl` (205); `scripts/build-train-merged.sh`, `scripts/repeat-jsonl.py`.
+#### Challenge bank and train gold (eval culture)
+
+- **`tests/challenges/`** — **151** total (**6** seeds + **145** bank `001`–`145`); split in [`eval-slices.yaml`](tests/challenges/eval-slices.yaml): **`train_for_sft` 98** + **`eval_holdout` 53** (blind eval only).
+- **`data/challenge-solutions/`** — **98/98** train solutions (`SOLVE-QUEUE.md` complete); ~6500 lines verified Forth; each `TESTS OK` via gforth before queue mark.
+- **6 Rosetta distill challenges** — `140`–`145` (holder, dict-list, find-idx, sq-brackets, expect-match, arr-sum); map [`ROSETTA-DISTILL-15.md`](tests/challenges/ROSETTA-DISTILL-15.md).
+- **`data/challenge-solutions/_tester.fs`** — wrapper to run gold solutions with ttester.
+- **Agent solve workflow** — [`docs/AGENT-SOLVE-CHALLENGES.md`](docs/AGENT-SOLVE-CHALLENGES.md), progress tracking in `SOLVE-QUEUE.md` (28 → 77 → 98).
+- **Rosetta Code** — `sources/rosettacode-forth/` (569 tasks), `INDEX.md`, `challenge-links.yaml`, `taxonomy-keywords.yaml`, `scripts/rosettacode-hint.py`; **15/15** distill candidates → `rules/`.
+- **theForthNet packages** — vendored `sources/theforth.net-packages/`, [`INDEX.md`](sources/theforth.net-packages/INDEX.md), selective distill → `rules/`.
+
+#### FORTH architecture and research docs
+
+- **`docs/FORTH-SYSTEM-ARCHITECTURE.md`** (+ EN), **`FORTH-HARDWARE-CODESIGN`**, **`FORTH-FMAP-GUIDE`**, **`FORTH-DIALECT-LAYERS`**, **`FORTH-ANS-PORTABILITY-LAYER`**, **`FORTH-THREADING`**, **`FORTH-FEATURE-COMPLEXITY`**, **`FORTH-STACK-CPU-RESEARCH`** (RU + EN).
+- **`data/forth-fmap-profiles.json`**, **`forth-threading-models.json`**, **`forth-use-case-templates.json`**.
+
+#### Track A 0.5B LoRA — pipeline fixed, experiment **closed**
+
+- **Short SYSTEM for SFT** — `scripts/sft_prompts.py` (`TRAIN_SYSTEM_SHORT` ~50 tok); `--system short|full` in `build-dataset.py`, `build-challenge-dataset.py`.
+- **Token validation** — `scripts/validate-train-tokens.py`; `build-train-merged.sh` guards truncation.
+- **Infer parity** — `training/infer-sandbox.py` `--system short`, `--from-jsonl`, `--word`.
+- **One-shot final run** — `training/run-track-a-final.sh`, `scripts/track-a-smoke-infer.sh`.
+- **Docs** — [`docs/TRACK-A-FINAL.md`](docs/TRACK-A-FINAL.md), [`docs/TRACK-A-LESSONS.md`](docs/TRACK-A-LESSONS.md) (0.5B **not a mistake** — pipeline bugs found, honest negative result on logic), [`docs/ML-GLOSSARY-FORTH.md`](docs/ML-GLOSSARY-FORTH.md).
+- **Conclusion:** LoRA 0.5B gives Forth-shaped output but fails algorithms; path forward = **rules + IR transpiler + gforth judge**, not more 0.5B postfix training.
+
+#### AI platform knowledge base (May 31)
+
+- **Hub** — [`docs/AI-KNOWLEDGE-INDEX.md`](docs/AI-KNOWLEDGE-INDEX.md): how to build AI-containing automation for Forth systems.
+- [`docs/AI-VS-TOOLS.md`](docs/AI-VS-TOOLS.md) — LLM vs static tools (transpiler, stack-glue, fhdlgen).
+- [`docs/EXTERNAL-LLM-ARCHITECTURE.md`](docs/EXTERNAL-LLM-ARCHITECTURE.md) — Opus/cloud LLM as **orchestrator** (Tier 0–3), MCP sketch, cost gate.
+- [`docs/NOTATION-AND-TRANSPILER.md`](docs/NOTATION-AND-TRANSPILER.md) — why LLM is overkill for notation/postfix.
+- [`docs/MULTI-AGENT-ARCHITECTURE.md`](docs/MULTI-AGENT-ARCHITECTURE.md) — explicit agents + thinking as internal dialogue.
+- [`docs/ROADMAP-AI-PLATFORM.md`](docs/ROADMAP-AI-PLATFORM.md) — Lisp/WASM IR tests, RAG, Track B, infra, **XCKU5P** primary FPGA.
+- [`docs/PROOFREAD-AI-GENERATED.md`](docs/PROOFREAD-AI-GENERATED.md) — selective human proofread checklist.
+
+#### Track A 0.5B training pipeline (earlier Unreleased items)
+
+- **Track A 0.5B training pipeline** — `training/train-sandbox.py`, `infer-sandbox.py`, `merge-sandbox.py`; wrappers `run-sandbox.sh`, `run-sandbox-merged.sh`, `run-sandbox-long.sh`, `run-sandbox-merge.sh`; configs `sandbox-long.yaml`, `sandbox-merged.yaml`.
+- **SFT datasets** — `data/train-simple.jsonl`, `train-core-validated.jsonl`, `train-merged.jsonl`, `train-repeated.jsonl`; `scripts/build-train-merged.sh`, `scripts/repeat-jsonl.py`.
 - **Ollama + frules rules** — [`docs/OLLAMA-FRULES.md`](docs/OLLAMA-FRULES.md), `scripts/build-ollama-system.sh`, `training/write-modelfile-with-rules.sh`, `training/Modelfile.example2` (short SYSTEM).
-- **Training docs** — [`docs/TRAINING-NEXT-STEPS.md`](docs/TRAINING-NEXT-STEPS.md); expanded [`README.md`](README.md) (Track A status, long-run conclusions, merge LoRA, loss glossary); expanded [`training/README.md`](training/README.md) (train log fields, CLI args, infer vs train format).
-- **Examples with `T{ }T`** — `examples/gforth/good.fs`, `examples/ans/portable.fs` (validated pairs for SFT).
-- **WebAssembly / WAForth in architecture docs** — §11.2 case study in `FORTH-SYSTEM-ARCHITECTURE` (RU+EN), FMAP profile `waforth`, FMAP guide rows, `forth-system-context.mdc` routing.
+- **Training docs** — [`docs/TRAINING-NEXT-STEPS.md`](docs/TRAINING-NEXT-STEPS.md); expanded [`README.md`](README.md), [`training/README.md`](training/README.md).
+- **Examples with `T{ }T`** — `examples/gforth/good.fs`, `examples/ans/portable.fs`.
+
+#### Rules and sources (distillation)
+
+- **Thinking Forth (Brodie)** — `sources/brodie-thinking-forth/` → `forth-factoring`, `forth-style`, `forth-anti-patterns`, `forth-naming`.
 - **Five Gforth manual topic rules** — `forth-numeric.mdc`, `forth-wordlists.mdc`, `forth-debugging.mdc`, `forth-oof.mdc`, `forth-c-bindings.mdc`.
-- **Gforth Tutorial distillation** (`sources/gforth-manual-tutorial/` → `rules/`):
-  - **`forth-memory.mdc`** — `variable`, `create`, `allot`, `here`, `aligned`, `allocate`.
-  - **`forth-io.mdc`** — `open-file`, `read-line`, `write-line`, ior/`throw`, `Value fd`.
-  - **`forth-meta.mdc`** — interpret vs compile state, `immediate`, `postpone`, `[`/`]`.
-  - **`forth-strings.mdc`** — `( c-addr u )`, `s"`, `c"`, counted strings, `c,`/`c@`.
-  - **`forth-floating-point.mdc`** — separate FP stack, `1e` literals, `f~abs`/`f~rel`.
-- **`sources/gforth-manual-tutorial/`** — Gforth manual ch.3 Tutorial (§3.1–§3.37) as per-section Markdown; `extract.sh` for refresh from [gforth.org/manual/Tutorial.html](https://gforth.org/manual/Tutorial.html).
-- **`sources/gforth-manual/`** — full Gforth manual ([gforth.org/manual/](https://gforth.org/manual/)); ~304 HTML nodes → Markdown (`index.md`, `pages.list`, `extract.sh`; honours `http(s)_proxy`; `upstream/` gitignored).
-- **`tests/challenges/`** — 139 bank (`001`–`139`) + 6 seeds = **145** hold-out; `eval-slices.yaml`, [`docs/BENCHMARK-SIZING.md`](docs/BENCHMARK-SIZING.md).
-- **14 training-oriented tasks** (126–139): linked, parse, graph topo, DP knapsack/edit, LRU, Collatz, etc.
-- **`scripts/_build_catalog.py`**, **`scripts/challenge_catalog.py`**, **`scripts/challenge_scaffolds.py`**, **`scripts/gen_challenges.py`**, **`scripts/check_manifest_dedup.py`**, **`scripts/verify_challenges.sh`** — generate and smoke-test the bank.
+- **Gforth Tutorial distillation** — `forth-memory`, `forth-io`, `forth-meta`, `forth-strings`, `forth-floating-point`.
+- **`sources/gforth-manual-tutorial/`**, **`sources/gforth-manual/`** (~304 nodes) — full manual distill into `rules/`.
+- **Stack-debugging rules** — from solve-session fixes (`forth-control`, queue progress).
+- **WebAssembly / WAForth** — §11.2 in `FORTH-SYSTEM-ARCHITECTURE` (RU+EN), FMAP profile `waforth`.
+- **Challenge tooling** — `scripts/_build_catalog.py`, `challenge_catalog.py`, `challenge_scaffolds.py`, `gen_challenges.py`, `check_manifest_dedup.py`, `verify_challenges.sh`.
 
 ### Changed
 
-- **[`docs/TRAINING-RUNS.md`](docs/TRAINING-RUNS.md)** — logged Track A sandbox, merged, simple, **long** (260 steps, train_loss 0.344; infer gcd/factorial fail).
-- **[`docs/LOCAL-GEMMA-BENCHMARK.md`](docs/LOCAL-GEMMA-BENCHMARK.md)** — cross-link to `OLLAMA-FRULES.md`.
-- **[`docs/MODEL-TRAINING.md`](docs/MODEL-TRAINING.md)** — merge 0.5B via `merge-sandbox.py`; Ollama rules → `OLLAMA-FRULES.md`.
-- **[`data/README.md`](data/README.md)** — document merged/simple/repeated JSONL paths.
-- **Gforth manual — full distillation** (`sources/gforth-manual/` → `rules/`) — five new topics plus expanded stack/control/defining/meta/memory/io/strings/portability/dialect; covers ch.2–§9 actionable idioms (errors, exceptions, structs, assertions, numeric, wordlists, debugging, OOP/C basics); skip Word Index and engine/assembler internals; `install.sh` FULL_TOPICS, `frules-index.mdc` routing, `docs/SOURCES.md` provenance.
-- **Gforth Tutorial distillation (updated rules)** — `forth-stack` (manipulation, designing stack effects), `forth-control` (exit/leave, recursion, flags), `forth-defining` (simple-field, defer/is), `forth-dialect-gforth` (locals, try/endtry; strings/FP moved to dedicated topics), `forth-style`, `forth-portability`, `forth-anti-patterns`, `forth-naming` (type prefixes).
-- **`docs/SOURCES.md`** — per-file provenance from Gforth Tutorial §3.x and Gforth manual ch.5–9; skip lists documented.
-- **`TODO.md`** — full manual vendored, distilled, and documented; open: index theForthNet packages.
+- **[`docs/BENCHMARK-SIZING.md`](docs/BENCHMARK-SIZING.md)** — **151 / 98 train / 53 hold-out** (was wrongly «145 hold-out only»).
+- **[`docs/CHALLENGE-TO-TRAIN.md`](docs/CHALLENGE-TO-TRAIN.md)**, **[`MODEL-TRAINING.md`](docs/MODEL-TRAINING.md)**, **README** — aligned counts with `eval-slices.yaml`.
+- **[`docs/TRAINING-RUNS.md`](docs/TRAINING-RUNS.md)** — Track A sandbox, merged, simple, long; final honest run (`train_loss` ~1.8, infer logic fail).
+- **`TODO.md`** — train solve complete; Track A closed; AI knowledge base marked done; proofread open.
+- **Gforth manual / Tutorial distillation** — expanded stack/control/defining/meta/memory/io/strings/portability/dialect; `install.sh` FULL_TOPICS, `frules-index.mdc`, `docs/SOURCES.md`.
 
 ### Fixed
 
-- **`training/merge-sandbox.py`** — `NotImplementedError` on transformers 5.5: call `unsloth_generic_save` / `unsloth_save_pretrained_gguf` on **PeftModel** explicitly (not 4-bit base).
+- **Track A data pipeline** — full `system` (~4000 tok) + `MAX_SEQ=1024` truncated assistant from loss; old adapters invalid. Fixed with short system + validation.
+- **`training/merge-sandbox.py`** — `NotImplementedError` on transformers 5.5: call `unsloth_generic_save` / `unsloth_save_pretrained_gguf` on **PeftModel** explicitly.
+- **Train solutions (human-verified after AI draft)** — e.g. `072` word-ladder BFS stack/queue; `135` LRU warnings; `014`–`016` dual-buffer scaffolds; `020` seen-table segfault path.
+- **Stale doc counts** — 94→**98** train, 145→**53** hold-out, 131→**151** total (see `PROOFREAD-AI-GENERATED.md`).
+- **`tests/lint.sh`** — English-only grep for `rules/*.mdc` (in `./test.sh`).
+
+### Human work summary (from git history, not LOC)
+
+| Phase | Calendar | What happened |
+|-------|----------|----------------|
+| Bootstrap | May 25–27 | v0.1.0 rules, ttester, MODEL-TRAINING, challenge seeds, Gemma benchmark docs |
+| Sources + early solve | May 28 | Gforth manual vendored/distilled; solve queue started (gcd…); blocked string tasks after segfault |
+| **Solve sprint** | **May 29** | **~60 commits** — solutions 034–145 tier, FORTH arch docs, queue **98/98** closed |
+| Hardening | May 30–31 | Rosetta/theForthNet; word-ladder fix; Track A final + AI platform docs; proofread P0 |
+
+**Note:** Most `.fs` solutions and distill text are AI-assisted; **human role** = architecture, gforth verification, queue discipline, pipeline debugging, and honest Track A closure. Public write-up: [FMix on DEV](https://dev.to/ua3mqj/fmix-a-package-manager-for-forth-37ld) (sibling repo; same author/session era).
 
 ## [0.1.2] — 2026-05-27
 
