@@ -2,7 +2,7 @@
 
 LoRA / QLoRA для Forth (Gforth). **Глоссарий и зачем 145 челленджей vs 33 строк sandbox** — [`../README.md`](../README.md#обучение-локальной-модели-термины).
 
-**Пошагово:** [`docs/MODEL-TRAINING.md`](../docs/MODEL-TRAINING.md) · **после train:** [`docs/TRAINING-NEXT-STEPS.md`](../docs/TRAINING-NEXT-STEPS.md) · журнал: [`docs/TRAINING-RUNS.md`](../docs/TRAINING-RUNS.md)
+**Пошагово:** [`docs/MODEL-TRAINING.md`](../docs/MODEL-TRAINING.md) · **глоссарий ML:** [`docs/ML-GLOSSARY-FORTH.md`](../docs/ML-GLOSSARY-FORTH.md) · **Track A final:** [`docs/TRACK-A-FINAL.md`](../docs/TRACK-A-FINAL.md) · **после train:** [`docs/TRAINING-NEXT-STEPS.md`](../docs/TRAINING-NEXT-STEPS.md) · журнал: [`docs/TRAINING-RUNS.md`](../docs/TRAINING-RUNS.md)
 
 | Path | Purpose |
 |------|---------|
@@ -12,11 +12,14 @@ LoRA / QLoRA для Forth (Gforth). **Глоссарий и зачем 145 че�
 | `run-sandbox.sh` | Track A: `sandbox.jsonl` (~24–33) → `sandbox-adapter/` |
 | `run-sandbox-merged.sh` | **Same 0.5B**, `train-merged.jsonl` (~120+) → `sandbox-adapter-merged/` |
 | `run-sandbox-long.sh` | Repeat jsonl ×N + many epochs → `sandbox-adapter-long/` |
+| `run-track-a-final.sh` | **Final Track A:** short system rebuild → validate → train → smoke infer |
+| `../scripts/validate-train-tokens.py` | JSONL fits `max_seq` (assistant not truncated) |
+| `../scripts/track-a-smoke-infer.sh` | gcd / factorial / divisible? shape checks |
 | `../scripts/repeat-jsonl.py` | Oversample: `repeat-jsonl.py data/train-simple.jsonl out.jsonl -n 5` |
 | `configs/sandbox-long.yaml` | Defaults for long run (10 ep, repeat 5) |
 | `../scripts/build-train-merged.sh` | `train-core` + `challenge-train` → `data/train-merged.jsonl` |
 | `train-sandbox.py` | QLoRA; `--dataset` / `--out` / `--epochs` |
-| `infer-sandbox.py` | `--adapter output/sandbox-adapter-merged` or `--no-adapter` |
+| `infer-sandbox.py` | `--adapter …` · `--from-jsonl data/train-simple.jsonl --word gcd` · `--system short|none` |
 | `merge-sandbox.py` | LoRA → `output/merged-0.5b/` and/or `--gguf` |
 | `run-sandbox-merge.sh` | `ADAPTER`, `OUT`, optional `GGUF=...` |
 | `Modelfile.example` | Ollama template after GGUF export |
@@ -123,7 +126,11 @@ python3 training/infer-sandbox.py --adapter output/… --prompt "Implement …"
 python3 training/infer-sandbox.py --no-adapter   # только база
 ```
 
-**Расхождение train vs infer:** в jsonl три роли (`system` + `user` + `assistant`, system = сжатые frules rules). `infer-sandbox.py` шлёт **только** `user` — модель видит другой формат, чем при SFT. Плюс `max_new_tokens=256` — может генерировать много лишних `: word` после первого `;`.
+**Расхождение train vs infer (исправлено):** jsonl = `system` (short) + `user` + `assistant`.  
+`infer-sandbox.py` по умолчанию `--system short`; для parity — `--from-jsonl … --word gcd`.  
+Старый режим без system: `--system none`.
+
+**Длина:** short system ~50 tok; full (`--system full`) ~4000 tok — **не для SFT** при max_seq=1024.
 
 **Результат long (2026-05-30):** step-loss ~10⁻⁴, но gcd/factorial — псевдо-Forth (`return.`, markdown, лишние слова). Выводы — [`../README.md`](../README.md#выводы-после-sandbox-adapter-long-infer-май-2026).
 

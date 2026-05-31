@@ -62,6 +62,7 @@ dialect=gforth
 | `scripts/build-challenge-dataset.py` | JSONL из `data/challenge-solutions/` (только `train_for_sft`) |
 | `training/` | Track A/B: train, infer, конфиги LoRA — см. **глоссарий ниже** |
 | `AGENTS.md` | Краткая сводка для любого агента |
+| `docs/AI-KNOWLEDGE-INDEX.md` | **База знаний:** ИИ + Forth automation, hub всех AI-доков |
 
 ## Как добавлять книги
 
@@ -104,6 +105,15 @@ dialect=gforth
 | [`docs/CHALLENGE-RUNS.md`](docs/CHALLENGE-RUNS.md) | Cursor / Composer / Agent: новый чат, промпт, `gforth`, таблица результатов |
 | [`docs/LOCAL-GEMMA-BENCHMARK.md`](docs/LOCAL-GEMMA-BENCHMARK.md) | **Gemma 4 через Ollama**: включить/выключить правила, A/B baseline |
 | [`docs/OLLAMA-FRULES.md`](docs/OLLAMA-FRULES.md) | **Ollama + все rules `.mdc`**: Qwen 0.5B, full/core SYSTEM |
+| [`docs/TRACK-A-FINAL.md`](docs/TRACK-A-FINAL.md) | финальный прогон Track A (short system) |
+| [`docs/AI-KNOWLEDGE-INDEX.md`](docs/AI-KNOWLEDGE-INDEX.md) | **Hub:** база знаний ИИ-содержащих решений для Forth |
+| [`docs/TRACK-A-LESSONS.md`](docs/TRACK-A-LESSONS.md) | 0.5B не ошибка; Track A закрыт; что получили |
+| [`docs/NOTATION-AND-TRANSPILER.md`](docs/NOTATION-AND-TRANSPILER.md) | Почему LLM — не transpiler нотации (overkill) |
+| [`docs/MULTI-AGENT-ARCHITECTURE.md`](docs/MULTI-AGENT-ARCHITECTURE.md) | Multi-agent, thinking = внутренний диалог |
+| [`docs/ROADMAP-AI-PLATFORM.md`](docs/ROADMAP-AI-PLATFORM.md) | План: Lisp/WASM, RAG, train, infra, KU5P |
+| [`docs/AI-VS-TOOLS.md`](docs/AI-VS-TOOLS.md) | **ИИ vs статика**: transpiler, stack-glue, gforth как судья |
+| [`docs/EXTERNAL-LLM-ARCHITECTURE.md`](docs/EXTERNAL-LLM-ARCHITECTURE.md) | **Opus / облачный LLM + toolchain**: tier model, MCP, cost gate |
+| [`docs/ML-GLOSSARY-FORTH.md`](docs/ML-GLOSSARY-FORTH.md) | **глоссарий ML**: pretrain, LoRA, reasoning, curriculum |
 | [`docs/MODEL-TRAINING.md`](docs/MODEL-TRAINING.md) | **Своя LoRA для Forth**: датасет, песочница 0.5B, train 7B, Ollama |
 | [`docs/TRAINING-RUNS.md`](docs/TRAINING-RUNS.md) | Журнал прогонов обучения |
 | [`docs/TRAINING-NEXT-STEPS.md`](docs/TRAINING-NEXT-STEPS.md) | После train: infer, eval, long-run |

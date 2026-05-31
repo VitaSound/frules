@@ -114,8 +114,10 @@ def gforth_ok(path: Path) -> bool:
         return False
 
 
-def build_records(train_files: list[str], validate: bool) -> list[dict]:
-    system = build_system_prompt()
+def build_records(
+    train_files: list[str], validate: bool, system_mode: str = "short"
+) -> list[dict]:
+    system = build_system_prompt(system_mode)
     records: list[dict] = []
     for fname in train_files:
         ch_path = CH_DIR / fname
@@ -168,14 +170,20 @@ def main() -> int:
         action="store_true",
         help="Run gforth from tests/challenges on each solution file",
     )
+    ap.add_argument(
+        "--system",
+        choices=("short", "full"),
+        default="short",
+        help="system prompt size (default short — fits 1024-token train window)",
+    )
     args = ap.parse_args()
     train_files = load_train_for_sft_files()
-    records = build_records(train_files, validate=args.validate)
+    records = build_records(train_files, validate=args.validate, system_mode=args.system)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with args.out.open("w", encoding="utf-8") as f:
         for rec in records:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    print(f"wrote {len(records)} / {len(train_files)} records -> {args.out}")
+    print(f"wrote {len(records)} / {len(train_files)} records -> {args.out}  (system={args.system})")
     if len(records) < len(train_files):
         print(
             "hint: add solutions under data/challenge-solutions/ and use --validate",

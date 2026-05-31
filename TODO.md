@@ -25,6 +25,24 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
     - [ ] **Расширить challenge-links** — добавлять пары bank↔Rosetta по мере ревью gold solutions (сейчас 36 curated).
     - [x] **Выборочная дистилляция Rosetta** — **15/15** distill candidates → `rules/` (verbatim ok + `gforth/` fixes); smoke `bash sources/rosettacode-forth/gforth/smoke-all.sh`.
     - [x] **Челленджи из Rosetta (15 distill)** — 9 уже были в bank; добавлены `140`–`145` (6 новых). Карта: [`ROSETTA-DISTILL-15.md`](tests/challenges/ROSETTA-DISTILL-15.md). Решения: `data/challenge-solutions/140`–`145`.
+- [x] **Track A 0.5B LoRA** — pipeline OK; short system fix; финальный прогон `sandbox-adapter-fixed-merged`: Forth-форма, логика fail → **Track A закрыт**. См. [`docs/TRACK-A-FINAL.md`](docs/TRACK-A-FINAL.md), [`docs/ML-GLOSSARY-FORTH.md`](docs/ML-GLOSSARY-FORTH.md).
+- [ ] **Track B — большая модель (7B+).** `Qwen2.5-Coder-7B-Instruct` + `training/configs/prod-7b.yaml`; short system jsonl; curriculum (микро-примеры `1 2 +` …); eval на `eval_holdout`. См. [`docs/MODEL-TRAINING.md`](docs/MODEL-TRAINING.md), [`docs/TRAINING-NEXT-STEPS.md`](docs/TRAINING-NEXT-STEPS.md).
+- [ ] **IR-пайплайн (LLM → transpiler → Forth).** Opus / 7B локально генерирует IR; backend детерминированный. Опробовать варианты:
+    - [ ] **Lisp / S-expr** — `(+ a (* b c))` → post-order → Gforth; прототип `scripts/lisp-to-forth.py` (или аналог).
+    - [ ] **JSON AST** — жёсткая схема `{ "op": "+", "args": [...] }`; парсер + codegen; промпт «only JSON».
+    - [ ] **Python → `ast`** — LLM пишет subset Python; `ast.parse` → обход → Forth (надёжнее, чем AST «из головы» LLM).
+    - [ ] **WASM text (.wat)** — стековая IR; таблица замены `i32.add` → `+`, `local.get` → `@`.
+    - [ ] **Stack glue / scheduler** — склеить последовательность IR-операций **без `variable`/`value`**: симуляция стека + подбор `dup`/`swap`/`rot`/`over`/`nip`/`>r` между словами с известным `( before -- after )`; минимизировать глубину и число manipulations; отдельно ветки `if` (одинаковый depth). Прототип: `scripts/stack-glue.py` или слой в transpiler. См. frules `forth-anti-patterns` (rot rot) — для **генератора** допустимо, для ручного кода — factoring.
+    - [ ] Сравнить: качество / галлюцинации / gforth `TESTS OK` на 3–5 задачах из `tests/ans/` (gcd, factorial, fizzbuzz).
+    - [ ] Зафиксировать вывод в `docs/` (какой IR выбрать для аппаратной платформы).
+    - [x] **ИИ vs статика:** [`docs/AI-VS-TOOLS.md`](docs/AI-VS-TOOLS.md) — таблица задач продукта, pipeline v1.
+    - [x] **Opus / облачный LLM как оркестратор:** [`docs/EXTERNAL-LLM-ARCHITECTURE.md`](docs/EXTERNAL-LLM-ARCHITECTURE.md) — tier model, toolchain, MCP sketch, cost gate.
+- [x] **База знаний ИИ-платформы (2026-05-31).** Рефлексия сессии → MD:
+    - [x] Hub: [`docs/AI-KNOWLEDGE-INDEX.md`](docs/AI-KNOWLEDGE-INDEX.md)
+    - [x] Track A: 0.5B не ошибка — [`docs/TRACK-A-LESSONS.md`](docs/TRACK-A-LESSONS.md)
+    - [x] LLM ≠ transpiler нотации — [`docs/NOTATION-AND-TRANSPILER.md`](docs/NOTATION-AND-TRANSPILER.md)
+    - [x] Multi-agent + внутренний диалог — [`docs/MULTI-AGENT-ARCHITECTURE.md`](docs/MULTI-AGENT-ARCHITECTURE.md)
+    - [x] Roadmap: Lisp/WASM, RAG, train, infra, KU5P — [`docs/ROADMAP-AI-PLATFORM.md`](docs/ROADMAP-AI-PLATFORM.md)
 - [ ] **Pre-commit hook** (`.git/hooks/pre-commit` или husky): запускать `./test.sh`, блокировать коммит при FAIL.
 - [ ] **CI.** GitHub Actions: установка `gforth` + `pforth` через apt, запуск `./test.sh` на каждый PR/push.
 - [x] **Lint English-only.** `tests/lint.sh` — grep `[А-Яа-яЁё]` в `rules/*.mdc` и `templates/*.mdc`; вызывается из `./test.sh`.
@@ -62,4 +80,5 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
 - [ ] Конвертер: `.mdc` → одиночный markdown для системных промптов другим IDE (не-Cursor).
 - [ ] Бенчмарки модели на `tests/challenges/`: процент зелёных под разными моделями (Composer, Sonnet, Opus, GPT) — публиковать таблицу.
 - [x] **Инструкции по обучению модели:** `docs/MODEL-TRAINING.md`, `docs/TRAINING-RUNS.md`, `scripts/build-dataset.py`, `data/sandbox.jsonl`, `training/configs/`.
-- [ ] Расширить `data/train.jsonl` до 500+ (внешний Gforth + синтетика); Track A/B на GPU — см. MODEL-TRAINING.md.
+- [x] **Track A final + глоссарий ML:** `docs/TRACK-A-FINAL.md`, `docs/ML-GLOSSARY-FORTH.md`, `scripts/validate-train-tokens.py`, `training/run-track-a-final.sh`.
+- [ ] Расширить `data/train.jsonl` до 500+ (curriculum + внешний Gforth); **Track B 7B** — см. MODEL-TRAINING.md и пункт «Track B» выше.

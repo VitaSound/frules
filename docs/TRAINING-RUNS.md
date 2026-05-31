@@ -28,9 +28,12 @@ After each train or benchmark, add one row. Do not commit multi-GB weights — o
 
 Protocol: [`CHALLENGE-RUNS.md`](CHALLENGE-RUNS.md) — one fresh chat per challenge, judge = `gforth`.
 
-## See also
+## См. также
 
-- [`TRAINING-NEXT-STEPS.md`](TRAINING-NEXT-STEPS.md) — **после Track A / A+ / long:** infer, eval, Ollama+rules
-- [`OLLAMA-FRULES.md`](OLLAMA-FRULES.md) — Ollama + frules SYSTEM (full/core, Qwen 0.5B, LoRA+GGUF)
+- [`TRAINING-NEXT-STEPS.md`](TRAINING-NEXT-STEPS.md) — infer, eval, Ollama+rules
+- [`TRACK-A-FINAL.md`](TRACK-A-FINAL.md) — финальный прогон Track A (short system)
+- [`ML-GLOSSARY-FORTH.md`](ML-GLOSSARY-FORTH.md) — глоссарий ML
 - [`MODEL-TRAINING.md`](MODEL-TRAINING.md) — full instructions
+- [`../TODO.md`](../TODO.md) — Track B, IR-пайплайн (Lisp / JSON AST / Python ast / WASM)
+- [`OLLAMA-FRULES.md`](OLLAMA-FRULES.md) — Ollama + frules SYSTEM
 - [`LOCAL-GEMMA-BENCHMARK.md`](LOCAL-GEMMA-BENCHMARK.md) — Gemma baseline without training

@@ -5,7 +5,11 @@ Build ShareGPT-style JSONL for Forth SFT from frules tests and examples.
 Usage (from repo root):
   python3 scripts/build-dataset.py --sandbox
   python3 scripts/build-dataset.py --out data/train.jsonl
-  python3 scripts/build-dataset.py --validate --sandbox
+  python3 scripts/build-dataset.py --validate --out data/train-simple.jsonl
+  python3 scripts/build-dataset.py --system full --out data/train-full-system.jsonl
+
+Default --system short (~50 tokens) so rows fit MAX_SEQ_LENGTH=1024 in train.
+Use --system full only for experiments (Ollama-style rules blob — truncates SFT).
 
 Does not include tests/challenges/ (eval hold-out).
 """
@@ -21,14 +25,12 @@ from pathlib import Path
 from shutil import which
 
 ROOT = Path(__file__).resolve().parents[1]
-RULES = ROOT / "rules"
 DATA = ROOT / "data"
+SCRIPTS = Path(__file__).resolve().parent
+if str(SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS))
 
-SYSTEM_FILES = (
-    "forth-dialect-gforth.mdc",
-    "forth-stack.mdc",
-    "forth-anti-patterns.mdc",
-)
+from sft_prompts import resolve_system  # noqa: E402
 
 SANDBOX_SOURCES: list[tuple[Path, str | None]] = [
     (ROOT / "tests" / "ans", None),
@@ -43,26 +45,8 @@ PROD_SOURCES = SANDBOX_SOURCES + [
 SANDBOX_SKIP_DUPES = {"clamp"}
 
 
-def strip_mdc(text: str) -> str:
-    if text.startswith("---"):
-        end = text.find("---", 3)
-        if end != -1:
-            return text[end + 3 :].lstrip()
-    return text
-
-
-def build_system_prompt() -> str:
-    parts = [
-        "You write Gforth. Postfix Forth only — never C, Python, or infix.",
-        (ROOT / "AGENTS.md").read_text(encoding="utf-8").strip(),
-        "",
-    ]
-    for name in SYSTEM_FILES:
-        path = RULES / name
-        if path.is_file():
-            parts.append(strip_mdc(path.read_text(encoding="utf-8")).strip())
-            parts.append("")
-    return "\n".join(parts).strip()
+def build_system_prompt(mode: str = "short") -> str:
+    return resolve_system(mode)
 
 
 def header_spec(path: Path, text: str) -> str:
@@ -170,8 +154,9 @@ def collect_from_file(
 def collect_sources(
     sources: list[tuple[Path, str | None]],
     skip_dupes: set[str],
+    system_mode: str,
 ) -> list[dict]:
-    system = build_system_prompt()
+    system = build_system_prompt(system_mode)
     seen: set[str] = set()
     records: list[dict] = []
     for entry, single in sources:
@@ -236,11 +221,17 @@ def main() -> int:
         action="store_true",
         help="Keep only records whose source .fs passes gforth",
     )
+    ap.add_argument(
+        "--system",
+        choices=("short", "full"),
+        default="short",
+        help="system prompt size (default short — fits 1024-token train window)",
+    )
     args = ap.parse_args()
 
     sources = SANDBOX_SOURCES if args.sandbox else PROD_SOURCES
     skip_dupes = SANDBOX_SKIP_DUPES if args.sandbox else set()
-    records = collect_sources(sources, skip_dupes)
+    records = collect_sources(sources, skip_dupes, args.system)
 
     if args.validate:
         if not which("gforth"):
@@ -250,7 +241,7 @@ def main() -> int:
 
     out = args.out or (DATA / ("sandbox.jsonl" if args.sandbox else "train.jsonl"))
     write_jsonl(out, records)
-    print(f"wrote {len(records)} records -> {out}")
+    print(f"wrote {len(records)} records -> {out}  (system={args.system})")
     return 0
 
 

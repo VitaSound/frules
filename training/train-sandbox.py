@@ -23,7 +23,7 @@ from trl import SFTConfig, SFTTrainer
 ROOT = Path(__file__).resolve().parents[1]
 
 MODEL = "Qwen/Qwen2.5-Coder-0.5B-Instruct"
-MAX_SEQ_LENGTH = 1024
+DEFAULT_MAX_SEQ_LENGTH = 1024
 LORA_R = 8
 LORA_ALPHA = 16
 LR = 2.0e-4
@@ -81,6 +81,12 @@ def parse_args() -> argparse.Namespace:
         default=LR,
         help="Peak LR (default 2e-4)",
     )
+    ap.add_argument(
+        "--max-seq",
+        type=int,
+        default=DEFAULT_MAX_SEQ_LENGTH,
+        help="Max sequence length (default 1024; use 2048 for train-merged.jsonl)",
+    )
     return ap.parse_args()
 
 
@@ -105,10 +111,11 @@ def main() -> None:
     print(f"dataset: {dataset} ({n_lines} lines)")
     print(f"output:  {out_dir}")
     print(f"epochs:  {args.epochs}")
+    print(f"max_seq: {args.max_seq}")
 
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=MODEL,
-        max_seq_length=MAX_SEQ_LENGTH,
+        max_seq_length=args.max_seq,
         load_in_4bit=True,
     )
     model = FastLanguageModel.get_peft_model(
@@ -151,7 +158,7 @@ def main() -> None:
         tokenizer=tokenizer,
         train_dataset=train_ds,
         dataset_text_field="text",
-        max_seq_length=MAX_SEQ_LENGTH,
+        max_seq_length=args.max_seq,
         packing=False,
         args=SFTConfig(
             output_dir=str(out_dir),
