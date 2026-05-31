@@ -17,6 +17,7 @@
 | Таблица «ИИ vs статика» | [`AI-VS-TOOLS.md`](AI-VS-TOOLS.md) |
 | Multi-agent, внутренний диалог | [`MULTI-AGENT-ARCHITECTURE.md`](MULTI-AGENT-ARCHITECTURE.md) |
 | **План: IR, RAG, train, infra, hardware** | [`ROADMAP-AI-PLATFORM.md`](ROADMAP-AI-PLATFORM.md) |
+| **Вычитка AI-generated** | [`PROOFREAD-AI-GENERATED.md`](PROOFREAD-AI-GENERATED.md) |
 | ML-термины, потолок 0.5B | [`ML-GLOSSARY-FORTH.md`](ML-GLOSSARY-FORTH.md) |
 | Протокол финального прогона Track A | [`TRACK-A-FINAL.md`](TRACK-A-FINAL.md) |
 | Eval 151 challenge | [`CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md) |
@@ -27,7 +28,7 @@
 
 ## Одна страница: что мы поняли (2026-05-31)
 
-### 1. Track A (0.5B LoRA) — **не ошибка**, эксперiment закрыт
+### 1. Track A (0.5B LoRA) — **не ошибка**, эксперимент закрыт
 
 - Нашли **баги pipeline** (truncation system, train≠infer) — это ценность.
 - Честный прогон: Forth-**форма**, логика **fail** → **0.5B не тянет алгоритмы Forth**.

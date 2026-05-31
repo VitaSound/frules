@@ -2,7 +2,7 @@
 
 Закрываем Track A **честно**: после фикса короткого `system` и parity infer/train.
 
-**0.5B — не ошибка:** эксперiment дал fix pipeline + честный отрицательный результат → см. [`TRACK-A-LESSONS.md`](TRACK-A-LESSONS.md). **Проехали дальше** к IR + transpiler + rules.
+**0.5B — не ошибка:** эксперимент дал fix pipeline + честный отрицательный результат → см. [`TRACK-A-LESSONS.md`](TRACK-A-LESSONS.md). **Проехали дальше** к IR + transpiler + rules.
 
 Полный гайд по train: [`MODEL-TRAINING.md`](MODEL-TRAINING.md). Журнал: [`TRAINING-RUNS.md`](TRAINING-RUNS.md). База знаний: [`AI-KNOWLEDGE-INDEX.md`](AI-KNOWLEDGE-INDEX.md).
 

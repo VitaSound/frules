@@ -1,6 +1,6 @@
 # Глоссарий ML для Forth (frules)
 
-Краткий справочник терминов из эксперiment Track A (Qwen2.5-Coder-0.5B + LoRA).  
+Краткий справочник терминов из эксперимент Track A (Qwen2.5-Coder-0.5B + LoRA).  
 Связанные документы: [`MODEL-TRAINING.md`](MODEL-TRAINING.md), [`TRACK-A-FINAL.md`](TRACK-A-FINAL.md), [`TRAINING-RUNS.md`](TRAINING-RUNS.md).
 
 ---

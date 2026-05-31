@@ -9,21 +9,21 @@
 | Нужно 500+ **решённых челленджей**? | **Нет.** Нужно **~100** проверенных решений для train-split + остальное из `tests/ans` / внешний Forth до **500+** всего. |
 | Писать решение в `tests/challenges/*.fs`? | **Нет.** Файлы в каталоге остаются **пустыми** (hold-out). |
 | Куда класть решения? | [`data/challenge-solutions/`](../data/challenge-solutions/) — копия файла **с кодом между маркерами**. |
-| Что остаётся «вслепую»? | **eval_holdout** (~45): 6 seeds + ~39 bank — **никогда** в train. |
+| Что остаётся «вслепую»? | **eval_holdout** (**53**): часть seeds + bank — **никогда** в train. |
 
 ## Разбиение (уже в `eval-slices.yaml`)
 
-| Срез | ~Файлов | Назначение |
+| Срез | Файлов | Назначение |
 |------|--------|------------|
-| `train_for_sft` | **94** | **Готово:** решения в `data/challenge-solutions/` → `challenge-train.jsonl` (не для слепого eval) |
-| `eval_holdout` | **~45** | Только оценка после обучения |
-| `full` | 145 | Справочно |
+| `train_for_sft` | **98** | **Готово:** решения в `data/challenge-solutions/` → `challenge-train.jsonl` (не для слепого eval) |
+| `eval_holdout` | **53** | Только оценка после обучения |
+| `full` | **151** | Все seeds + bank (справочно) |
 
 Перегенерация срезов: `python3 scripts/gen_challenges.py` (поле `split` в `manifest.yaml`).
 
 ## Пошагово (solve train — **завершено**)
 
-Все **94** файла `train_for_sft` решены и отмечены в [`SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md). Ниже — **архив** процесса; для новых чатов используйте **eval_holdout** (валидация моделей), не train.
+Все **98** файла `train_for_sft` решены и отмечены в [`SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md). Ниже — **архив** процесса; для новых чатов используйте **eval_holdout** (валидация моделей), не train.
 
 ### 1. Установить frules
 
@@ -126,7 +126,7 @@ wc -l data/train.jsonl   # цель >= 500
 
 ## Чеклист
 
-- [x] Решены только файлы из `train_for_sft` (94/94, [`SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md))
+- [x] Решены только файлы из `train_for_sft` (**98/98**, [`SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md))
 - [x] Каждый train-файл: `TESTS OK` в `data/challenge-solutions/`
 - [x] `tests/challenges/*.fs` на train: между маркерами **пустые**
 - [ ] `build-challenge-dataset.py --validate` без warn

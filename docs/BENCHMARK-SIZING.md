@@ -1,18 +1,24 @@
 # Challenge bank sizing (for neural training)
 
-`tests/challenges/` is **hold-out only** — it does not appear in `data/train.jsonl`. Training data comes from `tests/ans/`, `tests/gforth/`, `examples/`, and external Gforth you add (target **≥ 500** SFT pairs).
+**151 total** = 6 seeds + **145 bank**. Split: **98** `train_for_sft` (gold in `data/challenge-solutions/`) + **53** `eval_holdout` (blind eval). Source: [`eval-slices.yaml`](../tests/challenges/eval-slices.yaml).
 
-The bank exists to **measure** the model after training, not to train it.
+Training JSONL: `tests/ans/`, `examples/`, `challenge-train.jsonl` — target **≥ 500** SFT pairs total for Track B. The bank **measures** generalization on hold-out, not replaces train volume.
 
-## Optimal size: **145 total** (6 seeds + 139 bank)
+## Size summary
 
 | Role | Count | Why |
 |------|------:|-----|
 | **Seeds** | 6 | Fast smoke (`01`–`06`); frules style checks |
-| **Bank** | 139 | ~8 tasks × 18 taxonomy blocks; room for Forth-heavy patterns |
-| **Total hold-out** | **145** | Upper bound of plan corridor (130±15); stable eval without clone inflation |
+| **Bank** | 145 | Taxonomy coverage; LeetCode/Codewars/Rosetta mix |
+| **Total** | **151** | Stable eval set |
+| **train_for_sft** | 98 | SFT export (not blind) |
+| **eval_holdout** | 53 | **Blind** exam only |
 
-Adding more than ~145 mostly duplicates `pattern_key` skills and wastes eval time (each run = fresh chat + `gforth`). Training quality is improved by **more train.jsonl**, not more challenges.
+Adding clones beyond ~151 mostly duplicates `pattern_key` skills. Training quality improves from **more train.jsonl**, not from putting hold-out into SFT.
+
+## Legacy note
+
+Older docs said «145 hold-out only» — **outdated** after train split. See [`PROOFREAD-AI-GENERATED.md`](PROOFREAD-AI-GENERATED.md).
 
 ## Eval slices (use these for training milestones)
 
@@ -45,7 +51,7 @@ Aim **6–10 tasks** per block for blocks that matter for Forth:
 | `data/train.jsonl` | **≥ 500** | Real Forth with tests |
 | `tests/challenges/` | **145 fixed** | Blind eval only |
 
-**Challenge solutions for SFT:** **`train_for_sft` solve complete** (94 verified in `data/challenge-solutions/`) → [`docs/CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md). Never put solutions in `tests/challenges/`; never train on `eval_holdout` (~45) — use hold-out for **model validation** after training.
+**Challenge solutions for SFT:** **`train_for_sft` solve complete** (**98** verified in `data/challenge-solutions/`) → [`docs/CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md). Never put solutions in hold-out paste zones; never train on **`eval_holdout` (53)** — use hold-out for **model validation** after training.
 
 ## Regenerating after catalog edits
 

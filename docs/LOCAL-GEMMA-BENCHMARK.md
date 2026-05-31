@@ -1,6 +1,6 @@
 # Локальный бенчмарк: Gemma 4 + frules
 
-Как прогнать `tests/challenges/` (6 seeds + 125 bank, см. [`INDEX.md`](../tests/challenges/INDEX.md)) через **локальную** Gemma 4 (Ollama) и сравнить
+Как прогнать `tests/challenges/` (**151** total: 6 seeds + 145 bank, см. [`INDEX.md`](../tests/challenges/INDEX.md)) через **локальную** Gemma 4 (Ollama) и сравнить
 результат **с правилами** и **без**. Общий протокол челленджей —
 [`CHALLENGE-RUNS.md`](CHALLENGE-RUNS.md).
 

@@ -111,6 +111,7 @@ dialect=gforth
 | [`docs/NOTATION-AND-TRANSPILER.md`](docs/NOTATION-AND-TRANSPILER.md) | Почему LLM — не transpiler нотации (overkill) |
 | [`docs/MULTI-AGENT-ARCHITECTURE.md`](docs/MULTI-AGENT-ARCHITECTURE.md) | Multi-agent, thinking = внутренний диалог |
 | [`docs/ROADMAP-AI-PLATFORM.md`](docs/ROADMAP-AI-PLATFORM.md) | План: Lisp/WASM, RAG, train, infra, KU5P |
+| [`docs/PROOFREAD-AI-GENERATED.md`](docs/PROOFREAD-AI-GENERATED.md) | **Вычитка AI-generated:** чеклист, приоритеты, типичные ошибки |
 | [`docs/AI-VS-TOOLS.md`](docs/AI-VS-TOOLS.md) | **ИИ vs статика**: transpiler, stack-glue, gforth как судья |
 | [`docs/EXTERNAL-LLM-ARCHITECTURE.md`](docs/EXTERNAL-LLM-ARCHITECTURE.md) | **Opus / облачный LLM + toolchain**: tier model, MCP, cost gate |
 | [`docs/ML-GLOSSARY-FORTH.md`](docs/ML-GLOSSARY-FORTH.md) | **глоссарий ML**: pretrain, LoRA, reasoning, curriculum |
@@ -118,7 +119,7 @@ dialect=gforth
 | [`docs/TRAINING-RUNS.md`](docs/TRAINING-RUNS.md) | Журнал прогонов обучения |
 | [`docs/TRAINING-NEXT-STEPS.md`](docs/TRAINING-NEXT-STEPS.md) | После train: infer, eval, long-run |
 | [`training/README.md`](training/README.md) | Скрипты train/infer, `run-sandbox-long.sh` |
-| [`tests/challenges/`](tests/challenges/) | 145 hold-out (6 seeds + 139 bank), `eval-slices.yaml`, [`docs/BENCHMARK-SIZING.md`](docs/BENCHMARK-SIZING.md) |
+| [`tests/challenges/`](tests/challenges/) | **151** total (6 seeds + 145 bank); **53** hold-out (`eval_holdout`); `eval-slices.yaml`, [`docs/BENCHMARK-SIZING.md`](docs/BENCHMARK-SIZING.md) |
 
 ```bash
 ./install.sh . gforth          # правила ВКЛ  → .cursor/rules/
@@ -143,21 +144,21 @@ cd tests/challenges && gforth 01-clamp.fs   # или 052-two-sum.fs — без �
 | **Merge (веса)** | Склеить LoRA + базу в **одни** полные веса (CPU/RAM, минуты). | [`training/merge-sandbox.py`](training/merge-sandbox.py) — см. раздел **«Merge LoRA»** ниже. Для infer в venv **не нужен** (`infer-sandbox.py` грузит adapter). Нужен для **GGUF / Ollama / LM Studio**. |
 | **merged (датасет)** | Не путать с merge весов: `train-merged.jsonl` = ans + 98 challenge. | [`scripts/build-train-merged.sh`](scripts/build-train-merged.sh), [`training/run-sandbox-merged.sh`](training/run-sandbox-merged.sh) |
 | **GGUF / Ollama** | Сжатый формат для локального чата. | После merge+export; LM Studio на Windows обычно ест GGUF, не папку adapter из WSL. |
-| **Hold-out** | Данные/задачи, которые модель **не видела** при SFT — только для оценки. | `tests/challenges/` (145 файлов): зоны paste **пустые**. |
+| **Hold-out** | Данные/задачи, которые модель **не видела** при SFT — только для оценки. | **53** файла (`eval_holdout` в `eval-slices.yaml`): зоны paste **пустые**. |
 | **Eval / бенчмарк** | Прогон модели на hold-out, `gforth` → TESTS OK. | [`docs/CHALLENGE-RUNS.md`](docs/CHALLENGE-RUNS.md), срез `eval_holdout` в `eval-slices.yaml`. |
 
 **Train vs inference на GPU:** обучение жрёт VRAM дольше и тяжелее; чат (inference) на той же карте обычно легче, но большую модель в Ollama лучше не грузить **во время** train 7B.
 
-## Почему ~33 строки sandbox, а челленджей ~145?
+## Почему ~33 строки sandbox, а челленджей 151?
 
-Это **разные роли**, не «мы собрали 145 и забыли в train».
+Это **разные роли**, не «мы собрали банк и забыли в train».
 
 ```text
 rules/*.mdc          →  RAG / Cursor (всегда в контексте, не JSONL)
 tests/ans + examples →  sandbox.jsonl / train.jsonl  (малый SFT, с тестами gforth)
 train_for_sft (98)   →  challenge-train.jsonl  (gold в data/challenge-solutions/)
-eval_holdout (~53)   →  tests/challenges/ пустые  (слепая оценка ПОСЛЕ обучения)
-full bank (145)      →  6 seeds + 139 bank  (справочно, см. eval-slices.yaml)
+eval_holdout (53)    →  tests/challenges/ пустые  (слепая оценка ПОСЛЕ обучения)
+full (151)           →  6 seeds + 145 bank  (см. eval-slices.yaml)
 ```
 
 | Набор | ~Размер | Зачем |
@@ -165,15 +166,11 @@ full bank (145)      →  6 seeds + 139 bank  (справочно, см. eval-sl
 | **`data/sandbox.jsonl`** | **33** строки (24 с `--validate`, только `TESTS OK`) | **Track A:** откатать цепочку dataset → QLoRA → adapter за минуты. Не про качество на всём банке. |
 | **`data/train.jsonl`** | **~24–41** из `tests/ans` + `examples` | **Track B (ядро):** цель **≥ 500** строк (внешний Gforth, синтетика). |
 | **`data/challenge-train.jsonl`** | **98** из `train_for_sft` | **Track B (челленджи):** эталонные решения большой модели; не смешивать с hold-out. |
-| **`tests/challenges/`** | **145** задач | **Не в train.** Имитация LeetCode/Codewars: измерить, насколько модель **обобщает**, а не зазубрила ответы. |
+| **`eval_holdout`** | **53** задачи | **Слепой экзамен** — stubs в `tests/challenges/` без gold. |
 
-Если бы все 145 решений лежали в `tests/challenges/` и попали в SFT, **бенчмарк стал бы бессмысленным** (модель уже видела ответы). Поэтому:
+98 train + 53 hold-out = **151** total. Решения для обучения — в `data/challenge-solutions/`, не в paste зонах hold-out.
 
-1. Условия и тесты — в `tests/challenges/*.fs` (**пустой** paste).
-2. Решения для обучения — в `data/challenge-solutions/` (отдельная папка).
-3. В JSONL для SFT попадает только срез **`train_for_sft`** (98), не **`eval_holdout`** (~53).
-
-**Итого «мало данных» для train сейчас — намеренно:** песочница 33/24 — проверка пайплайна; полный объём для 7B — `train.jsonl` 500+ + `challenge-train.jsonl` 98, а 145 задач — **экзамен**, не учебник.
+**Итого «мало данных» для train сейчас — намеренно:** песочница 33/24 — проверка пайплайна; полный объём для 7B — `train.jsonl` 500+ + `challenge-train.jsonl` 98; **53** hold-out — экзамен, не учебник.
 
 Срезы и цифры: [`tests/challenges/eval-slices.yaml`](tests/challenges/eval-slices.yaml), [`docs/CHALLENGE-TO-TRAIN.md`](docs/CHALLENGE-TO-TRAIN.md), [`docs/BENCHMARK-SIZING.md`](docs/BENCHMARK-SIZING.md).
 

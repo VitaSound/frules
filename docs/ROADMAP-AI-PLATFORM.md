@@ -27,7 +27,7 @@ Phase 5  →  inference engine on FPGA (quantized NN) — long term
 
 ### Задачи
 
-| # | Задача | Арtefact |
+| # | Задача | Артефакт |
 |---|--------|----------|
 | 1.1 | `scripts/lisp-to-forth.py` — post-order emit + locals hook | prototype |
 | 1.2 | `scripts/wasm-to-forth.py` — subset `.wat` → Forth ops | prototype |

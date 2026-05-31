@@ -26,7 +26,7 @@
 | **QLoRA** | LoRA + 4-bit база (влезает в 16 GB VRAM) |
 | **Merge** | слить adapter в полные веса |
 | **GGUF** | формат для llama.cpp / Ollama |
-| **Hold-out** | `tests/challenges/` — **145** файлов (6 seed + 139 bank), не в train, только оценка |
+| **Hold-out** | **`eval_holdout`** — **53** файла (слепой eval); **151** total в каталоге (6 seeds + 145 bank) |
 
 ---
 
@@ -119,7 +119,7 @@ python3 scripts/build-dataset.py --sandbox --validate
 
 - **Не** включайте `tests/challenges/` в train.
 - В `01-clamp.fs` и `04-caesar-shift.fs` между маркерами могут быть черновики — **очистите** перед честным бенчмарком или не используйте эти файлы как эталон в train.
-- Решения для **обучения**: срез `train_for_sft` (**94/94 готово**) → [`data/challenge-solutions/`](../data/challenge-solutions/) → [`CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md). **Не** в `tests/challenges/*.fs`. Фаза batch-solve закрыта — см. [`SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md).
+- Решения для **обучения**: срез `train_for_sft` (**98/98 готово**) → [`data/challenge-solutions/`](../data/challenge-solutions/) → [`CHALLENGE-TO-TRAIN.md`](CHALLENGE-TO-TRAIN.md). **Не** в `tests/challenges/*.fs`. Фаза batch-solve закрыта — см. [`SOLVE-QUEUE.md`](../data/challenge-solutions/SOLVE-QUEUE.md).
 - **Eval / валидация моделей:** только `eval_holdout` (6 seeds + ~39 bank) — не попадают в `challenge-train.jsonl`, не подглядывать в gold solutions hold-out slug.
 
 ### Расширение датасета (Track B)
@@ -246,7 +246,7 @@ Smoke: один промпт `: gcd`. Опционально вставка в �
 | +LoRA | off | on |
 | +LoRA+frules | on | on |
 
-Hold-out: **145** файла (6 seeds + 139 bank). Полный прогон не обязателен — используйте срезы из [`eval-slices.yaml`](../tests/challenges/eval-slices.yaml): `smoke` (~12), `standard` (~24), `stratified_20`. Протокол: [`CHALLENGE-RUNS.md`](CHALLENGE-RUNS.md), размер: [`BENCHMARK-SIZING.md`](BENCHMARK-SIZING.md).
+Hold-out: **53** файла (`eval_holdout`: часть seeds + bank). Полный банк **151** (6 seeds + 145 bank). Полный прогон hold-out не обязателен — используйте срезы из [`eval-slices.yaml`](../tests/challenges/eval-slices.yaml): `smoke` (~12), `standard` (~24), `stratified_20`. Протокол: [`CHALLENGE-RUNS.md`](CHALLENGE-RUNS.md), размер: [`BENCHMARK-SIZING.md`](BENCHMARK-SIZING.md).
 
 Заполнить [`TRAINING-RUNS.md`](TRAINING-RUNS.md) и таблицу в `CHALLENGE-RUNS.md`.
 

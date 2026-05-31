@@ -4,8 +4,8 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
 
 ## Near term (next 1–2 sessions)
 
-- [x] **`train_for_sft` solve queue** — 94/94 в [`data/challenge-solutions/SOLVE-QUEUE.md`](data/challenge-solutions/SOLVE-QUEUE.md); дальше `build-challenge-dataset.py`, **валидация моделей** на `eval_holdout` (не train).
-- [x] **`tests/challenges/`** — 6 seeds + 125 bank (`001`–`125`), 131 total; `manifest.yaml`, `INDEX.md`, `taxonomy-coverage.md`; генераторы `scripts/_build_catalog.py`, `gen_challenges.py`, `verify_challenges.sh`. Hold-out, без решений между маркерами.
+- [x] **`train_for_sft` solve queue** — **98/98** в [`data/challenge-solutions/SOLVE-QUEUE.md`](data/challenge-solutions/SOLVE-QUEUE.md); дальше `build-challenge-dataset.py`, **валидация моделей** на `eval_holdout` (не train).
+- [x] **`tests/challenges/`** — 6 seeds + 145 bank = **151** total; `manifest.yaml`, `INDEX.md`, `taxonomy-coverage.md`; генераторы `scripts/_build_catalog.py`, `gen_challenges.py`, `verify_challenges.sh`. Hold-out slice **53** — без решений между маркерами.
     - [x] Seed: `01`–`06` + `_tester.fs`. Bank: LeetCode Top 100 + Codewars/kata/PE/Rosetta, unique `pattern_key`, cognitive 0–10.
     - [x] Добить набор seed `07`–`10` — **заменено банком `001`–`139`** (parse/anagram/RLE/binary-search в банке; taxonomy OK). Defining words / FP / double — см. «Среднесрочно» ниже.
     - [~] Бенчмарковый прогон: `docs/CHALLENGE-RUNS.md` (Cursor) + `docs/LOCAL-GEMMA-BENCHMARK.md` (Gemma 4 / Ollama, rules on/off). Первая строка в CHALLENGE-RUNS — Composer 2.5 / Agent на `01-clamp`.
@@ -43,6 +43,7 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
     - [x] LLM ≠ transpiler нотации — [`docs/NOTATION-AND-TRANSPILER.md`](docs/NOTATION-AND-TRANSPILER.md)
     - [x] Multi-agent + внутренний диалог — [`docs/MULTI-AGENT-ARCHITECTURE.md`](docs/MULTI-AGENT-ARCHITECTURE.md)
     - [x] Roadmap: Lisp/WASM, RAG, train, infra, KU5P — [`docs/ROADMAP-AI-PLATFORM.md`](docs/ROADMAP-AI-PLATFORM.md)
+- [ ] **Вычитка AI-generated** — [`docs/PROOFREAD-AI-GENERATED.md`](docs/PROOFREAD-AI-GENERATED.md); P0 цифры частично поправлены 2026-05-31.
 - [ ] **Pre-commit hook** (`.git/hooks/pre-commit` или husky): запускать `./test.sh`, блокировать коммит при FAIL.
 - [ ] **CI.** GitHub Actions: установка `gforth` + `pforth` через apt, запуск `./test.sh` на каждый PR/push.
 - [x] **Lint English-only.** `tests/lint.sh` — grep `[А-Яа-яЁё]` в `rules/*.mdc` и `templates/*.mdc`; вызывается из `./test.sh`.

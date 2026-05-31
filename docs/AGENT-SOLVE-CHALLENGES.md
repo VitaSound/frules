@@ -38,7 +38,7 @@ Dialect: **Gforth**.
 | Commit solution, queue, and challenge (if fixed) — **after user OK** | Batch-close multiple tasks without per-task review |
 | One challenge per run (until review request or final push) | |
 
-Train list (`SOLVE-QUEUE.md`, ~94 files): **complete** — do not reopen for batch solving. Do **not** put solutions in `eval_holdout` files in [`eval-slices.yaml`](../tests/challenges/eval-slices.yaml); those are for **model validation** later.
+Train list (`SOLVE-QUEUE.md`, **98** files): **complete** — do not reopen for batch solving. Do **not** put solutions in `eval_holdout` files in [`eval-slices.yaml`](../tests/challenges/eval-slices.yaml); those are for **model validation** later.
 
 ---
 
