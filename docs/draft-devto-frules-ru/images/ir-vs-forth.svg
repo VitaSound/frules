@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 280" font-family="sans-serif" font-size="13">
+  <rect x="10" y="20" width="340" height="240" rx="8" fill="#2d1f1f" stroke="#c44"/>
+  <text x="180" y="48" fill="#f88" text-anchor="middle" font-weight="bold">L LLM � .fs =0?@O<CN</text>
+  <text x="30" y="85" fill="#ddd">Opus / Agent</text>
+  <text x="30" y="110" fill="#aaa">rot swap dup pick&</text>
+  <text x="30" y="140" fill="#aaa">WRONG NUMBER OF RESULTS</text>
+  <text x="30" y="170" fill="#aaa">$$$ thinking-xhigh</text>
+  <text x="30" y="210" fill="#888">Forth-D>@<0, ;>38:0 fail</text>
+  <rect x="370" y="20" width="340" height="240" rx="8" fill="#1a2d1f" stroke="#4a4"/>
+  <text x="540" y="48" fill="#8f8" text-anchor="middle" font-weight="bold"> LLM � IR � tools � .fs</text>
+  <text x="390" y="85" fill="#ddd">LLM � IR / ?A524>:>4</text>
+  <text x="390" y="115" fill="#aaa">transpiler + stack-glue</text>
+  <text x="390" y="145" fill="#aaa">gforth T{ }T</text>
+  <text x="390" y="175" fill="#8f8">PASS | structured FAIL</text>
+  <text x="390" y="210" fill="#888">FAIL � ?@028< IR, =5 rot</text>
+</svg>

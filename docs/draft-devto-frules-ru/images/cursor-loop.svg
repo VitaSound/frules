@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 120" font-family="sans-serif" font-size="12">
+  <rect x="10" y="40" width="70" height="40" rx="6" fill="#334" stroke="#88a"/>
+  <text x="45" y="65" fill="#fff" text-anchor="middle">User</text>
+  <text x="100" y="65" fill="#888">�</text>
+  <rect x="115" y="30" width="90" height="60" rx="6" fill="#353" stroke="#8a8"/>
+  <text x="160" y="55" fill="#fff" text-anchor="middle">Cursor</text>
+  <text x="160" y="72" fill="#aaa" text-anchor="middle">Agent</text>
+  <text x="220" y="65" fill="#888">�</text>
+  <rect x="235" y="25" width="200" height="70" rx="6" fill="#443" stroke="#aa8"/>
+  <text x="335" y="50" fill="#fff" text-anchor="middle">Q1�A1�Q2�A2&</text>
+  <text x="335" y="72" fill="#aaa" text-anchor="middle">thinking (A:@KBK5 turns)</text>
+  <text x="450" y="65" fill="#888">�</text>
+  <rect x="465" y="40" width="80" height="40" rx="6" fill="#533" stroke="#a88"/>
+  <text x="505" y="58" fill="#fff" text-anchor="middle">gforth</text>
+  <text x="505" y="72" fill="#afa" text-anchor="middle" font-size="10">PASS|FAIL</text>
+  <path d="M 335 95 Q 335 110 160 110 Q 85 110 85 80" fill="none" stroke="#666" stroke-dasharray="4"/>
+  <text x="210" y="108" fill="#888" font-size="10">FAIL � =>2K9 loop</text>
+</svg>
