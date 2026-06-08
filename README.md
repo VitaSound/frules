@@ -1,5 +1,7 @@
 # frules — правила Forth для ИИ
 
+[![Cov](https://img.shields.io/badge/Cov-2%25-red.svg)](https://github.com/VitaSound/frules)
+
 Набор сжатых, структурированных правил для Cursor (и других ассистентов), чтобы код на Forth был идиоматичнее и с меньшим числом типичных ошибок.
 
 ## Подключение к проекту
