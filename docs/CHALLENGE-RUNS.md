@@ -3,6 +3,9 @@
 How to check whether **frules** actually steer a **fresh** model toward idiomatic Forth.
 This is manual QA, not CI.
 
+**A/B 98 train (Cursor Auto vs ecosystem vs Ollama):** see [`BENCHMARK-AB-98.md`](BENCHMARK-AB-98.md) —
+`scripts/benchmark-env.sh`, timeout, cognitive sort.
+
 **Local Gemma 4 (Ollama):** see [`LOCAL-GEMMA-BENCHMARK.md`](LOCAL-GEMMA-BENCHMARK.md) —
 install model, connect/disconnect `.cursor/rules`, A/B baseline vs frules on.
 

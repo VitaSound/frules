@@ -6,7 +6,7 @@
 
 | Файл | Описание | Источник |
 |------|----------|----------|
-| `cursor-invoice.png` | Cursor billing, on-demand ~$102, thinking-xhigh | Скрин из Cursor Settings → Billing; **замазать** личные данные |
+| `cursor-invoice.png` | Cursor Invoices, май 2026 (23–29): ~$263 mid-month usage | Скрин Billing → Invoices; в репо |
 | `palmer-burn-after-reading.png` | Кадр «После прочтения сжечь» (Palmer) | Кадр из фильма или мем; финал поста |
 
 ## SVG (готовы в репо)

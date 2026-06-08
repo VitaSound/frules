@@ -118,6 +118,27 @@
 
 ---
 
+## §13 Вторая неделя — не дообучать, а обвесить
+
+- Track A закрыт → неделя на rules + gforth + toolchain, не LoRA.
+- **Экосистема:** feco, fmcp, fjson; июньские версии fmix/flint/fcov.
+- **Auto unlimited** — основной режим; Opus — пара раз в день 1.
+- Pre-commit — в TODO, не обещать в посте.
+- Завод: Cursor Auto → rules + MCP → gforth.
+
+## §14 Локальный стенд + A/B
+
+- Половина недели — ресёрч V100, NVLink, шлейфы PCIe.
+- Гипотеза 32 GB = вся кодовая база + architect reasoning — **не проверено**.
+- Стоп: деньги, возраст Volta, E5440×2, неясная польза.
+- *Железо после эксперимента, не до.*
+- A/B 98 train: A bare Auto, B +ecosystem, C Qwen3B+core (не Gemma primary).
+- Таймаут 15 min; таблица по cognitive ↑; цифры TBD.
+- V100 rental smoke 2–4h — запланировано до покупки стойки.
+- Open question: достаточный размер Forth-модели на 8–16 GB.
+
+---
+
 ## F0–F7 quick reference
 
 | # | Fail | Learn | Built |

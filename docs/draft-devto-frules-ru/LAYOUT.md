@@ -43,6 +43,8 @@
 | 9 | Track A F0–F7 | 8 + table sidebar | — | текст ✓ |
 | 10 | Роль инженера | 2 | — | текст ✓ |
 | 11 | Локальный завод | 3 + table + diagram | — | WASM Phase 1 ✓ |
+| 13 | **Вторая неделя** | 6 + table eco + A/B шаблон | — | devto-publish ✓ |
+| 13a | V100 / NVLink / verify-before-buy | 3 | — | внутри §13 |
 | 12 | Palmer | цитата | **palmer**.png | PNG автор |
 | — | Источники | списки ссылок | — | текст ✓ |
 
@@ -78,6 +80,12 @@ Track A ─────────────────── F0 «пук» 
 Инженер
   │
 Локальный завод ─────────── Phase 1: WASM
+  │
+Побочные продукты (май) ─── таблица repos
+  │
+коротко (антипаттерны)
+  │
+§13 Вторая неделя ───────── экосистема feco/fmcp · Auto · V100 · A/B TBD
   │
 Palmer ──────────────────── [palmer-burn-after-reading.png]  ← must-have
   │

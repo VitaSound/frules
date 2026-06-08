@@ -8,7 +8,7 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
 - [x] **`tests/challenges/`** — 6 seeds + 145 bank = **151** total; `manifest.yaml`, `INDEX.md`, `taxonomy-coverage.md`; генераторы `scripts/_build_catalog.py`, `gen_challenges.py`, `verify_challenges.sh`. Hold-out slice **53** — без решений между маркерами.
     - [x] Seed: `01`–`06` + `_tester.fs`. Bank: LeetCode Top 100 + Codewars/kata/PE/Rosetta, unique `pattern_key`, cognitive 0–10.
     - [x] Добить набор seed `07`–`10` — **заменено банком `001`–`139`** (parse/anagram/RLE/binary-search в банке; taxonomy OK). Defining words / FP / double — см. «Среднесрочно» ниже.
-    - [~] Бенчмарковый прогон: `docs/CHALLENGE-RUNS.md` (Cursor) + `docs/LOCAL-GEMMA-BENCHMARK.md` (Gemma 4 / Ollama, rules on/off). Первая строка в CHALLENGE-RUNS — Composer 2.5 / Agent на `01-clamp`.
+    - [~] A/B **98 train**: [`docs/BENCHMARK-AB-98.md`](docs/BENCHMARK-AB-98.md) — arms A/B/C, `scripts/benchmark-env.sh`, `benchmark_train_order.py`, `benchmark-record.sh`. Базовый промпт: `CHALLENGE-RUNS.md`; локальная модель arm C: **Qwen3B + core SYSTEM** (не Gemma primary). Цифры — TBD.
 - [x] **Дистилляция источников в `rules/`.** Vendored-текст в `sources/` → `docs/DISTILL-PROMPT.md` → обновить `rules/*.mdc` и `docs/SOURCES.md` (как для Brodie).
     - [x] Thinking Forth: исходники в `sources/brodie-thinking-forth/chapter*.md` + `appendix*.md` + `epilog.md` (`extract.sh`). Картинки в `figures/` — только для человека.
     - [x] Прогнать `docs/DISTILL-PROMPT.md` по главам Brodie; обновить `rules/*.mdc` (`forth-factoring`, `forth-style`, `forth-anti-patterns`, `forth-naming`; `docs/SOURCES.md` отмечает источник).

@@ -105,6 +105,7 @@ dialect=gforth
 | Документ | Содержание |
 |----------|------------|
 | [`docs/CHALLENGE-RUNS.md`](docs/CHALLENGE-RUNS.md) | Cursor / Composer / Agent: новый чат, промпт, `gforth`, таблица результатов |
+| [`docs/BENCHMARK-AB-98.md`](docs/BENCHMARK-AB-98.md) | **A/B 98 train**: Cursor Auto bare vs ecosystem vs Ollama Qwen3B; `scripts/benchmark-env.sh` |
 | [`docs/LOCAL-GEMMA-BENCHMARK.md`](docs/LOCAL-GEMMA-BENCHMARK.md) | **Gemma 4 через Ollama**: включить/выключить правила, A/B baseline |
 | [`docs/OLLAMA-FRULES.md`](docs/OLLAMA-FRULES.md) | **Ollama + все rules `.mdc`**: Qwen 0.5B, full/core SYSTEM |
 | [`docs/TRACK-A-FINAL.md`](docs/TRACK-A-FINAL.md) | финальный прогон Track A (short system) |
