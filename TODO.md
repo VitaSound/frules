@@ -43,6 +43,8 @@ Status legend: `[ ]` open · `[~]` in progress · `[x]` done
     - [x] LLM ≠ transpiler нотации — [`docs/NOTATION-AND-TRANSPILER.md`](docs/NOTATION-AND-TRANSPILER.md)
     - [x] Multi-agent + внутренний диалог — [`docs/MULTI-AGENT-ARCHITECTURE.md`](docs/MULTI-AGENT-ARCHITECTURE.md)
     - [x] Roadmap: Lisp/WASM, RAG, train, infra, KU5P — [`docs/ROADMAP-AI-PLATFORM.md`](docs/ROADMAP-AI-PLATFORM.md)
+    - [x] Экосистема checklist (rules, RAG, MCP, skills) — [`docs/GFORTH-AI-ECOSYSTEM.md`](docs/GFORTH-AI-ECOSYSTEM.md)
+    - [x] **Skills rollout (29)** — [`.cursor/skills/`](../.cursor/skills/), [`docs/GFORTH-SKILLS-CATALOG.md`](docs/GFORTH-SKILLS-CATALOG.md), `./install.sh` symlinks skills; S01–S29 complete (no fhdl/fhdlgen)
 - [ ] **Вычитка AI-generated** — [`docs/PROOFREAD-AI-GENERATED.md`](docs/PROOFREAD-AI-GENERATED.md); P0 цифры частично поправлены 2026-05-31.
 - [ ] **Pre-commit hook** (`.git/hooks/pre-commit` или husky): запускать `./test.sh`, блокировать коммит при FAIL.
 - [ ] **CI.** GitHub Actions: установка `gforth` + `pforth` через apt, запуск `./test.sh` на каждый PR/push.

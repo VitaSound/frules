@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install frules into target .cursor/rules/
+# Install frules into target .cursor/rules/ and .cursor/skills/
 #
 # Usage:
 #   ./install.sh [target-dir] [dialect] [profile]
@@ -11,9 +11,10 @@
 #   ./install.sh . gforth
 #   ./install.sh . gforth core
 #   ./install.sh . ans
+#   ./install.sh /path/to/vitasound-project gforth
 #
 # Notes:
-# - Symlinks point at this checkout's rules/. Edits to rules/ are picked up live.
+# - Symlinks point at this checkout's rules/ and .cursor/skills/.
 # - `.fs` is shared with F#: keep Forth sources in a Forth-only repo, or tighten
 #   topic globs to your project layout.
 
@@ -22,9 +23,12 @@ set -euo pipefail
 FRULES_ROOT="$(cd "$(dirname "$0")" && pwd)"
 TARGET="${1:-.}"
 RULES_SRC="$FRULES_ROOT/rules"
+SKILLS_SRC="$FRULES_ROOT/.cursor/skills"
 TPL_DIR="$FRULES_ROOT/templates"
 CONF="$FRULES_ROOT/frules.conf"
-RULES_DST="$(cd "$TARGET" && pwd)/.cursor/rules"
+TARGET_ABS="$(cd "$TARGET" && pwd)"
+RULES_DST="$TARGET_ABS/.cursor/rules"
+SKILLS_DST="$TARGET_ABS/.cursor/skills"
 
 read_dialect_from_conf() {
   if [ -f "$CONF" ]; then
@@ -151,7 +155,44 @@ for f in "${DIALECT_TOPICS[@]}"; do link_rule "$RULES_SRC/$f"; done
 
 prune_stale_links
 
+install_skills() {
+  [ -d "$SKILLS_SRC" ] || return 0
+  mkdir -p "$SKILLS_DST"
+  declare -A SKILL_KEEP=()
+  local skill name dst target
+  for skill in "$SKILLS_SRC"/*/; do
+    [ -d "$skill" ] || continue
+    name="$(basename "$skill")"
+    [ "$name" = "README.md" ] && continue
+    [ -f "$skill/SKILL.md" ] || continue
+    dst="$SKILLS_DST/$name"
+    if [ -e "$dst" ] && [ ! -L "$dst" ]; then
+      echo "skip skill (exists, not symlink): $name"
+      continue
+    fi
+    ln -sf "$skill" "$dst"
+    SKILL_KEEP["$name"]=1
+    echo "linked skill: $name"
+  done
+  for dst in "$SKILLS_DST"/*; do
+    [ -L "$dst" ] || continue
+    name="$(basename "$dst")"
+    target="$(readlink "$dst")"
+    case "$target" in
+      "$FRULES_ROOT"/*) ;;
+      *) continue ;;
+    esac
+    if [ -z "${SKILL_KEEP[$name]:-}" ]; then
+      rm -f "$dst"
+      echo "removed skill: $name"
+    fi
+  done
+}
+
+install_skills
+
 echo ""
 echo "Installed: dialect=$DIALECT  profile=$PROFILE"
-echo "Target:    $RULES_DST"
-echo "See docs/RULES-ARCHITECTURE.md for activation behavior."
+echo "Rules:     $RULES_DST"
+echo "Skills:    $SKILLS_DST"
+echo "See docs/RULES-ARCHITECTURE.md and docs/GFORTH-SKILLS-CATALOG.md"

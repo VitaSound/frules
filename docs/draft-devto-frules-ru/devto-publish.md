@@ -365,6 +365,57 @@ Cursor Auto → frules rules + AGENTS.md
 
 Остаются вопросы - а есть ли «необходимо-достаточный» размер **Forth-специфичной** модели на 8–16 GB VRAM, которую меняют под задачу как смену инструмента в заводе? Ведь если так, то будет иметь смысл или купить и использовать в долгую v100. Или разориться на современную, но не максимально большую карту.
 
+### Rules были — skills добавились
+
+Rules (`.mdc`) я уже описал: postfix, stack effect, «не делай `rot` ради красоты». Cursor их подхватывает из `.cursor/rules/`. Но rules отвечают на вопрос **как писать Forth**, а не **в каком порядке работать Agent'у**. За неделю 2 это стало узким местом: модель знает синтаксис, но забывает прогнать gforth, лезет в gold на hold-out, или крутит thinking вместо depth probe.
+
+Отсюда второй слой — **skills**: markdown-рецепты в `.cursor/skills/*/SKILL.md`. Не дублируют rules, а задают workflow: когда читать manual, когда IR, когда **обязательно** `TESTS OK` до слова «готово». Каталог: **29 skills** (P0–P3), установка тем же `./install.sh <project> gforth`, что и rules — см. [`GFORTH-SKILLS-CATALOG.md`](https://github.com/VitaSound/frules/blob/main/docs/GFORTH-SKILLS-CATALOG.md).
+
+| Слой | Вопрос | Пример |
+|------|--------|--------|
+| **rules** | Как писать? | `forth-stack.mdc`, `forth-control.mdc` |
+| **skills** | Что делать по шагам? | `gforth-verify-loop`, `solve-gforth-challenge` |
+| **MCP** | Кто запускает judge? | `gforth_eval`, `fmix_test` |
+| **gforth** | PASS или FAIL? | `T{ }T` → **TESTS OK** |
+
+Минимальный набор для coding — bundle **Minimal (7)**; для VitaSound/fmix — **12** (добавляются eval, IR, setup, flint). Приоритет P0 в каталоге — это волны rollout, не то же самое, что Minimal: три P0-skills (`eval-holdout-integrity`, `gforth-ir-pipeline`, `setup-frules-ecosystem`) живут в расширенном bundle, не в минимальном.
+
+Завод недели 2 теперь выглядит так:
+
+```text
+Cursor Auto → frules rules + skills + AGENTS.md
+            → MCP vitasound-forth (gforth_eval, …)
+            → gforth TESTS OK
+```
+
+*(RLM-MCP — отдельная история Phase 2b; в skills не входит.)*
+
+### Smoke-тест skills: sandbox `frules_test`
+
+Пока A/B на 98 задачах ещё **TBD**, нужен был быстрый ответ: skills **вообще работают** и **не вредят**? Собрал отдельную папку **`frules_test`** (рядом с frules): `./install.sh` тянет rules+skills симлинками, challenge harness — копией, **без gold** в `data/challenge-solutions/`.
+
+Три проверки в **свежих чатах** (судья — только gforth):
+
+| # | Skill | Задача | Критерий PASS |
+|---|-------|--------|---------------|
+| **A** | `solve-gforth-challenge` + `gforth-verify-loop` | `007-gcd.fs` с нуля, без gold | `data/challenge-solutions/007-gcd.fs` → **TESTS OK** |
+| **B** | `eval-holdout-integrity` | `003-pow-x-n.fs` (slice `eval_holdout`) | paste zone в spec **пустая**; решение в `eval-work/003-pow-x-n.fs` → **TESTS OK** |
+| **C** | `frules-topic-routing` | «какой rule для string/parse?» | `forth-strings.mdc`; parsing → `forth-meta.mdc`; Gforth → `forth-dialect-gforth.mdc` |
+
+**A** прошёл: классический gcd, агент запустил gforth до «готово». **B** — сначала только integrity (paste пустой), потом полный PASS после сохранения `: ipow` вне spec; hold-out не засоряем gold в репо. **C** — агент попал в `rules/frules-index.mdc` (строки про `s"` и recognizers), без FMAP-простыни.
+
+Команды проверки (если повторять сами):
+
+```bash
+# train
+cd frules_test && ./run-test.sh 007-gcd
+
+# hold-out (paste в tests/challenges/003-pow-x-n.fs не трогаем)
+cd frules_test/tests/challenges
+gforth ../../eval-work/003-pow-x-n.fs
+```
+
+Это не заменяет arm B на 98 файлах — только доказывает, что **рецепты подхватываются** и eval culture (hold-out, verify loop) соблюдается в изолированном проекте. Цифры A/B по-прежнему в таблице выше — **TBD**.
 
 ---
 
@@ -383,5 +434,5 @@ Fail недели — провал в виде неудавшейся генер
 
 **VitaSound:** [frules](https://github.com/VitaSound/frules) · [feco](https://github.com/VitaSound/feco) · [fmix](https://github.com/VitaSound/fmix) · [fmcp](https://github.com/VitaSound/fmcp) · [flint](https://github.com/VitaSound/flint) · [fcov](https://github.com/VitaSound/fcov) · [fsemver](https://github.com/VitaSound/fsemver) · [fhdlgen](https://github.com/VitaSound/fhdlgen)
 
-**Docs:** [BENCHMARK-AB-98](https://github.com/VitaSound/frules/blob/main/docs/BENCHMARK-AB-98.md) · [CHALLENGE-RUNS](https://github.com/VitaSound/frules/blob/main/docs/CHALLENGE-RUNS.md) · [OLLAMA-FRULES](https://github.com/VitaSound/frules/blob/main/docs/OLLAMA-FRULES.md)
+**Docs:** [BENCHMARK-AB-98](https://github.com/VitaSound/frules/blob/main/docs/BENCHMARK-AB-98.md) · [CHALLENGE-RUNS](https://github.com/VitaSound/frules/blob/main/docs/CHALLENGE-RUNS.md) · [OLLAMA-FRULES](https://github.com/VitaSound/frules/blob/main/docs/OLLAMA-FRULES.md) · [GFORTH-SKILLS-CATALOG](https://github.com/VitaSound/frules/blob/main/docs/GFORTH-SKILLS-CATALOG.md)
 

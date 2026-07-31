@@ -124,7 +124,9 @@
 - **Экосистема:** feco, fmcp, fjson; июньские версии fmix/flint/fcov.
 - **Auto unlimited** — основной режим; Opus — пара раз в день 1.
 - Pre-commit — в TODO, не обещать в посте.
-- Завод: Cursor Auto → rules + MCP → gforth.
+- Завод: Cursor Auto → rules + **skills** + MCP → gforth.
+- **29 Cursor skills** (workflow recipes); каталог `GFORTH-SKILLS-CATALOG.md`; `install.sh` ставит rules+skills.
+- Smoke `frules_test`: A gcd train, B hold-out ipow, C topic routing — PASS; A/B 98 цифры TBD.
 
 ## §14 Локальный стенд + A/B
 

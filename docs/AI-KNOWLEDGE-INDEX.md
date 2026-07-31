@@ -11,6 +11,8 @@
 | Тема | Документ |
 |------|----------|
 | **Hub (этот файл)** | [`AI-KNOWLEDGE-INDEX.md`](AI-KNOWLEDGE-INDEX.md) |
+| **Экосистема Gforth + LLM (чеклист)** | [`GFORTH-AI-ECOSYSTEM.md`](GFORTH-AI-ECOSYSTEM.md) |
+| **Cursor skills catalog (29)** | [`GFORTH-SKILLS-CATALOG.md`](GFORTH-SKILLS-CATALOG.md) |
 | Track A: 0.5B — не ошибка, проехали | [`TRACK-A-LESSONS.md`](TRACK-A-LESSONS.md) |
 | Почему LLM — не transpiler нотации | [`NOTATION-AND-TRANSPILER.md`](NOTATION-AND-TRANSPILER.md) |
 | Tier model, Opus, cost, MCP | [`EXTERNAL-LLM-ARCHITECTURE.md`](EXTERNAL-LLM-ARCHITECTURE.md) |
