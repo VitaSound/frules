@@ -346,3 +346,8 @@ python3 scripts/repeat-jsonl.py data/train-simple.jsonl data/train-repeated.json
 | `data/*.jsonl` | датасеты SFT |
 
 Полный гайд установки: [`docs/MODEL-TRAINING.md`](docs/MODEL-TRAINING.md). Скрипты: [`training/README.md`](training/README.md).
+
+## Экосистема VitaSound
+
+- [feco](https://github.com/VitaSound/feco) — каталог Forth-тулчейна: версии, покрытие, установка всех репозиториев
+- [MIT](https://github.com/VitaSound/MIT) — инженерная методология: декомпозиция задач и уровни аппаратно-программного стека
