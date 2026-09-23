@@ -1,0 +1,18 @@
+schema: spec-driven
+
+context: |
+  Language: Russian
+  All artifacts must be written in Russian.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+
+  Проект: frules — Markdown-правила для ИИ-ассистентов, пишущих Forth (диалекты gforth / ans), часть экосистемы VitaSound feco.
+  Правила агента: AGENTS.md. Состав: rules/*.mdc, install.sh (установка правил в целевой репозиторий),
+  examples/, tests/, docs/ (FORTH-*.md, обучение моделей), training/.
+  Проверка: ./test.sh (gforth, pforth при наличии; тест проходит, если в выводе есть "TESTS OK").
+  Экосистема: feco (каталог), fmix/flint/fcov (тулчейн), fmcp (MCP vitasound-forth).
+
+rules:
+  specs:
+    - Спеки описывают поведение install.sh, состав правил и профилей (full/core), а не содержание отдельных правил
+  tasks:
+    - Изменения правил проверять ./test.sh и, при влиянии на установку, прогоном ./install.sh на тестовом проекте
