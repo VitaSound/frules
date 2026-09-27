@@ -21,7 +21,7 @@
 | [`FORTH-DIALECT-LAYERS.md`](FORTH-DIALECT-LAYERS.md) | **Слой 0**: доменные диалекты **FORTH-X** |
 | [`FORTH-STACK-CPU-RESEARCH.md`](FORTH-STACK-CPU-RESEARCH.md) | **Исследовательские тезисы**: суперскалярный стековый фронтенд, Эльбрус, loop fracking |
 
-**Источники (внешние):** [ForthHub/ForthCPUs](https://github.com/ForthHub/ForthFreak/blob/master/ForthCPUs), [forth-standard.org/systems](https://forth-standard.org/systems), [Koopman stack computers](https://users.ece.cmu.edu/~koopman/stack_computers/sections.html), [WebAssembly](https://webassembly.org/), [WAForth](https://github.com/remko/waforth).
+**Источники (внешние):** [ForthHub/ForthCPUs](https://github.com/ForthHub/ForthFreak/blob/master/ForthCPUs), [forth-standard.org/systems](https://forth-standard.org/systems), [Koopman stack computers](https://users.ece.cmu.edu/~koopman/stack_computers/sections.html), [WebAssembly](https://webassembly.org/), [WAForth](https://github.com/remko/waforth), [H2](https://github.com/howerj/forth-cpu), [BIT-SERIAL](https://github.com/howerj/bit-serial).
 
 ---
 
@@ -324,6 +324,7 @@ Co-design новой платформы под задачу (ECU, FPGA, custom p
 | MuP21 / F21 | ○ | V/V/A/1–2 | Moore stack CPUs |
 | GreenArrays GA144/F18 | ● niche | V/V/1–4/M | [GreenArrays](https://www.greenarraychips.com/) |
 | J1 / J1a | ● | V/V/0/I | [jamesbowman/j1](https://github.com/jamesbowman/j1) |
+| H2 | ● | V/V/3/I | [howerj/forth-cpu](https://github.com/howerj/forth-cpu) — VHDL-производная J1; стеки 64/65; IRQ; eForth SoC |
 | Mecrisp-Ice | ● | V/V/0–1/I | [Mecrisp](https://mecrisp.sourceforge.net/) |
 | Steamer16, CD16, Sh-Boom, … | ○ | V/?/? | [ForthCPUs list](https://github.com/ForthHub/ForthFreak/blob/master/ForthCPUs) |
 | Эльбрус-1/2 (СтОп, OoO) | ◐ historical | V/?/… | [обзор zzeng](https://habr.com/ru/articles/313376/); тезисы — [`FORTH-STACK-CPU-RESEARCH.md`](FORTH-STACK-CPU-RESEARCH.md) |
@@ -337,7 +338,17 @@ Co-design новой платформы под задачу (ECU, FPGA, custom p
 
 **J1** — **fixed internal** (~33 data + ~32 return). Это **не эталон** всех Forth-CPU:
 типичный embedded Forth на MCU и многие historical stack machines — **RAM-backed**.
-Форки (forthytwo, H2) снова идут к RAM+указатель, когда internal stack не хватает.
+Форки вроде forthytwo уходят к RAM+указатель, когда internal stack не хватает.
+
+**H2** ([howerj/forth-cpu](https://github.com/howerj/forth-cpu), Richard James Howe) — VHDL-перепись J1 с небольшими расширениями. 16-bit: большинство примитивов за один такт, `!` — две инструкции. Стеки остаются **fixed internal**, глубина задаётся при синтезе: 64 return и 65 data (у J1 ~32 и ~33). Spill в RAM нет. Добавлены линия hold и IRQ. Это не runtime Gforth. SoC под Nexys3 (Spartan-6): UART, текстовый VGA (подмножество VT100), PS/2, таймер. Образ eForth собирает meta-compiler на host ([howerj/embed](https://github.com/howerj/embed)); на плате Forth принимает ввод с UART или с клавиатуры. Рядом симулятор на C и тестбенч GHDL. Профиль `h2`.
+
+### Forth на нестековом soft-CPU
+
+| Система | Статус | Модель | Ссылка |
+|---------|--------|--------|--------|
+| BIT-SERIAL (`bcpu`) | ● | 16-bit accumulator, bit-serial; Forth — программная VM | [howerj/bit-serial](https://github.com/howerj/bit-serial) |
+
+**BIT-SERIAL** (Richard James Howe) обрабатывает слово по одному биту. На Spartan-6 ядро порядка 23 slices / 76 LUT — UART в том же SoC больше самого CPU. В аппаратуре нет call/return, стека, прерываний и байтовой адресации. eForth — VM поверх аккумулятора: стек и вызовы эмулируются. Кросс-компилятор — `bit.fth` под gforth; в репозитории есть готовый `bit.hex`. Имеет смысл, когда на FPGA почти не осталось места и скорость не важна. Если нужны аппаратный стек и инструкция за такт, тот же автор отсылает к H2. Профиль `bit-serial`: память единая (MM=U), ISA не стековая — не MM=V.
 
 **Метафора (не FMAP-ось):** fixed internal stack на J1 ближе к **узкому исполнительному
 ядру** (hot path call/ret, T+N ALU), а RAM — для **состояния и кода**; не замена

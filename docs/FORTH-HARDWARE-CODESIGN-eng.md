@@ -367,6 +367,8 @@ flowchart TD
 | **MuP21 / F21** | Moore multi-stack | Co-design language + silicon |
 | **GreenArrays GA144** | Many tiny Forth cores | Parallelism + Forth native |
 | **J1 / J1a** | Verilog Forth CPU | **Accessible** co-design today |
+| **H2** | VHDL J1 derivative, stacks 64/65, IRQ, eForth SoC | [howerj/forth-cpu](https://github.com/howerj/forth-cpu); fixed internal, no RAM spill |
+| **BIT-SERIAL** | Bit-serial accumulator, ~76 LUT, eForth as a VM | [howerj/bit-serial](https://github.com/howerj/bit-serial); floor space over speed; not a stack ISA |
 | **Mecrisp-Ice** | FPGA Forth | Cross-only, RP=0 |
 | **8051-eForth / stm8ef** | *Not* custom CPU, but co-design **peripherals + STC** | Middle path on cheap MCU |
 

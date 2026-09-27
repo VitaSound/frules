@@ -21,7 +21,7 @@ Reference for **people** (porting, choosing a system, understanding embedded For
 | [`FORTH-DIALECT-LAYERS-eng.md`](FORTH-DIALECT-LAYERS-eng.md) | **Layer 0**: domain dialects **FORTH-X** |
 | [`FORTH-STACK-CPU-RESEARCH-eng.md`](FORTH-STACK-CPU-RESEARCH-eng.md) | **Research theses**: superscalar stack frontend (zzeng distill) |
 
-**External sources:** [ForthHub/ForthCPUs](https://github.com/ForthHub/ForthFreak/blob/master/ForthCPUs), [forth-standard.org/systems](https://forth-standard.org/systems), [Koopman stack computers](https://users.ece.cmu.edu/~koopman/stack_computers/sections.html), [WebAssembly](https://webassembly.org/), [WAForth](https://github.com/remko/waforth).
+**External sources:** [ForthHub/ForthCPUs](https://github.com/ForthHub/ForthFreak/blob/master/ForthCPUs), [forth-standard.org/systems](https://forth-standard.org/systems), [Koopman stack computers](https://users.ece.cmu.edu/~koopman/stack_computers/sections.html), [WebAssembly](https://webassembly.org/), [WAForth](https://github.com/remko/waforth), [H2](https://github.com/howerj/forth-cpu), [BIT-SERIAL](https://github.com/howerj/bit-serial).
 
 ---
 
@@ -322,6 +322,7 @@ A complete list of all CPUs is **impossible** ([ForthCPUs](https://github.com/Fo
 | MuP21 / F21 | ○ | V/V/A/1–2 | Moore stack CPUs |
 | GreenArrays GA144/F18 | ● niche | V/V/1–4/M | [GreenArrays](https://www.greenarraychips.com/) |
 | J1 / J1a | ● | V/V/0/I | [jamesbowman/j1](https://github.com/jamesbowman/j1) |
+| H2 | ● | V/V/3/I | [howerj/forth-cpu](https://github.com/howerj/forth-cpu) — VHDL J1 derivative; stacks 64/65; IRQ; eForth SoC |
 | Mecrisp-Ice | ● | V/V/0–1/I | [Mecrisp](https://mecrisp.sourceforge.net/) |
 | Steamer16, CD16, Sh-Boom, … | ○ | V/?/? | [ForthCPUs list](https://github.com/ForthHub/ForthFreak/blob/master/ForthCPUs) |
 
@@ -334,7 +335,17 @@ A complete list of all CPUs is **impossible** ([ForthCPUs](https://github.com/Fo
 
 **J1** — **fixed internal** (~33 data + ~32 return). It is **not the reference** for all Forth CPUs:
 typical embedded Forth on MCUs and many historical stack machines are **RAM-backed**.
-Forks (forthytwo, H2) move back to RAM+pointers when the internal stack is insufficient.
+Forks such as forthytwo move to RAM+pointers when the internal stack is insufficient.
+
+**H2** ([howerj/forth-cpu](https://github.com/howerj/forth-cpu), Richard James Howe) is a VHDL rewrite of the J1 with small extensions. 16-bit: most primitives take one cycle; `!` is two instructions. Stacks stay **fixed internal**, with depth set at synthesis: 64 return and 65 data (J1 is about 32 and 33). There is no spill to RAM. A hold line and IRQs are added. This is not a Gforth runtime. The SoC targets the Nexys3 (Spartan-6): UART, text VGA (a VT100 subset), PS/2, and a timer. A host meta-compiler ([howerj/embed](https://github.com/howerj/embed)) builds the eForth image; on the board Forth takes input from the UART or the keyboard. A C simulator and a GHDL testbench sit beside the VHDL. Profile `h2`.
+
+### Forth on a non-stack soft-CPU
+
+| System | Status | Model | Link |
+|--------|--------|-------|------|
+| BIT-SERIAL (`bcpu`) | ● | 16-bit accumulator, bit-serial; Forth is a software VM | [howerj/bit-serial](https://github.com/howerj/bit-serial) |
+
+**BIT-SERIAL** (Richard James Howe) processes one bit of a word at a time. On a Spartan-6 the core is about 23 slices / 76 LUTs — the UART in the same SoC is larger than the CPU. Hardware has no call/return, no stack, no interrupts, and no byte addressing. eForth is a VM on the accumulator: the stack and calls are emulated. The cross-compiler is `bit.fth` under gforth; the repo includes a ready `bit.hex`. It fits when FPGA floor space is almost gone and speed does not matter. When a hardware stack and one instruction per cycle are needed, the same author points to H2. Profile `bit-serial`: unified memory (MM=U), not a stack ISA — not MM=V.
 
 **Metaphor (not an FMAP axis):** J1’s fixed internal stacks resemble a **narrow execution core**
 (hot path call/ret, T+N ALU); RAM holds **state and code** — not a full Gforth parameter stack.
